@@ -1,5 +1,7 @@
 package tools;
 
+import java.util.List;
+
 import tools.Vector2D;
 
 public class Vector2D {
@@ -91,6 +93,18 @@ public class Vector2D {
 		var vA = this.mul((float) factor);
 		var vB = other.mul((float) (1.0 - factor));
 		return vA.add(vB);
+	}
+
+	public Vector2D interpolate(List<Vector2D> vectors) {
+		float x = 0;
+		float y = 0;
+		for (Vector2D vector : vectors) {
+			x += vector.x / vectors.size();
+			y += vector.y / vectors.size();
+		}
+
+		Vector2D ret = new Vector2D(x, y);
+		return ret;
 	}
 
 	public String toString() {

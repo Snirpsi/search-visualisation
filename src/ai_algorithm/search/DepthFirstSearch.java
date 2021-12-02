@@ -7,6 +7,7 @@ import ai_algorithm.Problem;
 import ai_algorithm.SearchNode;
 import ai_algorithm.State;
 import ai_algorithm.Uebung02;
+import application.Debugger;
 
 public class DepthFirstSearch extends SearchAlgorithm {
 
@@ -38,12 +39,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 
 		while (!frontier.isEmpty()) {
 
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Debugger.pause();
 			
 			SearchNode node = frontier.removeLast();
 			System.out.println(node);

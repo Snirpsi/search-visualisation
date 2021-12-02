@@ -3,6 +3,7 @@ package ecs.components.graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 import ai_algorithm.SearchNode;
 import application.UpdateRegistry;
@@ -78,7 +79,7 @@ public class TreeLayouter extends Component {
 		int i = 0;
 		for (TreeComponent leave : leaves) {
 			Position leavePos = leave.entity.getComponent(Position.class);
-			leavePos.setPosition(new Vector2D(i * leaveDistance, leaveDistance * (leave.updateDepth())));
+			leavePos.setPosition(new Vector2D(i * leaveDistance, (float) (PARENT_DISTANCE * (leave.updateDepth()))));
 			i++;
 			if (leave.getParent() != null) {
 				leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
@@ -94,18 +95,26 @@ public class TreeLayouter extends Component {
 			return;
 		}
 
-		if (treeOwn.getParent() == null) {
-			treeOwn.entity.getComponent(Position.class).setPosition(new Vector2D(0, 0));
-			return;
+		// position child average
+
+		List<Vector2D> vectors = new LinkedList<Vector2D>();
+		for (TreeComponent child : treeOwn.getChildren()) {
+			vectors.add(child.entity.getComponent(Position.class).getFuturePosition());
 		}
 
-		TreeComponent ownFirstChild = treeOwn.getChildren().get(0);
-		Vector2D newParentPos = new Vector2D(ownFirstChild.entity.getComponent(Position.class).getFuturePosition().x,
-				leaveDistance * (treeOwn.updateDepth()));
+		Vector2D newParentPos = new Vector2D(new Vector2D().interpolate(vectors).x,
+				(float) (PARENT_DISTANCE * (treeOwn.updateDepth())));
+
+		// positioniere unter first child
+//		TreeComponent ownFirstChild = treeOwn.getChildren().get(0);
+//		Vector2D newParentPos = new Vector2D(ownFirstChild.entity.getComponent(Position.class).getFuturePosition().x,
+//				leaveDistance * (treeOwn.updateDepth()));
 		treeOwn.entity.getComponent(Position.class).setPosition(newParentPos);
 
-		treeOwn.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
-
+		if (treeOwn.getParent() != null) {
+			treeOwn.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
+		}
+		return;
 	}
 
 	@Override

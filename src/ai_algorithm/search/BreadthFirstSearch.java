@@ -7,6 +7,7 @@ import ai_algorithm.Problem;
 import ai_algorithm.SearchNode;
 import ai_algorithm.State;
 import ai_algorithm.Uebung02;
+import application.Debugger;
 
 public class BreadthFirstSearch extends SearchAlgorithm {
 
@@ -38,12 +39,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 
 		while (!frontier.isEmpty()) {
 
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Debugger.pause();
 			
 			SearchNode node = frontier.removeFirst();
 			System.out.println(node);

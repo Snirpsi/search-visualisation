@@ -42,7 +42,8 @@ public class GameObject { // aka GameObject
 		try {
 			T newComp = componentClass.getConstructor().newInstance();
 			addComponent(newComp);
-			System.out.println("WARNING: Component created by getComponent method.");
+			System.out.println("WARNING: Component " + newComp.getClass().getName() + " created by getComponent method "
+					+ this.getClass().getName() + ".");
 			return (T) newComp;
 
 		} catch (Exception e) {
