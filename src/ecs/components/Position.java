@@ -21,24 +21,36 @@ public class Position extends Component {
 	}
 
 	public void setPosition(Vector2D position) {
-		var animator = this.entity.getComponent(Animation.class);
-		if (animator == null) {
+		if (!this.entity.hasComponent(Animation.class)) {
 			this.position = position;
 			return;
 		}
+		var animator = this.entity.getComponent(Animation.class);
 		animator.setEndPos(position);
 	}
 
 	public void directSetPosition(Vector2D position) {
 		this.position = position;
-		var animator = this.entity.getComponent(Animation.class);
-		if (animator == null) {
+
+		if (!this.entity.hasComponent(Animation.class)) {
 			return;
 		}
+		var animator = this.entity.getComponent(Animation.class);
 		animator.startPos = position;
 	}
 
 	public Vector2D getPosition() {
+
+
+		return position;
+
+	}
+
+	public Vector2D getFuturePosition() {
+		if (super.entity.hasComponent(Animation.class)) {
+			return super.entity.getComponent(Animation.class).endPos;
+		}
 		return position;
 	}
+
 }

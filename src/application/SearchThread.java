@@ -1,6 +1,6 @@
 package application;
 
-import ai_algorithm.SearchAlgorithm;
+import ai_algorithm.search.SearchAlgorithm;
 
 public class SearchThread extends Thread {
 

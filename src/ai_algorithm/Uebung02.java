@@ -73,7 +73,7 @@ public class Uebung02 {
 		for (String a : prob.getActions(s)) {
 			
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

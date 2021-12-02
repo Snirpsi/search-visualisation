@@ -1,8 +1,8 @@
 package application;
 
-import ai_algorithm.BreadthFirstSearch;
 import ai_algorithm.RasterPathProblem;
-
+import ai_algorithm.search.BreadthFirstSearch;
+import ai_algorithm.search.DepthFirstSearch;
 import application.gui.GuiLayout;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,10 +21,10 @@ public class Main extends Application {
 
 			RasterPathProblem problem = new RasterPathProblem();
 
-			BreadthFirstSearch searchi = new BreadthFirstSearch(problem);
-
-			 SearchThread s = new SearchThread(searchi);
-			 s.start();
+			DepthFirstSearch searchiDepth = new DepthFirstSearch(problem);
+			BreadthFirstSearch searchiBreadth = new BreadthFirstSearch(problem);
+			SearchThread s = new SearchThread(searchiDepth);
+			s.start();
 
 			UpdateCycle updater = new UpdateCycle();
 			updater.start();

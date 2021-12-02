@@ -1,10 +1,16 @@
-package ai_algorithm;
+package ai_algorithm.search;
 
 import java.util.HashSet;
 
-public class BreadthFirstSearch extends SearchAlgorithm {
+import ai_algorithm.Frontier;
+import ai_algorithm.Problem;
+import ai_algorithm.SearchNode;
+import ai_algorithm.State;
+import ai_algorithm.Uebung02;
 
-	public BreadthFirstSearch(Problem problem) {
+public class DepthFirstSearch extends SearchAlgorithm {
+
+	public DepthFirstSearch(Problem problem) {
 		super(problem);
 	}
 
@@ -33,13 +39,13 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		while (!frontier.isEmpty()) {
 
 			try {
-				Thread.sleep(500);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			SearchNode node = frontier.removeFirst();
+			SearchNode node = frontier.removeLast();
 			System.out.println(node);
 			for (SearchNode child : Uebung02.expand(node)) {
 				State state = child.getState();

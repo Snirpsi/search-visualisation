@@ -25,10 +25,6 @@ public class GameObject { // aka GameObject
 		this.name = name;
 	}
 
-	// benutzen um Komponenten und Co hinzuzufügen
-	public void init() {
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -42,15 +38,22 @@ public class GameObject { // aka GameObject
 		if (c != null) {
 			return componentClass.cast(c);
 		}
+		// create new component if it doesen't exist in gameObject
 		try {
 			T newComp = componentClass.getConstructor().newInstance();
 			addComponent(newComp);
+			System.out.println("WARNING: Component created by getComponent method.");
 			return (T) newComp;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 
+	}
+
+	public <T extends Component> boolean hasComponent(Class<T> componentClass) {
+		return components.containsKey(componentClass);
 	}
 
 	public <T extends Component> void removeComponent(Class<T> componentClass) {

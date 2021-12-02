@@ -19,6 +19,9 @@ public class RasterPathProblem extends Problem {
 	public RasterPathProblem() {
 		super();
 
+		startPos = new Vector2DInt((int) (Math.random()*GAMESIZE) ,(int) (Math.random()*GAMESIZE));
+		
+		
 		labyrinth = new char[GAMESIZE][GAMESIZE];
 
 		// Level generieren
@@ -37,7 +40,7 @@ public class RasterPathProblem extends Problem {
 
 	@Override
 	public State getInitialState() {
-		return new RasterPathState(this, new Vector2DInt(0, 0));
+		return new RasterPathState(this, startPos);
 	}
 
 	@Override
