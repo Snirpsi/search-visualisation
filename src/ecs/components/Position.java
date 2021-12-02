@@ -8,6 +8,10 @@ public class Position extends Component {
 
 	private Vector2D position;
 
+	public Position() {
+		this.position = new Vector2D();
+	}
+
 	public Position(Vector2D position) {
 		this.position = position;
 	}

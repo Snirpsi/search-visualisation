@@ -32,7 +32,7 @@ public class TreeLayouter extends Component {
 		this.entity.getComponent(Position.class).setPosition(position);
 	}
 
-	public void layout() {
+	public void layout2() {
 		// Benötigte Komponenten holen
 		// System.out.println("BAUM UPDATE LAYOUT");
 		TreeComponent nodeComp = super.entity.getComponent(TreeComponent.class);
@@ -67,7 +67,7 @@ public class TreeLayouter extends Component {
 		}
 	}
 
-	public void layout2() { // temporary
+	public void layout() { // temporary
 
 		TreeComponent nodeComp = super.entity.getComponent(TreeComponent.class);
 		Position pos = super.entity.getComponent(Position.class);
@@ -75,10 +75,19 @@ public class TreeLayouter extends Component {
 
 		if (nodeComp.getParent() == null) {
 			pos.setPosition(OFFSET);
+			return;
+		}
+
+		if (!nodeComp.isLeave()) {
+			TreeComponent firstChild = nodeComp.getChildren().get(0);
+			Position firstChildPos = firstChild.entity.getComponent(Position.class);
+			Vector2D newPos = new Vector2D(firstChildPos.getPosition().x, nodeComp.getDepth() * leaveDistance);
+			nodeComp.entity.getComponent(Position.class).setPosition(newPos);
+			nodeComp.getParent().entity.getComponent(TreeLayouter.class).layout();
 		}
 
 		TreeComponent root = nodeComp.getRoot();
-		System.out.println("ROOTDEPTH " +root.getDepth());
+		// System.out.println("ROOTDEPTH " + root.getDepth());
 		root.updateDepth();
 		List<TreeComponent> leaves = root.getLeavesInOrder();
 		int i = 0;
@@ -86,40 +95,14 @@ public class TreeLayouter extends Component {
 
 		// positionieren der elternknoten der blätter
 		for (TreeComponent leave : leaves) {
+			
 			TreeComponent now = leave;
 			now.updateDepth();
 			Position leavePos = leave.entity.getComponent(Position.class);
 			leavePos.setPosition(new Vector2D(i * leaveDistance, leaveDistance * (now.updateDepth())));
 			i++;
-
-			while (now.getParent() != null) {
-				TreeComponent nowParent = now.getParent();
-				nowParent.updateDepth();
-				Position parentPos = nowParent.entity.getComponent(Position.class);
-				// update tiefe der kinder
-				for (TreeComponent child : nowParent.getChildren()) {
-					child.getDepth();
-					
-					Vector2D pso = child.entity.getComponent(Position.class).getPosition();
-					 child.entity.getComponent(Position.class).setPosition(new Vector2D( pso.x ,leaveDistance * (now.updateDepth())));
-				}
-				TreeComponent parentsFirstChild = nowParent.getChildren().get(0);
-				Position parentsFirstChildPosition = parentsFirstChild.entity.getComponent(Position.class);
-				float parentsFirstChildPositionX = parentsFirstChildPosition.getPosition().x;
-				Vector2D newParentPos = new Vector2D(parentsFirstChildPositionX,
-						leaveDistance * (leave.getDepth() - 1));
-
-				parentPos.setPosition(newParentPos);
-//				Vector2D nowPos = now.entity.getComponent(Position.class).getPosition();
-//				Vector2D parentPos = now.getParent().entity.getComponent(Position.class).getPosition();
-//
-//				Vector2D nextParentPos = new Vector2D(nowPos.x, leaveDistance * now.getDepth());
-//				now.getParent().entity.getComponent(Position.class).setPosition(nextParentPos);
-				now = nowParent;
-			}
-
+			
 		}
-
 	}
 
 	@Override

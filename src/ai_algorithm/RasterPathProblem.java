@@ -7,7 +7,7 @@ import tools.Vector2DInt;
 
 public class RasterPathProblem extends Problem {
 
-	public final int GAMESIZE = 5;
+	public final int GAMESIZE = 20;
 	public final int TILESIZE = 20;
 	public final int BORDERSIZE = 1;
 

@@ -68,6 +68,8 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 	private void visit(Solution gameObject, RasterPathProblem prob) {
+		
+		
 		SpriteGraphics spriteGrapics = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
 		List<State> states = gameObject.getVisitedStates();
 		List<String> actions = gameObject.getSolutionActions();
@@ -126,7 +128,7 @@ public class InitialisationVisitor extends Visitor {
 		} else {
 			coloring.setColor(Color.BLUE);
 		}
-		gameObject.addComponent(new Animation(1));
+		//gameObject.addComponent(new Animation(1));
 
 		if (gameObject.getParent() != null) {
 

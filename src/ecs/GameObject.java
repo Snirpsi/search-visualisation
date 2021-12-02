@@ -1,5 +1,6 @@
 package ecs;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,15 @@ public class GameObject { // aka GameObject
 		if (c != null) {
 			return componentClass.cast(c);
 		}
+		try {
+			T newComp = componentClass.getConstructor().newInstance();
+			addComponent(newComp);
+			return (T) newComp;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
+
 	}
 
 	public <T extends Component> void removeComponent(Class<T> componentClass) {
@@ -87,6 +96,6 @@ public class GameObject { // aka GameObject
 
 	public void accept(Visitor visitor) {
 		System.out.println("Blub" + this.getClass());
-		visitor.visit( this );//this.getClass().cast(this));
+		visitor.visit(this);// this.getClass().cast(this));
 	}
 }

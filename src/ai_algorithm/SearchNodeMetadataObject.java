@@ -7,4 +7,6 @@ public class SearchNodeMetadataObject {
 	public static SearchNode root;
 	public static SearchNode expanding;
 
+	public boolean isInFrontier;
+	public boolean isInMemory;
 }

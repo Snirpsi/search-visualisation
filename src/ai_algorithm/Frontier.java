@@ -20,13 +20,16 @@ public class Frontier extends GameObject {
 	public void add(SearchNode sn) {
 		// eventuell notify hinzufügen für fallunterscheidung von verschiedenen aktionen
 		this.frontier.add(sn);
-		UpdateRegistry.largeUpdatePendingComponents();
-
+		UpdateRegistry.registerForLargeComponentUpdate(sn);
+		UpdateRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void addAll(List<SearchNode> nodes) {
 		frontier.addAll(nodes);
-		UpdateRegistry.largeUpdatePendingComponents();
+		for (SearchNode node : nodes) {
+			UpdateRegistry.registerForLargeComponentUpdate(node);
+		}
+		UpdateRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void sort(Function<SearchNode, Double> evaluationFunction) {
@@ -41,7 +44,7 @@ public class Frontier extends GameObject {
 				}
 			}
 		});
-		UpdateRegistry.largeUpdatePendingComponents();
+		UpdateRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public boolean isEmpty() {
