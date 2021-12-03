@@ -10,7 +10,7 @@ import application.UpdateRegistry;
 import ecs.Component;
 import ecs.components.Position;
 import ecs.components.TreeComponent;
-
+import javafx.geometry.Pos;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
@@ -58,7 +58,7 @@ public class TreeLayouter extends Component {
 			// System.out.println(child.getDepth());
 			var neuPos = new Vector2D(
 					(float) /* (DISTANCE * child.getDepth()) */ (PARENT_DISTANCE * child.getDepth() * child.getDepth()
-							+ child.getDepth() * child.getSibling() * SIBLING_DISTANCE
+							+ child.getDepth() * child.getSiblingCount() * SIBLING_DISTANCE
 							+ Math.sin(PARENT_DISTANCE * angle * PARENT_DISTANCE) * SIBLING_DISTANCE),
 					0);
 			Vector2D neuRotPos = neuPos.rotate(childTreeLayouter.angle);
@@ -86,6 +86,46 @@ public class TreeLayouter extends Component {
 			}
 		}
 
+		for (TreeComponent leave : leaves) {
+			if (leave.getParent() != null) {
+				//number of tree layout iterations more means more beautifull
+				for (int j = 0; j < 5; j++) { 
+					leave.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
+					leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
+				}
+				leave.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
+			}
+		}
+
+	}
+
+	private void placeSiblingsRecursivLayout() {
+		TreeComponent treeOwn = this.entity.getComponent(TreeComponent.class);
+		if (treeOwn.isLeave()) {
+			return;
+		}
+		if (treeOwn.getParent() == null) {
+			return;
+		}
+		Position ownPos = treeOwn.entity.getComponent(Position.class);
+		for (TreeComponent sibling : treeOwn.getSiblings()) {
+
+			if ((sibling.getChildren() == null || sibling.getChildren().size() == 0) && sibling != treeOwn) {
+
+				Position siblingPos = sibling.entity.getComponent(Position.class);
+				// set sibling neighboring own node
+				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber())), 0);
+				Vector2D newSiblingPos = new Vector2D(ownPos.getFuturePosition()).add(relativSiblingPos);
+				siblingPos.setPosition(newSiblingPos);
+
+			}
+
+		}
+		Vector2D relativeOwnPos = new Vector2D((float) (leaveDistance * (treeOwn.getSiblingNumber())), 0);
+		Vector2D newOwnPos = new Vector2D(ownPos.getFuturePosition()).add(relativeOwnPos);
+		ownPos.setPosition(newOwnPos);
+
+		// treeOwn.entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 	}
 
 	private void parentRecursiveLayout() {

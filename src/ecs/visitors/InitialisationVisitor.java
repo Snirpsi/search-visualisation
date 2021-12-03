@@ -166,6 +166,7 @@ public class InitialisationVisitor extends Visitor {
 				gameObject.getState().getProblem().getComponent(SpriteGraphics.class).show();
 				gameObject.getState().getComponent(SpriteGraphics.class).show();
 				gameObject.getSolutionActions().getComponent(SpriteGraphics.class).show();
+				gameObject.getComponent(TreeLayouter.class).layout();
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
 			}

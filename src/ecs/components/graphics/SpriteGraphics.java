@@ -1,5 +1,6 @@
 package ecs.components.graphics;
 
+import application.Globals;
 import ecs.MissingComponentExeption;
 import ecs.components.Association;
 import ecs.components.Position;
@@ -12,6 +13,10 @@ public class SpriteGraphics extends Graphics {
 	// Coloring coloring = null;
 	Position position = null;
 
+	public SpriteGraphics() {
+		super(Globals.treeRepresentationGraphicsContext);
+	}
+	
 	public SpriteGraphics(Pane graphicsContext) {
 		super(graphicsContext);
 	}

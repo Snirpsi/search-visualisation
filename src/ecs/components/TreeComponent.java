@@ -74,8 +74,24 @@ public class TreeComponent extends Component {
 	/**
 	 * @return the sibling
 	 */
-	public int getSibling() {
+	public int getSiblingCount() {
 		return sibling;
+	}
+
+	public int getSiblingNumber() {
+		if (this.getParent() == null) {
+			return 0;
+		}
+		return this.getParent().getChildren().indexOf(this);
+	}
+
+	public List<TreeComponent> getSiblings() {
+		if (this.getParent() == null) {
+			var l = new LinkedList<TreeComponent>();
+			l.add(this);
+			return l;
+		}
+		return this.getParent().getChildren();
 	}
 
 	public boolean isLeave() {
@@ -111,7 +127,7 @@ public class TreeComponent extends Component {
 			if (now.isLeave()) {
 				leaves.add(now);
 			} else {
-				for (int i = now.getChildren().size()-1 ; i >= 0; i--) {
+				for (int i = now.getChildren().size() - 1; i >= 0; i--) {
 					frontier.add(now.getChildren().get(i));
 				}
 			}
