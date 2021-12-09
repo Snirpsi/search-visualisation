@@ -106,6 +106,13 @@ public class TreeComponent extends Component {
 		return false;
 	}
 
+	public boolean isRoot() {
+		if (this.getParent() == null) {
+			return true;
+		}
+		return false;
+	}
+
 	public TreeComponent getRoot() {
 		TreeComponent rootComp = this;
 		while (rootComp.getParent() != null) {
@@ -114,7 +121,7 @@ public class TreeComponent extends Component {
 		return rootComp;
 	}
 
-	public List<TreeComponent> getLeavesInOrder() {
+	public List<TreeComponent> getLeafsInOrder() {
 
 		List<TreeComponent> leaves = new LinkedList<TreeComponent>();
 		List<TreeComponent> frontier = new LinkedList<TreeComponent>();

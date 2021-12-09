@@ -1,7 +1,7 @@
 package ai_algorithm.search;
 
-import ai_algorithm.Problem;
 import ai_algorithm.SearchNode;
+import ai_algorithm.problems.Problem;
 
 public abstract class SearchAlgorithm {
 

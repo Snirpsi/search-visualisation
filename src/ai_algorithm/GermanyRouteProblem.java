@@ -2,6 +2,8 @@ package ai_algorithm;
 
 import java.util.*;
 
+import ai_algorithm.problems.Problem;
+
 public class GermanyRouteProblem extends Problem {
 	
     protected static final Map<String, Map<String, Integer>> cityDistances = Map.ofEntries(

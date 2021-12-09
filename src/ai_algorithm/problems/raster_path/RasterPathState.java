@@ -1,7 +1,8 @@
-package ai_algorithm;
+package ai_algorithm.problems.raster_path;
 
 import java.util.Objects;
 
+import ai_algorithm.State;
 import tools.Vector2DInt;
 
 public class RasterPathState extends State {

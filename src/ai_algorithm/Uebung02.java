@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import ai_algorithm.problems.Problem;
+
 public class Uebung02 {
 
 	public static void main(String[] args) {

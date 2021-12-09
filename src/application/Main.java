@@ -1,6 +1,6 @@
 package application;
 
-import ai_algorithm.RasterPathProblem;
+import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearch;
 import application.gui.GuiLayout;
@@ -23,7 +23,7 @@ public class Main extends Application {
 
 			DepthFirstSearch searchiDepth = new DepthFirstSearch(problem);
 			BreadthFirstSearch searchiBreadth = new BreadthFirstSearch(problem);
-			SearchThread s = new SearchThread(searchiDepth);
+			SearchThread s = new SearchThread(searchiBreadth);
 			s.start();
 
 			UpdateCycle updater = new UpdateCycle();

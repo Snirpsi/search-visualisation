@@ -41,7 +41,7 @@ public class TreeLayouter extends Component {
 		Position pos = super.entity.getComponent(Position.class);
 		nodeComp.updateDepth();
 
-		if (nodeComp.getParent() == null) {
+		if (nodeComp.isRoot()) {
 			pos.setPosition(OFFSET);
 		}
 		int n = nodeComp.getChildren().size();
@@ -74,10 +74,10 @@ public class TreeLayouter extends Component {
 		TreeComponent treeOwn = super.entity.getComponent(TreeComponent.class);
 		TreeComponent treeRoot = treeOwn.getRoot();
 
-		List<TreeComponent> leaves = treeRoot.getLeavesInOrder();
+		List<TreeComponent> leafs = treeRoot.getLeafsInOrder();
 
 		int i = 0;
-		for (TreeComponent leave : leaves) {
+		for (TreeComponent leave : leafs) {
 			Position leavePos = leave.entity.getComponent(Position.class);
 			leavePos.setPosition(new Vector2D(i * leaveDistance, (float) (PARENT_DISTANCE * (leave.updateDepth()))));
 			i++;
@@ -86,14 +86,14 @@ public class TreeLayouter extends Component {
 			}
 		}
 
-		for (TreeComponent leave : leaves) {
-			if (leave.getParent() != null) {
-				//number of tree layout iterations more means more beautifull
-				for (int j = 0; j < 5; j++) { 
-					leave.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
-					leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
+		for (TreeComponent leaf : leafs) {
+			if (!leaf.isRoot()) {
+				// number of tree layout iterations more means more beautifull
+				for (int j = 0; j < 3; j++) {
+					leaf.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
+					leaf.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 				}
-				leave.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
+				leaf.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 			}
 		}
 
@@ -104,7 +104,7 @@ public class TreeLayouter extends Component {
 		if (treeOwn.isLeave()) {
 			return;
 		}
-		if (treeOwn.getParent() == null) {
+		if (treeOwn.isRoot()) {
 			return;
 		}
 		Position ownPos = treeOwn.entity.getComponent(Position.class);
@@ -151,7 +151,7 @@ public class TreeLayouter extends Component {
 //				leaveDistance * (treeOwn.updateDepth()));
 		treeOwn.entity.getComponent(Position.class).setPosition(newParentPos);
 
-		if (treeOwn.getParent() != null) {
+		if (!treeOwn.isRoot()) {
 			treeOwn.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 		}
 		return;

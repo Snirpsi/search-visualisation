@@ -1,5 +1,6 @@
 package ai_algorithm;
 
+import ai_algorithm.problems.Problem;
 import ecs.GameObject;
 
 public abstract class State extends GameObject {

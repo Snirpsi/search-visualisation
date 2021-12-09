@@ -1,13 +1,15 @@
-package ai_algorithm;
+package ai_algorithm.problems.raster_path;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import ai_algorithm.State;
+import ai_algorithm.problems.Problem;
 import tools.Vector2DInt;
 
 public class RasterPathProblem extends Problem {
 
-	public final int GAMESIZE = 20;
+	public final int GAMESIZE = 15;
 	public final int TILESIZE = 20;
 	public final int BORDERSIZE = 1;
 
@@ -19,9 +21,8 @@ public class RasterPathProblem extends Problem {
 	public RasterPathProblem() {
 		super();
 
-		startPos = new Vector2DInt((int) (Math.random()*GAMESIZE) ,(int) (Math.random()*GAMESIZE));
-		
-		
+		startPos = new Vector2DInt((int) (Math.random() * GAMESIZE), (int) (Math.random() * GAMESIZE));
+
 		labyrinth = new char[GAMESIZE][GAMESIZE];
 
 		// Level generieren

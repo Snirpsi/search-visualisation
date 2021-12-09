@@ -1,7 +1,8 @@
-package ai_algorithm;
+package ai_algorithm.problems;
 
 import java.util.List;
 
+import ai_algorithm.State;
 import ecs.GameObject;
 
 public abstract class Problem extends GameObject{

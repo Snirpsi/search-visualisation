@@ -3,11 +3,11 @@ package ecs.visitors;
 import java.util.List;
 
 import ai_algorithm.Frontier;
-import ai_algorithm.RasterPathProblem;
-import ai_algorithm.RasterPathState;
 import ai_algorithm.SearchNode;
 import ai_algorithm.Solution;
 import ai_algorithm.State;
+import ai_algorithm.problems.raster_path.RasterPathProblem;
+import ai_algorithm.problems.raster_path.RasterPathState;
 import application.Globals;
 import application.UpdateRegistry;
 import ecs.Component;
@@ -176,6 +176,23 @@ public class InitialisationVisitor extends Visitor {
 		});
 		gameObject.addComponent(ih);
 		circle.setOnMouseClicked(InputConnector.getInputConnector(gameObject));
+		InputHandler ihhover = new InputHandler(e -> {
+			System.out.println("INPUT SearchNode");
+			try {
+				gameObject.getState().getComponent(SpriteGraphics.class).clearPane();
+				gameObject.getState().getProblem().getComponent(SpriteGraphics.class).show();
+				gameObject.getState().getComponent(SpriteGraphics.class).show();
+				gameObject.getSolutionActions().getComponent(SpriteGraphics.class).show();
+				gameObject.getComponent(TreeLayouter.class).layout();
+			} catch (Exception exeption) {
+				System.out.println("Components Missing");
+			}
+
+			e.consume();
+			return null;
+		});
+		gameObject.addComponent(ihhover);
+		circle.setOnMouseEntered(InputConnector.getInputConnector(gameObject));
 		UpdateRegistry.registerForLargeComponentUpdate(gameObject);
 	}
 

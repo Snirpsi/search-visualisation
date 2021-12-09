@@ -2,6 +2,8 @@ package ai_algorithm;
 
 import java.util.Objects;
 
+import ai_algorithm.problems.Problem;
+
 public class CityState extends State {
 
 	private final Problem problem;

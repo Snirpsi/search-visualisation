@@ -3,6 +3,7 @@ package ai_algorithm;
 import java.util.LinkedList;
 import java.util.List;
 
+import ai_algorithm.problems.Problem;
 import ecs.GameObject;
 
 public class Solution extends GameObject {

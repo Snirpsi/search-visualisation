@@ -2,11 +2,12 @@ package ai_algorithm.search;
 
 import java.util.HashSet;
 
+import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
-import ai_algorithm.Problem;
 import ai_algorithm.SearchNode;
 import ai_algorithm.State;
 import ai_algorithm.Uebung02;
+import ai_algorithm.problems.Problem;
 import application.Debugger;
 
 public class DepthFirstSearch extends SearchAlgorithm {
@@ -20,7 +21,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 
 		Frontier frontier = new Frontier();
 		// muss noch eigene Klasse werden;
-		HashSet<State> explored = new HashSet<>();
+		ExploredSet explored = new ExploredSet();
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
 		explored.add(problem.getInitialState());
