@@ -6,7 +6,6 @@ import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.State;
-import ai_algorithm.Uebung02;
 import ai_algorithm.problems.Problem;
 import application.Debugger;
 
@@ -20,12 +19,12 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 	public SearchNode search() {
 
 		Frontier frontier = new Frontier();
-		// muss noch eigene Klasse werden;
-		ExploredSet explored = new ExploredSet();// new HashSet<State>();
+
+		ExploredSet explored = new ExploredSet();
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
 		explored.add(problem.getInitialState());
-		
+
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -41,14 +40,13 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		while (!frontier.isEmpty()) {
 
 			Debugger.pause();
-			
+
 			SearchNode node = frontier.removeFirst();
 			System.out.println(node);
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
 					System.out.println("Finished");
-					//Uebung02.expand(child);
 					return child;
 				}
 				if (!explored.contains(state)) {

@@ -45,8 +45,6 @@ public class SearchNode extends GameObject {
 		this.solution = new Solution(this);
 
 		this.metadata.expanding = parent;
-		this.metadata.expanding = parent;
-		this.metadata.expanding = parent;
 
 	}
 
