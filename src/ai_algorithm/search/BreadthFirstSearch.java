@@ -44,7 +44,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 			
 			SearchNode node = frontier.removeFirst();
 			System.out.println(node);
-			for (SearchNode child : Uebung02.expand(node)) {
+			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
 					System.out.println("Finished");

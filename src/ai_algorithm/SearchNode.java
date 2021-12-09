@@ -1,10 +1,14 @@
 package ai_algorithm;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import ai_algorithm.problems.Problem;
+import application.Debugger;
 import application.UpdateRegistry;
 import ecs.GameObject;
+import javafx.scene.Node;
 
 public class SearchNode extends GameObject {
 
@@ -26,7 +30,6 @@ public class SearchNode extends GameObject {
 		super();
 		this.metadata = new SearchNodeMetadataObject();
 
-
 		this.parent = parent;
 		this.state = state;
 		this.pathCost = pathCost;
@@ -40,11 +43,11 @@ public class SearchNode extends GameObject {
 			}
 		}
 		this.solution = new Solution(this);
-		
+
 		this.metadata.expanding = parent;
 		this.metadata.expanding = parent;
 		this.metadata.expanding = parent;
-		
+
 	}
 
 	public SearchNode getParent() {
@@ -77,5 +80,28 @@ public class SearchNode extends GameObject {
 	 */
 	public Solution getSolutionActions() {
 		return solution;
+	}
+
+	public List<SearchNode> expand() {
+		List<SearchNode> futureCildren = new ArrayList<>();
+		
+		if( this.getChildren() != null && this.getChildren().size() != 0) {
+			return this.getChildren(); // <-- only expand children if they don't alredy exist
+		}
+
+		State state = this.getState();
+		Problem prob = state.getProblem();
+		for (String action : prob.getActions(state)) {
+			Debugger.pause();
+
+			State succState = prob.getSuccessor(state, action);
+			SearchNode succ = new SearchNode(this, succState,
+					this.getPathCost() + prob.getCost(state, action, succState), action);
+			futureCildren.add(succ);
+		}
+		
+		this.children.addAll(futureCildren);
+
+		return this.children;
 	}
 }

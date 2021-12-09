@@ -25,7 +25,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
 		explored.add(problem.getInitialState());
-		
+
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -41,14 +41,13 @@ public class DepthFirstSearch extends SearchAlgorithm {
 		while (!frontier.isEmpty()) {
 
 			Debugger.pause();
-			
+
 			SearchNode node = frontier.removeLast();
 			System.out.println(node);
-			for (SearchNode child : Uebung02.expand(node)) {
+			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
 					System.out.println("Finished");
-					//Uebung02.expand(child);
 					return child;
 				}
 				if (!explored.contains(state)) {
