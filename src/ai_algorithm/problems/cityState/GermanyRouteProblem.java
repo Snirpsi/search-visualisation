@@ -1,7 +1,8 @@
-package ai_algorithm;
+package ai_algorithm.problems.cityState;
 
 import java.util.*;
 
+import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
 
 public class GermanyRouteProblem extends Problem {

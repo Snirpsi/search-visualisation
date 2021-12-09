@@ -1,7 +1,7 @@
-package ai_algorithm;
+package ai_algorithm.problems.cityState;
 
 import java.util.Objects;
-
+import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
 
 public class CityState extends State {
