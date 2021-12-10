@@ -3,8 +3,8 @@ package ai_algorithm;
 import java.util.HashSet;
 import java.util.List;
 
-import application.UpdateRegistry;
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 
 public class ExploredSet extends GameObject {
 
@@ -17,16 +17,16 @@ public class ExploredSet extends GameObject {
 
 	public void add(State state) {
 		this.explored.add(state);
-		UpdateRegistry.registerForLargeComponentUpdate(state);
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(state);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void addAll(List<State> states) {
 		explored.addAll(states);
 		for (State state : states) {
-			UpdateRegistry.registerForLargeComponentUpdate(state);
+			GameObjectRegistry.registerForLargeComponentUpdate(state);
 		}
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 	
 	public boolean isEmpty () {

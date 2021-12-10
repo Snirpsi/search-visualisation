@@ -2,8 +2,10 @@ package ecs;
 
 public abstract class Component {
 
-	// optimize with dirty bit
-
+	// optimize with dirty bit .. or not
+	public Component() {
+	}
+	
 	public GameObject entity = null;
 
 	public void start() {

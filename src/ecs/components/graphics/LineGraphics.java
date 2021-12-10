@@ -1,7 +1,6 @@
 package ecs.components.graphics;
 
 import ecs.GameObject;
-import ecs.MissingComponentExeption;
 import ecs.components.Association;
 import ecs.components.Position;
 
@@ -20,25 +19,16 @@ public class LineGraphics extends Graphics {
 	}
 
 	@Override
-	public void update(float deltaT) throws MissingComponentExeption {
+	public void update(float deltaT)  {
 		Position ownPos = super.entity.getComponent(Position.class);
-		if (ownPos == null) {
-			throw new MissingComponentExeption(
-					super.entity.getName() + " does not contain " + Position.class.getName());
-		}
+		
 		Association ownAssociation = super.entity.getComponent(Association.class);
-		if (ownAssociation == null) {
-			throw new MissingComponentExeption(
-					super.entity.getName() + " does not contain " + Association.class.getName());
-		}
+
 		GameObject other = ownAssociation.other;
 		if (other == null) {
 			throw new NullPointerException();
 		}
 		Position otherPos = other.getComponent(Position.class);
-		if (otherPos == null) {
-			throw new MissingComponentExeption();
-		}
 
 		for (Shape shape : shapes) {
 			if (shape.getClass().isAssignableFrom(Line.class)) {
@@ -54,6 +44,5 @@ public class LineGraphics extends Graphics {
 	@Override
 	public void fetchDependencies() {
 	}
-
 
 }

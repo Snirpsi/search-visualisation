@@ -1,7 +1,6 @@
 package ecs.components.graphics;
 
 import application.Globals;
-import ecs.MissingComponentExeption;
 import ecs.components.Association;
 import ecs.components.Position;
 
@@ -16,7 +15,7 @@ public class SpriteGraphics extends Graphics {
 	public SpriteGraphics() {
 		super(Globals.treeRepresentationGraphicsContext);
 	}
-	
+
 	public SpriteGraphics(Pane graphicsContext) {
 		super(graphicsContext);
 	}
@@ -46,7 +45,8 @@ public class SpriteGraphics extends Graphics {
 		// this.coloring = super.entitie.getComponent(Coloring.class);
 		this.position = super.entity.getComponent(Position.class);
 		if (this.position == null) {
-		//	throw new MissingComponentExeption(super.entity.getName() + " does not contain " + Association.class.getName());
+			// throw new MissingComponentExeption(super.entity.getName() + " does not
+			// contain " + Association.class.getName());
 		}
 	}
 }

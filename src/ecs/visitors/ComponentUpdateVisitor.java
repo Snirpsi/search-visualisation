@@ -5,8 +5,9 @@ import java.util.List;
 
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
-import application.UpdateRegistry;
+import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.TreeLayouter;
 import javafx.scene.paint.Color;
@@ -56,9 +57,14 @@ public class ComponentUpdateVisitor extends Visitor {
 		}
 
 	}
+	
+	
+	public void visit (RasterPathProblem rasterPathProblem) {
+		
+	}
 
 	private boolean isInFrontier(SearchNode s) {
-		List<Frontier> frontiers = UpdateRegistry.getAllGameObjectsOfType(Frontier.class);
+		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
 		for (Frontier frontier : frontiers) {
 			if (frontier.contains(s)) {
 				System.out.println("is in frontier " + s);
@@ -70,4 +76,7 @@ public class ComponentUpdateVisitor extends Visitor {
 
 		return false;
 	}
+	
+	
+	
 }

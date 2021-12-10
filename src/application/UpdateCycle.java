@@ -1,6 +1,7 @@
 package application;
 
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 import javafx.animation.AnimationTimer;
 
 public class UpdateCycle {
@@ -30,12 +31,12 @@ public class UpdateCycle {
 
 				Globals.fps = (int) (1 / deltaT);
 
-				for (GameObject rootGameObjects : UpdateRegistry.gameObjectRegistry) {
+				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
 					rootGameObjects.update(deltaT);
 				}
-				UpdateRegistry.initializePendingGameObjects();
+				GameObjectRegistry.initializePendingGameObjects();
 
-				UpdateRegistry.largeUpdatePendingComponents();
+				GameObjectRegistry.largeUpdatePendingComponents();
 			}
 		};
 	}

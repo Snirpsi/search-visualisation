@@ -1,15 +1,14 @@
-package application;
+package ecs;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import ecs.GameObject;
 import ecs.visitors.ComponentUpdateVisitor;
 import ecs.visitors.InitialisationVisitor;
 
-public class UpdateRegistry {
+public class GameObjectRegistry {
 
 	public static List<GameObject> gameObjectRegistry = Collections.synchronizedList(new LinkedList<>());
 	public static List<GameObject> largeSingleUpdate = Collections.synchronizedList(new LinkedList<GameObject>());
@@ -20,10 +19,7 @@ public class UpdateRegistry {
 	public static ComponentUpdateVisitor componentUpdateVisitor = new ComponentUpdateVisitor();
 
 	public static void register(GameObject gameObject) {
-		// synchronized (gameObjectRegistry) {
 		needsGameObjectInitialisation.add(gameObject);
-		// }
-
 	}
 
 	public static void initializePendingGameObjects() {
@@ -50,10 +46,9 @@ public class UpdateRegistry {
 
 		for (GameObject gameObject : gameObjectRegistry) {
 			if (gameObject.getClass().isAssignableFrom(type)) {
-				ret.add( type.cast(gameObject));
+				ret.add(type.cast(gameObject));
 			}
 		}
-
 		return ret;
 	}
 
