@@ -19,12 +19,13 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
+			
 			RasterPathProblem problem = new RasterPathProblem();
 
 			BreadthFirstSearch searchi = new BreadthFirstSearch(problem);
 
-			 SearchThread s = new SearchThread(searchi);
-			 s.start();
+			SearchThread s = new SearchThread(searchi);
+			s.start();
 
 			UpdateCycle updater = new UpdateCycle();
 			updater.start();
