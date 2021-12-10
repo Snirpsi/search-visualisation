@@ -25,11 +25,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
 		explored.add(problem.getInitialState());
 
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Debugger.pause();
 
 		if (this.problem.isGoalState(start.getState())) {
 			return start;
@@ -50,6 +46,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 					return child;
 				}
 				if (!explored.contains(state)) {
+					Debugger.pause();
 					explored.add(state);
 					frontier.add(child);
 				}
