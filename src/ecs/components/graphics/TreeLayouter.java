@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Vector;
 
 import ai_algorithm.SearchNode;
-import application.UpdateRegistry;
 import ecs.Component;
+import ecs.GameObjectRegistry;
 import ecs.components.Position;
 import ecs.components.TreeComponent;
 import javafx.geometry.Pos;

@@ -44,6 +44,14 @@ public class RasterPathProblem extends Problem {
 		return new RasterPathState(this, startPos);
 	}
 
+	public State getCorresphrondingState(Vector2DInt coordinate) {
+		if (!this.testPosition(coordinate)) {
+			return null;
+
+		}
+		return new RasterPathState(this, coordinate);
+	}
+
 	@Override
 	public boolean isGoalState(State state) {
 		RasterPathState stateC = (RasterPathState) state;

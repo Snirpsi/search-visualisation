@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
-import application.UpdateRegistry;
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 
-public class Frontier extends GameObject {
+public class Frontier extends GameObject { // maby it is althou collection ??? {
 
 	private List<SearchNode> frontier;
 
@@ -20,16 +20,16 @@ public class Frontier extends GameObject {
 	public void add(SearchNode sn) {
 		// eventuell notify hinzufügen für fallunterscheidung von verschiedenen aktionen
 		this.frontier.add(sn);
-		UpdateRegistry.registerForLargeComponentUpdate(sn);
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(sn);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void addAll(List<SearchNode> nodes) {
 		frontier.addAll(nodes);
 		for (SearchNode node : nodes) {
-			UpdateRegistry.registerForLargeComponentUpdate(node);
+			GameObjectRegistry.registerForLargeComponentUpdate(node);
 		}
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void sort(Function<SearchNode, Double> evaluationFunction) {
@@ -44,7 +44,7 @@ public class Frontier extends GameObject {
 				}
 			}
 		});
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public boolean isEmpty() {
@@ -68,6 +68,15 @@ public class Frontier extends GameObject {
 	public boolean contains(SearchNode searchnode) {
 		if (frontier.contains(searchnode)) {
 			return true;
+		}
+		return false;
+	}
+
+	public boolean containsNodeWithState(State state) {
+		for (SearchNode searchNode : frontier) {
+			if (searchNode.getState().equals(state)) {
+				return true;
+			}
 		}
 		return false;
 	}

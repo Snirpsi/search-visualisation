@@ -2,16 +2,18 @@ package ecs.visitors;
 
 import java.util.List;
 
+import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.Solution;
 import ai_algorithm.State;
+import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.problems.raster_path.RasterPathState;
 import application.Globals;
-import application.UpdateRegistry;
 import ecs.Component;
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 import ecs.components.Animation;
 import ecs.components.Association;
 import ecs.components.InputConnector;
@@ -28,6 +30,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import tools.Vector2D;
+import tools.Vector2DInt;
 
 public class InitialisationVisitor extends Visitor {
 	// default
@@ -193,7 +196,7 @@ public class InitialisationVisitor extends Visitor {
 		});
 		gameObject.addComponent(ihhover);
 		circle.setOnMouseEntered(InputConnector.getInputConnector(gameObject));
-		UpdateRegistry.registerForLargeComponentUpdate(gameObject);
+		GameObjectRegistry.registerForLargeComponentUpdate(gameObject);
 	}
 
 	// Frontier
@@ -203,60 +206,79 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 	// PathProblem
-	public void visit(RasterPathProblem gameObject) {
-		super.visit(gameObject);
-		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+	public void visit(RasterPathProblem rasterPathProblem) {
+		super.visit(rasterPathProblem);
+
+		// can cause createt objects that have not been initialized not apera
+		// TODO: change how get all works to realy add all objects
+		// Fetch all Frontiers
+		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
+		// Fetch all ExploredSets
+		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
 		SpriteGraphics spriteComponent = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
 
-		for (int i = 0; i < gameObject.GAMESIZE; i++) {
-			for (int j = 0; j < gameObject.GAMESIZE; j++) {
-				Rectangle r = new Rectangle(i * gameObject.TILESIZE, j * gameObject.TILESIZE, gameObject.TILESIZE,
-						gameObject.TILESIZE);
-				if (gameObject.labyrinth[i][j] == 'e') {
+		for (int i = 0; i < rasterPathProblem.GAMESIZE; i++) {
+			for (int j = 0; j < rasterPathProblem.GAMESIZE; j++) {
+				Rectangle r = new Rectangle(i * rasterPathProblem.TILESIZE, j * rasterPathProblem.TILESIZE,
+						rasterPathProblem.TILESIZE, rasterPathProblem.TILESIZE);
+				if (rasterPathProblem.labyrinth[i][j] == 'e') {
 					r.setFill(new Color(1.0, 1.0, 1.0, 1.0));
+					RasterPathState rps = (RasterPathState) rasterPathProblem
+							.getCorresphrondingState(new Vector2DInt(i, j));
+					if (rps != null) {
+						for (Frontier frontier : frontiers) {
+							if (frontier.containsNodeWithState(rps)) {
+								r.setFill(Color.LIGHTGREEN);
+							}
+						}
+						for (ExploredSet exploredSet : exploredSets) {
+							if (exploredSet.contains(rps)) {
+								r.setFill(Color.LIGHTGRAY);
+							}
+						}
+					}
 				} else {
 					r.setFill(new Color(0.2, 0.2, 1.0, 1.0));
 				}
-				r.setStyle(" -fx-stroke: black; -fx-stroke-width: " + gameObject.BORDERSIZE + ";");
+				r.setStyle(" -fx-stroke: black; -fx-stroke-width: " + rasterPathProblem.BORDERSIZE + ";");
 				spriteComponent.addShape(r);
-
 			}
 		}
 
-		var goalpos = (gameObject.GAMESIZE - 1) * gameObject.TILESIZE + gameObject.TILESIZE / 2;
+		var goalpos = (rasterPathProblem.GAMESIZE - 1) * rasterPathProblem.TILESIZE + rasterPathProblem.TILESIZE / 2;
 		Circle goalCircle = new Circle(goalpos, goalpos, 10);
-		goalCircle.setStyle(" -fx-stroke: black; -fx-stroke-width: " + gameObject.BORDERSIZE + ";");
+		goalCircle.setStyle(" -fx-stroke: black; -fx-stroke-width: " + rasterPathProblem.BORDERSIZE + ";");
 		goalCircle.setFill(Color.RED);
 		spriteComponent.addShape(goalCircle);
-
-		gameObject.addComponent(spriteComponent);
+		rasterPathProblem.addComponent(spriteComponent);
 		spriteComponent.hide();
 
 	}
 
-	public void visit(RasterPathState gameObject) {
-		super.visit(gameObject);
+	public void visit(RasterPathState RasterPathState) {
+		super.visit(RasterPathState);
 
 		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
 		/// LÖSUNG PASIEREN
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
-		var problem = gameObject.getProblem().getComponent(SpriteGraphics.class);
+		var problem = RasterPathState.getProblem().getComponent(SpriteGraphics.class);
 		if (problem != null) {
 			problem.show();
 		}
 
 		Component position = new Position(Vector2D.ZERO);
-		gameObject.addComponent(position);
+		RasterPathState.addComponent(position);
 
-		double fetchedTilesize = gameObject.getProblem().TILESIZE;
-		Circle startC = new Circle(gameObject.getPosition().x * fetchedTilesize + fetchedTilesize / 2,
-				gameObject.getPosition().y * fetchedTilesize + fetchedTilesize / 2, 10);
+		double fetchedTilesize = RasterPathState.getProblem().TILESIZE;
+		Circle startC = new Circle(RasterPathState.getPosition().x * fetchedTilesize + fetchedTilesize / 2,
+				RasterPathState.getPosition().y * fetchedTilesize + fetchedTilesize / 2, 7);
 		startC.setFill(Color.CYAN);
+		startC.setStyle(" -fx-stroke: black; -fx-stroke-width: " + RasterPathState.getProblem().BORDERSIZE + ";");
 		SpriteGraphics srg = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
 		srg.addShape(startC);
-		gameObject.addComponent(srg);
+		RasterPathState.addComponent(srg);
 
 	}
 }

@@ -1,11 +1,9 @@
 package ecs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import application.UpdateRegistry;
 import ecs.visitors.Visitor;
 
 public class GameObject { // aka GameObject
@@ -17,7 +15,7 @@ public class GameObject { // aka GameObject
 	public GameObject() {
 		this.components = new HashMap<>();
 		this.childGameObjects = new ArrayList<>();
-		UpdateRegistry.register(this);
+		GameObjectRegistry.register(this);
 	}
 
 	public GameObject(String name) {
@@ -67,7 +65,7 @@ public class GameObject { // aka GameObject
 		component.entity = this; // Reference aus der Komponente auf das zugehörige Object
 	}
 
-	public void update(float deltaT) throws MissingComponentExeption {
+	public void update(float deltaT) {
 		for (GameObject child : childGameObjects) {
 			child.update(deltaT);
 		}

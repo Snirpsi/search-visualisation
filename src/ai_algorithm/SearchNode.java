@@ -6,8 +6,8 @@ import java.util.List;
 
 import ai_algorithm.problems.Problem;
 import application.Debugger;
-import application.UpdateRegistry;
 import ecs.GameObject;
+import ecs.GameObjectRegistry;
 import javafx.scene.Node;
 
 public class SearchNode extends GameObject {
@@ -70,7 +70,7 @@ public class SearchNode extends GameObject {
 
 	public void setChildren(LinkedList<SearchNode> children) {
 		this.children = children;
-		UpdateRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	/**
