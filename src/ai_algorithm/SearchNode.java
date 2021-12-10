@@ -52,6 +52,13 @@ public class SearchNode extends GameObject {
 		return parent;
 	}
 
+	public boolean isRoot() {
+		if (this.getParent() == null) {
+			return true;
+		}
+		return false;
+	}
+
 	public State getState() {
 		return state;
 	}
@@ -82,8 +89,8 @@ public class SearchNode extends GameObject {
 
 	public List<SearchNode> expand() {
 		List<SearchNode> futureCildren = new ArrayList<>();
-		
-		if( this.getChildren() != null && this.getChildren().size() != 0) {
+
+		if (this.getChildren() != null && this.getChildren().size() != 0) {
 			return this.getChildren(); // <-- only expand children if they don't alredy exist
 		}
 
@@ -97,7 +104,7 @@ public class SearchNode extends GameObject {
 					this.getPathCost() + prob.getCost(state, action, succState), action);
 			futureCildren.add(succ);
 		}
-		
+
 		this.children.addAll(futureCildren);
 
 		return this.children;
