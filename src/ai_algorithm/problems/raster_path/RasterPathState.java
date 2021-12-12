@@ -52,6 +52,11 @@ public class RasterPathState extends State {
 		return Objects.equals(position, other.position);
 	}
 
+	@Override
+	public String toString() {
+
+		return position.toString();
+	}
 	
 
 	

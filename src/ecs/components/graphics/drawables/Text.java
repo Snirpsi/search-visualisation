@@ -15,7 +15,13 @@ public class Text extends Drawable {
 	public Text() {
 		this.text = new Label("EMPTY TEXT");
 		this.text.setFont(new Font(4));
-		this.text.setTextFill(Color.RED);
+		this.text.setTextFill(Color.HOTPINK);
+	}
+
+	public Text(String string) {
+		this();
+		this.text.setText(string);
+
 	}
 
 	public void setText(String s) {

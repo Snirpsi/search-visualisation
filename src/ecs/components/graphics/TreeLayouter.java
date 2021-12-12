@@ -93,7 +93,6 @@ public class TreeLayouter extends Component {
 					leaf.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 					leaf.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 				}
-				leaf.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 			}
 		}
 
@@ -124,8 +123,6 @@ public class TreeLayouter extends Component {
 		Vector2D relativeOwnPos = new Vector2D((float) (leaveDistance * (treeOwn.getSiblingNumber())), 0);
 		Vector2D newOwnPos = new Vector2D(ownPos.getFuturePosition()).add(relativeOwnPos);
 		ownPos.setPosition(newOwnPos);
-
-		// treeOwn.entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 	}
 
 	private void parentRecursiveLayout() {
@@ -154,6 +151,8 @@ public class TreeLayouter extends Component {
 		if (!treeOwn.isRoot()) {
 			treeOwn.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 		}
+		//MABY NEEDET AFTER REWORK		
+		//this.placeSiblingsRecursivLayout();
 		return;
 	}
 
