@@ -9,7 +9,7 @@ import tools.Vector2DInt;
 
 public class RasterPathProblem extends Problem {
 
-	public final int GAMESIZE = 15;
+	public final int GAMESIZE = 5;
 	public final int TILESIZE = 20;
 	public final int BORDERSIZE = 1;
 
@@ -42,6 +42,10 @@ public class RasterPathProblem extends Problem {
 	@Override
 	public State getInitialState() {
 		return new RasterPathState(this, startPos);
+	}
+
+	public State getGoalState() {
+		return new RasterPathState(this, goalPos);
 	}
 
 	public State getCorresphrondingState(Vector2DInt coordinate) {

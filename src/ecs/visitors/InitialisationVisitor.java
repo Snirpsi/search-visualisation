@@ -22,9 +22,12 @@ import ecs.components.Position;
 import ecs.components.TreeComponent;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
-import ecs.components.graphics.LineGraphics;
-import ecs.components.graphics.SpriteGraphics;
 import ecs.components.graphics.TreeLayouter;
+import ecs.components.graphics.drawables.ConnectionLine;
+import ecs.components.graphics.drawables.Sprite;
+import ecs.components.graphics.drawables.Text;
+import ecs.components.graphics.drawables.TileMap2D;
+import javafx.print.Collation;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -65,32 +68,35 @@ public class InitialisationVisitor extends Visitor {
 
 		Circle circle = new Circle(0, 0, 20);
 		circle.setFill(Color.CHARTREUSE);
-		Graphics graphics = new SpriteGraphics(Globals.treeRepresentationGraphicsContext);
-		graphics.addShape(circle);
+		Graphics graphics = new Graphics(Globals.treeRepresentationGraphicsContext);
 		gameObject.addComponent(graphics);
+
+		Sprite sprite = new Sprite();
+		sprite.addShape(new Circle(100, 100, 100));
+		gameObject.addComponent(sprite);
 	}
 
 	private void visit(Solution gameObject, RasterPathProblem prob) {
 
-		SpriteGraphics spriteGrapics = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
-		List<State> states = gameObject.getVisitedStates();
-		List<String> actions = gameObject.getSolutionActions();
-		int offset = (prob.TILESIZE / 2);
-		int transform = (prob.TILESIZE);
-
-		if (states.size() >= 2) {
-
-			RasterPathState statePrev = (RasterPathState) states.get(0);
-			RasterPathState stateSucc = (RasterPathState) states.get(0);
-			for (int i = 1; i < states.size(); i++) {
-				// Linie malen
-				statePrev = stateSucc;
-				stateSucc = (RasterPathState) states.get(i);
-				Line path = new Line(statePrev.getPosition().x * transform + offset,
-						statePrev.getPosition().y * transform + offset, stateSucc.getPosition().x * transform + offset,
-						stateSucc.getPosition().y * transform + offset);
-				path.setStroke(new Color(1.0, 0, 0, 0.3));
-				spriteGrapics.addShape(path);
+//		Sprite spriteGrapics = new Sprite(Globals.stateRepresentationGraphicsContext);
+//		List<State> states = gameObject.getVisitedStates();
+//		List<String> actions = gameObject.getSolutionActions();
+//		int offset = (prob.TILESIZE / 2);
+//		int transform = (prob.TILESIZE);
+//
+//		if (states.size() >= 2) {
+//
+//			RasterPathState statePrev = (RasterPathState) states.get(0);
+//			RasterPathState stateSucc = (RasterPathState) states.get(0);
+//			for (int i = 1; i < states.size(); i++) {
+//				// Linie malen
+//				statePrev = stateSucc;
+//				stateSucc = (RasterPathState) states.get(i);
+//				ConnectionLine path = new ConnectionLine(statePrev.getPosition().x * transform + offset,
+//						statePrev.getPosition().y * transform + offset, stateSucc.getPosition().x * transform + offset,
+//						stateSucc.getPosition().y * transform + offset);
+//				path.setStroke(new Color(1.0, 0, 0, 0.3));
+//				spriteGrapics.addShape(path);
 //				Label action = new Label(actions.get(i - 1));
 //				Vector2D labelPos = new Vector2D(statePrev.getPosition().x * transform + offset,
 //						statePrev.getPosition().y * transform + offset)
@@ -98,95 +104,72 @@ public class InitialisationVisitor extends Visitor {
 //										stateSucc.getPosition().y * transform + offset), 0.5);
 //				action.setTranslateX(labelPos.x);
 //				action.setTranslateY(labelPos.y);
-				// Shape a = action. ja mistikack .... was mach ich denn jetzt mit dem label
-				// spriteGrapics.addShape(action);
-
-			}
-		}
-
-		gameObject.addComponent(spriteGrapics);
+		// Shape a = action. ja mistikack .... was mach ich denn jetzt mit dem label
+		// spriteGrapics.addShape(action);
+//
+//			}
+//		}
+//gameObject.addComponent(spriteGrapics);
 
 	}
 
 	// SearchNode
-	public void visit(SearchNode gameObject) {
-		super.visit(gameObject);
+	public void visit(SearchNode searchNode) {
+		super.visit(searchNode);
+		searchNode.addComponent(new Position());
+		searchNode.addComponent(new Graphics(Globals.treeRepresentationGraphicsContext));
 
-		// not so default
-		System.out.println("Searchnode Visitor");
-		gameObject.addComponent(new Position(new Vector2D((float) Math.random() * 1000, (float) Math.random() * 1000)));
-
-		var sprites = new SpriteGraphics(Globals.treeRepresentationGraphicsContext);
 		Circle circle = new Circle(0, 0, 10);
-		sprites.addShape(circle);
-		gameObject.addComponent(sprites);
+		circle.setFill(Color.RED);
+		Sprite spriteComponent = new Sprite();
 
-		var coloring = new Coloring();
-		gameObject.addComponent(coloring);
+		spriteComponent.addShape(circle);
+		searchNode.addComponent(spriteComponent);
 
-		if (gameObject.getState().getProblem().isGoalState(gameObject.getState())) {
-			System.out.println("SET COLLOR RED");
+		Coloring coloring = new Coloring();
+		searchNode.addComponent(coloring);
+
+		searchNode.addComponent(new Animation(1));
+
+		Text text = new Text();
+		String actionText = searchNode.getAction();
+		actionText = actionText == null ? "-" : "" + actionText.charAt(0);
+		text.setText("S: " + searchNode.getState().toString() + "\n " + "C: " + searchNode.getPathCost() + "\n A: "
+				+ actionText);
+		searchNode.addComponent(text);
+
+		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
 			coloring.setColor(Color.RED);
 		} else {
 			coloring.setColor(Color.BLUE);
 		}
-		gameObject.addComponent(new Animation(1));
 
-		if (gameObject.getParent() != null) {
-
-			gameObject.getComponent(Position.class)
-					.directSetPosition(gameObject.getParent().getComponent(Position.class).getPosition());
-			// Verbindung zum parent (LINIE)
-			System.out.println("initialize line");
-			gameObject.addComponent(new Association(gameObject.getParent()));
-
-			var linesGraphics = new LineGraphics(Globals.treeRepresentationGraphicsContext);
-			linesGraphics.addShape(new Line());
-			gameObject.addComponent(linesGraphics);
-
-			/// Baum Komponente
-			var treeComponent = new TreeComponent(gameObject.getParent().getComponent(TreeComponent.class));
-			gameObject.addComponent(treeComponent);
-
-			var parentLayouter = gameObject.getParent().getComponent(TreeLayouter.class);
-			if (parentLayouter != null) {
-				parentLayouter.layout();
-			}
-
+		if (!searchNode.isRoot()) {
+			searchNode.getComponent(Position.class)
+					.directSetPosition(searchNode.getParent().getComponent(Position.class).getPosition());
+			// assoziation (linie zum parent)
+			searchNode.addComponent(new Association(searchNode.getParent()));
+			searchNode.addComponent(new ConnectionLine());
+			// add treeComponent
+			TreeComponent treeComponent = new TreeComponent(searchNode.getParent().getComponent(TreeComponent.class));
+			searchNode.addComponent(treeComponent);
+			searchNode.getParent().getComponent(TreeLayouter.class).layout();
 		} else {
-			var treeComponent = new TreeComponent();
-			gameObject.addComponent(treeComponent);
+			TreeComponent treeComponent = new TreeComponent();
+			searchNode.addComponent(treeComponent);
 		}
 
-		// BaumLayout
 		TreeLayouter treeLayouter = new TreeLayouter();
-		gameObject.addComponent(treeLayouter);
+		searchNode.addComponent(treeLayouter);
 
-		InputHandler ih = new InputHandler(e -> {
-			System.out.println("INPUT SearchNode");
-			try {
-				gameObject.getState().getComponent(SpriteGraphics.class).clearPane();
-				gameObject.getState().getProblem().getComponent(SpriteGraphics.class).show();
-				gameObject.getState().getComponent(SpriteGraphics.class).show();
-				gameObject.getSolutionActions().getComponent(SpriteGraphics.class).show();
-				gameObject.getComponent(TreeLayouter.class).layout();
-			} catch (Exception exeption) {
-				System.out.println("Components Missing");
-			}
-
-			e.consume();
-			return null;
-		});
-		gameObject.addComponent(ih);
-		circle.setOnMouseClicked(InputConnector.getInputConnector(gameObject));
 		InputHandler ihhover = new InputHandler(e -> {
 			System.out.println("INPUT SearchNode");
 			try {
-				gameObject.getState().getComponent(SpriteGraphics.class).clearPane();
-				gameObject.getState().getProblem().getComponent(SpriteGraphics.class).show();
-				gameObject.getState().getComponent(SpriteGraphics.class).show();
-				gameObject.getSolutionActions().getComponent(SpriteGraphics.class).show();
-				gameObject.getComponent(TreeLayouter.class).layout();
+				// searchNode.getState().getComponent(Graphics.class).clearPane();
+				searchNode.getState().getProblem().getComponent(Graphics.class).show();
+				searchNode.getState().getComponent(Graphics.class).show();
+				searchNode.getSolutionActions().getComponent(Graphics.class).show();
+				searchNode.getComponent(TreeLayouter.class).layout();
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
 			}
@@ -194,9 +177,12 @@ public class InitialisationVisitor extends Visitor {
 			e.consume();
 			return null;
 		});
-		gameObject.addComponent(ihhover);
-		circle.setOnMouseEntered(InputConnector.getInputConnector(gameObject));
-		GameObjectRegistry.registerForLargeComponentUpdate(gameObject);
+		searchNode.addComponent(ihhover);
+		circle.setOnMouseEntered(InputConnector.getInputConnector(searchNode));
+		GameObjectRegistry.registerForLargeComponentUpdate(searchNode);
+		searchNode.getComponent(Graphics.class).notifyNewDrawable();
+		searchNode.getComponent(Graphics.class).show();
+
 	}
 
 	// Frontier
@@ -209,6 +195,8 @@ public class InitialisationVisitor extends Visitor {
 	public void visit(RasterPathProblem rasterPathProblem) {
 		super.visit(rasterPathProblem);
 
+		rasterPathProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
+
 		// can cause createt objects that have not been initialized not apera
 		// TODO: change how get all works to realy add all objects
 		// Fetch all Frontiers
@@ -216,69 +204,73 @@ public class InitialisationVisitor extends Visitor {
 		// Fetch all ExploredSets
 		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
-		SpriteGraphics spriteComponent = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
+		TileMap2D tilemap = new TileMap2D();
+		rasterPathProblem.addComponent(tilemap);
 
 		for (int i = 0; i < rasterPathProblem.GAMESIZE; i++) {
 			for (int j = 0; j < rasterPathProblem.GAMESIZE; j++) {
-				Rectangle r = new Rectangle(i * rasterPathProblem.TILESIZE, j * rasterPathProblem.TILESIZE,
-						rasterPathProblem.TILESIZE, rasterPathProblem.TILESIZE);
+
 				if (rasterPathProblem.labyrinth[i][j] == 'e') {
-					r.setFill(new Color(1.0, 1.0, 1.0, 1.0));
-					RasterPathState rps = (RasterPathState) rasterPathProblem
-							.getCorresphrondingState(new Vector2DInt(i, j));
-					if (rps != null) {
-						for (Frontier frontier : frontiers) {
-							if (frontier.containsNodeWithState(rps)) {
-								r.setFill(Color.LIGHTGREEN);
-							}
-						}
-						for (ExploredSet exploredSet : exploredSets) {
-							if (exploredSet.contains(rps)) {
-								r.setFill(Color.LIGHTGRAY);
-							}
-						}
-					}
+					tilemap.setTile(new Vector2DInt(i, j), new Rectangle(), Color.WHITE);
 				} else {
-					r.setFill(new Color(0.2, 0.2, 1.0, 1.0));
+					tilemap.setTile(new Vector2DInt(i, j), new Rectangle(), Color.BLUE);
 				}
-				r.setStyle(" -fx-stroke: black; -fx-stroke-width: " + rasterPathProblem.BORDERSIZE + ";");
-				spriteComponent.addShape(r);
+
 			}
 		}
 
-		var goalpos = (rasterPathProblem.GAMESIZE - 1) * rasterPathProblem.TILESIZE + rasterPathProblem.TILESIZE / 2;
-		Circle goalCircle = new Circle(goalpos, goalpos, 10);
-		goalCircle.setStyle(" -fx-stroke: black; -fx-stroke-width: " + rasterPathProblem.BORDERSIZE + ";");
+		Sprite sprites = new Sprite();
+		rasterPathProblem.addComponent(sprites);
+
+		Circle goalCircle = new Circle();
 		goalCircle.setFill(Color.RED);
-		spriteComponent.addShape(goalCircle);
-		rasterPathProblem.addComponent(spriteComponent);
-		spriteComponent.hide();
+		tilemap.fitToTilemap(((RasterPathState) rasterPathProblem.getGoalState()).getPosition(), goalCircle);
+
+		Circle startCircle = new Circle();
+		startCircle.setFill(Color.GREEN);
+		tilemap.fitToTilemap(((RasterPathState) rasterPathProblem.getInitialState()).getPosition(), startCircle);
+
+		sprites.addShape(goalCircle);
+		sprites.addShape(startCircle);
+
+		rasterPathProblem.getComponent(Graphics.class).show();
 
 	}
 
-	public void visit(RasterPathState RasterPathState) {
-		super.visit(RasterPathState);
+	public void visit(RasterPathState rasterPathState) {
+		super.visit(rasterPathState);
 
 		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
 		/// LÖSUNG PASIEREN
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
-		var problem = RasterPathState.getProblem().getComponent(SpriteGraphics.class);
-		if (problem != null) {
-			problem.show();
-		}
+		Graphics problem = rasterPathState.getProblem().getComponent(Graphics.class);
+
+		problem.show();
 
 		Component position = new Position(Vector2D.ZERO);
-		RasterPathState.addComponent(position);
+		rasterPathState.addComponent(position);
+//
+//		double fetchedTilesize = RasterPathState.getProblem().TILESIZE;
+		Circle stateC = new Circle();
+		rasterPathState.getProblem().getComponent(TileMap2D.class).fitToTilemap(rasterPathState.getPosition(), stateC);
+		stateC.setRadius(4);
+		stateC.setFill(Color.CYAN);
 
-		double fetchedTilesize = RasterPathState.getProblem().TILESIZE;
-		Circle startC = new Circle(RasterPathState.getPosition().x * fetchedTilesize + fetchedTilesize / 2,
-				RasterPathState.getPosition().y * fetchedTilesize + fetchedTilesize / 2, 7);
-		startC.setFill(Color.CYAN);
-		startC.setStyle(" -fx-stroke: black; -fx-stroke-width: " + RasterPathState.getProblem().BORDERSIZE + ";");
-		SpriteGraphics srg = new SpriteGraphics(Globals.stateRepresentationGraphicsContext);
-		srg.addShape(startC);
-		RasterPathState.addComponent(srg);
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+		rasterPathState.addComponent(g);
+
+		Sprite sprite = new Sprite();
+		rasterPathState.addComponent(sprite);
+		sprite.addShape(stateC);
+
+		g.show();
+
+		// startC.setFill(Color.CYAN);
+//		startC.setStyle(" -fx-stroke: black; -fx-stroke-width: " + RasterPathState.getProblem().BORDERSIZE + ";");
+//		Sprite srg = new Sprite(Globals.stateRepresentationGraphicsContext);
+//		srg.addShape(startC);
+//		RasterPathState.addComponent(srg);
 
 	}
 }
