@@ -109,4 +109,8 @@ public class Vector2DInt {
 		return x == other.x && y == other.y;
 	}
 	
+	@Override
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ")";
+	}
 }

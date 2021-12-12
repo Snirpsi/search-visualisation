@@ -29,6 +29,12 @@ public class Vector2D {
 		this.y = v.y;
 	}
 
+	public Vector2D(double x, double y) {
+		this.x = (float) x;
+		this.y = (float) y;
+
+	}
+
 	public float length() {
 		return (float) Math.sqrt(x * x + y * y);
 	}
