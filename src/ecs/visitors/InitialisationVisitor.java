@@ -132,7 +132,10 @@ public class InitialisationVisitor extends Visitor {
 		searchNode.addComponent(new Animation(1));
 
 		Text text = new Text();
-		text.setText("Hallo");
+		String actionText = searchNode.getAction();
+		actionText = actionText == null ? "-" : "" + actionText.charAt(0);
+		text.setText("S: " + searchNode.getState().toString() + "\n " + "C: " + searchNode.getPathCost() + "\n A: "
+				+ actionText);
 		searchNode.addComponent(text);
 
 		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
@@ -179,6 +182,7 @@ public class InitialisationVisitor extends Visitor {
 		GameObjectRegistry.registerForLargeComponentUpdate(searchNode);
 		searchNode.getComponent(Graphics.class).notifyNewDrawable();
 		searchNode.getComponent(Graphics.class).show();
+
 	}
 
 	// Frontier
@@ -252,19 +256,17 @@ public class InitialisationVisitor extends Visitor {
 		rasterPathState.getProblem().getComponent(TileMap2D.class).fitToTilemap(rasterPathState.getPosition(), stateC);
 		stateC.setRadius(4);
 		stateC.setFill(Color.CYAN);
-		
+
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
 		rasterPathState.addComponent(g);
-		
+
 		Sprite sprite = new Sprite();
 		rasterPathState.addComponent(sprite);
 		sprite.addShape(stateC);
-		
-		g.show();
-		
 
-		
-		//		startC.setFill(Color.CYAN);
+		g.show();
+
+		// startC.setFill(Color.CYAN);
 //		startC.setStyle(" -fx-stroke: black; -fx-stroke-width: " + RasterPathState.getProblem().BORDERSIZE + ";");
 //		Sprite srg = new Sprite(Globals.stateRepresentationGraphicsContext);
 //		srg.addShape(startC);
