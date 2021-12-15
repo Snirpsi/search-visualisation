@@ -2,19 +2,22 @@ package ecs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ecs.visitors.Visitor;
+import javafx.print.Collation;
 
 public class GameObject { // aka GameObject
 
 	private String name = "";
-	private HashMap<Class<Component>, Component> components;
+	private ConcurrentHashMap<Class<Component>, Component> components; // TODO: Workaround concurrent HashMap
 	private List<GameObject> childGameObjects;
 
 	public GameObject() {
-		this.components = new HashMap<>();
-		this.childGameObjects = new ArrayList<>();
+		this.components = new ConcurrentHashMap<Class<Component>, Component>();
+		this.childGameObjects = new ArrayList<GameObject>();
 		GameObjectRegistry.register(this);
 	}
 
@@ -61,6 +64,7 @@ public class GameObject { // aka GameObject
 
 	@SuppressWarnings("unchecked")
 	public void addComponent(Component component) {
+
 		components.put((Class<Component>) component.getClass(), component);// Warum Warning
 		component.entity = this; // Reference aus der Komponente auf das zugehörige Object
 	}
@@ -69,17 +73,22 @@ public class GameObject { // aka GameObject
 		for (GameObject child : childGameObjects) {
 			child.update(deltaT);
 		}
-		for (Class<Component> key : components.keySet()) {
-			components.get(key).update(deltaT);
+
+//		Component [] comps = (Component[]) components.values()
+
+		for (Component comp : components.values()) { // TODO: Componenten werden in der laufzeit erstellt führt zu
+			// modifikation im iterator
+			comp.update(deltaT);
 		}
+
 	}
 
 	public void start() {
 		for (GameObject child : childGameObjects) {
 			child.start();
 		}
-		for (Class<Component> key : components.keySet()) {
-			components.get(key).start();
+		for (Component component : components.values()) {
+			component.start();
 		}
 	}
 

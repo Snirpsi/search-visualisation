@@ -56,26 +56,29 @@ public class TileMap2D extends Drawable {
 		}
 	}
 
-	public void fitToTilemap(Vector2DInt coords, Node node) {
+	public Vector2D fitToTilemap(Vector2DInt coords, Node nodeFX) {
 		Vector2D fitCoord = null;
-		if (node instanceof Rectangle r) {
+		if (nodeFX == null) {
+			return fitCoord = new Vector2D(coords.x, coords.y).mul(tileSize)
+					.add(new Vector2D(tileSize / 2, tileSize / 2));
+		}
+
+		if (nodeFX instanceof Rectangle r) {
 			fitCoord = new Vector2D(coords.x, coords.y).mul(tileSize);
 			r.setWidth(tileSize);
 			r.setHeight(tileSize);
 			r.setX(fitCoord.x);
 			r.setX(fitCoord.y);
-		}
-		if (node instanceof Circle c) {
+		} else if (nodeFX instanceof Circle c) {
 			fitCoord = new Vector2D(coords.x, coords.y).mul(tileSize).add(new Vector2D(tileSize / 2, tileSize / 2));
 			c.setRadius(tileSize / 2);
 			c.setCenterX(fitCoord.x);
 			c.setCenterY(fitCoord.y);
-		}
-
-		if (node instanceof Label l) {
+		} else if (nodeFX instanceof Label l) {
 			// fitCoord = new Vector2D(coords.x - l.getWidth() / 2, coords.y - l.getHeight()
 			// / 2).mul(tileSize);
 		}
+		return fitCoord;
 	}
 
 	@Override

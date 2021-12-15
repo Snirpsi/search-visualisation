@@ -3,6 +3,7 @@ package application.gui;
 import application.Globals;
 
 import javafx.scene.Node;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -15,7 +16,9 @@ public class GuiLayout {
 
 		// HBox menue = new HBox();
 
-		HBox aiVisualisation = new HBox();
+		SplitPane aiVisualisation = new SplitPane();
+		// Pane aiTreeVisualisation = new Pane();
+
 		Pane aiTreeVisualisation = new Pane();
 		Globals.treeRepresentationGraphicsContext = aiTreeVisualisation;
 
@@ -25,13 +28,13 @@ public class GuiLayout {
 		HBox.setHgrow(aiTreeVisualisation, Priority.ALWAYS);
 		HBox.setHgrow(aiStateVisualisation, Priority.ALWAYS);
 
-		Pane left = new Pane(new ZoomableScrollPaneOLD(aiTreeVisualisation));
-		left.setPrefSize(10000, 10000);
+		ZoomableScrollPaneOLD left = new ZoomableScrollPaneOLD(aiTreeVisualisation);
+		
 
-		Pane rigth = new Pane(new ZoomableScrollPaneOLD(aiStateVisualisation));
-		rigth.setPrefSize(10000, 10000);
+		ZoomableScrollPaneOLD rigth = new ZoomableScrollPaneOLD(aiStateVisualisation);
+		
 
-		aiVisualisation.getChildren().addAll(left, rigth);
+		aiVisualisation.getItems().addAll(left, rigth);
 		root.setCenter(aiVisualisation);
 
 		return root;

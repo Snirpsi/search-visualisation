@@ -5,7 +5,7 @@ import java.util.List;
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
-import ai_algorithm.Solution;
+import ai_algorithm.Path;
 import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
@@ -54,7 +54,7 @@ public class InitialisationVisitor extends Visitor {
 			return;
 		}
 		// Hmmmm..... ka ob das so gut ist ... O.o
-		if (gameObject instanceof Solution s) {
+		if (gameObject instanceof Path s) {
 			if (s.getProblem()instanceof RasterPathProblem prob) {
 				this.visit(s, prob);
 				return;
@@ -76,7 +76,43 @@ public class InitialisationVisitor extends Visitor {
 		gameObject.addComponent(sprite);
 	}
 
-	private void visit(Solution gameObject, RasterPathProblem prob) {
+	private void visit(Path path, RasterPathProblem prob) {
+//
+		path.addComponent(new Position());
+
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+		path.addComponent(g);
+
+		Sprite sprite = new Sprite();
+		path.addComponent(sprite);
+		// sprite.addShape(new Circle(1000, Color.GREEN));
+
+		List<State> states = path.getVisitedStates();
+		List<String> actions = path.getPathActions();
+
+		TileMap2D tileM = new TileMap2D();
+		if (prob.hasComponent(TileMap2D.class)) {
+			tileM = prob.getComponent(TileMap2D.class);
+		}
+
+		if (states.size() >= 2) {
+			RasterPathState statePrev = (RasterPathState) states.get(0);
+			RasterPathState stateSucc = (RasterPathState) states.get(0);
+			for (int i = 1; i < states.size(); i++) {
+				statePrev = stateSucc;
+				stateSucc = (RasterPathState) states.get(i);
+
+				Vector2D startLine = tileM.fitToTilemap(new Vector2DInt(statePrev.getPosition()), null);
+				Vector2D endLine = tileM.fitToTilemap(new Vector2DInt(stateSucc.getPosition()), null);
+
+				Line line = new Line(startLine.x, startLine.y, endLine.x, endLine.y);
+				line.setStroke(new Color(1.0, 0, 0, 0.3));
+				sprite.addShape(line);
+
+			}
+		}
+
+		g.show();
 
 //		Sprite spriteGrapics = new Sprite(Globals.stateRepresentationGraphicsContext);
 //		List<State> states = gameObject.getVisitedStates();
@@ -168,7 +204,7 @@ public class InitialisationVisitor extends Visitor {
 				// searchNode.getState().getComponent(Graphics.class).clearPane();
 				searchNode.getState().getProblem().getComponent(Graphics.class).show();
 				searchNode.getState().getComponent(Graphics.class).show();
-				searchNode.getSolutionActions().getComponent(Graphics.class).show();
+				searchNode.getPath().getComponent(Graphics.class).show();
 				searchNode.getComponent(TreeLayouter.class).layout();
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
@@ -250,8 +286,7 @@ public class InitialisationVisitor extends Visitor {
 
 		Component position = new Position(Vector2D.ZERO);
 		rasterPathState.addComponent(position);
-//
-//		double fetchedTilesize = RasterPathState.getProblem().TILESIZE;
+
 		Circle stateC = new Circle();
 		rasterPathState.getProblem().getComponent(TileMap2D.class).fitToTilemap(rasterPathState.getPosition(), stateC);
 		stateC.setRadius(4);
@@ -265,12 +300,6 @@ public class InitialisationVisitor extends Visitor {
 		sprite.addShape(stateC);
 
 		g.show();
-
-		// startC.setFill(Color.CYAN);
-//		startC.setStyle(" -fx-stroke: black; -fx-stroke-width: " + RasterPathState.getProblem().BORDERSIZE + ";");
-//		Sprite srg = new Sprite(Globals.stateRepresentationGraphicsContext);
-//		srg.addShape(startC);
-//		RasterPathState.addComponent(srg);
 
 	}
 }
