@@ -85,7 +85,6 @@ public class InitialisationVisitor extends Visitor {
 
 		Sprite sprite = new Sprite();
 		path.addComponent(sprite);
-		// sprite.addShape(new Circle(1000, Color.GREEN));
 
 		List<State> states = path.getVisitedStates();
 		List<String> actions = path.getPathActions();
@@ -113,39 +112,6 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		g.show();
-
-//		Sprite spriteGrapics = new Sprite(Globals.stateRepresentationGraphicsContext);
-//		List<State> states = gameObject.getVisitedStates();
-//		List<String> actions = gameObject.getSolutionActions();
-//		int offset = (prob.TILESIZE / 2);
-//		int transform = (prob.TILESIZE);
-//
-//		if (states.size() >= 2) {
-//
-//			RasterPathState statePrev = (RasterPathState) states.get(0);
-//			RasterPathState stateSucc = (RasterPathState) states.get(0);
-//			for (int i = 1; i < states.size(); i++) {
-//				// Linie malen
-//				statePrev = stateSucc;
-//				stateSucc = (RasterPathState) states.get(i);
-//				ConnectionLine path = new ConnectionLine(statePrev.getPosition().x * transform + offset,
-//						statePrev.getPosition().y * transform + offset, stateSucc.getPosition().x * transform + offset,
-//						stateSucc.getPosition().y * transform + offset);
-//				path.setStroke(new Color(1.0, 0, 0, 0.3));
-//				spriteGrapics.addShape(path);
-//				Label action = new Label(actions.get(i - 1));
-//				Vector2D labelPos = new Vector2D(statePrev.getPosition().x * transform + offset,
-//						statePrev.getPosition().y * transform + offset)
-//								.interpolate(new Vector2D(stateSucc.getPosition().x * transform + offset,
-//										stateSucc.getPosition().y * transform + offset), 0.5);
-//				action.setTranslateX(labelPos.x);
-//				action.setTranslateY(labelPos.y);
-		// Shape a = action. ja mistikack .... was mach ich denn jetzt mit dem label
-		// spriteGrapics.addShape(action);
-//
-//			}
-//		}
-//gameObject.addComponent(spriteGrapics);
 
 	}
 

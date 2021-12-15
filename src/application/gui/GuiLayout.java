@@ -28,10 +28,10 @@ public class GuiLayout {
 		HBox.setHgrow(aiTreeVisualisation, Priority.ALWAYS);
 		HBox.setHgrow(aiStateVisualisation, Priority.ALWAYS);
 
-		ZoomableScrollPaneOLD left = new ZoomableScrollPaneOLD(aiTreeVisualisation);
+		ZoomableScrollPane left = new ZoomableScrollPane(aiTreeVisualisation);
 		
 
-		ZoomableScrollPaneOLD rigth = new ZoomableScrollPaneOLD(aiStateVisualisation);
+		ZoomableScrollPane rigth = new ZoomableScrollPane(aiStateVisualisation);
 		
 
 		aiVisualisation.getItems().addAll(left, rigth);

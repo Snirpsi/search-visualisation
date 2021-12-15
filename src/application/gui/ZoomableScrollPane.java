@@ -1,124 +1,82 @@
 package application.gui;
 
-import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.transform.Scale;
+import javafx.scene.layout.VBox;
+//Createt by Daniel Hári
+//Coppied from https://stackoverflow.com/questions/39827911/javafx-8-scaling-zooming-scrollpane-relative-to-mouse-position
 
 public class ZoomableScrollPane extends ScrollPane {
 
-	Group zoomGroup;
-	Scale scaleTransform;
-	Node content;
-	double scaleValue = 1.0;
-	double delta = 0.1;
+	private double scaleValue = 0.7;
+	private double zoomIntensity = 0.02;
+	private Node target;
+	private Node zoomNode;
 
-	public ZoomableScrollPane(Node content) {
-		this.content = content;
-		Group contentGroup = new Group();
-		zoomGroup = new Group();
-		contentGroup.getChildren().add(zoomGroup);
-		zoomGroup.getChildren().add(content);
-		setContent(contentGroup);
-		scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
-		zoomGroup.getTransforms().add(scaleTransform);
+	public ZoomableScrollPane(Node target) {
+		super();
+		this.target = target;
+		this.zoomNode = new Group(target);
+		setContent(outerNode(zoomNode));
 
+		setPannable(true);
 		setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		setFitToHeight(true); // center
+		setFitToWidth(true); // center
 
-		zoomGroup.setOnScroll(new ZoomHandler());
+		updateScale();
 	}
 
-	public double getScaleValue() {
-		return scaleValue;
+	private Node outerNode(Node node) {
+		Node outerNode = centeredNode(node);
+		outerNode.setOnScroll(e -> {
+			e.consume();
+			onScroll(e.getTextDeltaY(), new Point2D(e.getX(), e.getY()));
+		});
+		return outerNode;
 	}
 
-	public void zoomToActual() {
-		zoomTo(1.0);
+	private Node centeredNode(Node node) {
+		VBox vBox = new VBox(node);
+		vBox.setAlignment(Pos.CENTER);
+		return vBox;
 	}
 
-	public void zoomTo(double scaleValue) {
-		this.scaleValue = scaleValue;
-
-		scaleTransform.setX(scaleValue);
-		scaleTransform.setY(scaleValue);
+	private void updateScale() {
+		target.setScaleX(scaleValue);
+		target.setScaleY(scaleValue);
 	}
 
-	public void zoomActual() {
-		scaleValue = 1;
-		zoomTo(scaleValue);
-	}
+	private void onScroll(double wheelDelta, Point2D mousePoint) {
+		double zoomFactor = Math.exp(wheelDelta * zoomIntensity);
 
-	public void zoomOut() {
-		scaleValue = scaleValue - (scaleValue * delta);
+		Bounds innerBounds = zoomNode.getLayoutBounds();
+		Bounds viewportBounds = getViewportBounds();
 
-		if (Double.compare(scaleValue, 0.1) < 0) {
-			scaleValue = 0.1;
-		}
+		// calculate pixel offsets from [0, 1] range
+		double valX = this.getHvalue() * (innerBounds.getWidth() - viewportBounds.getWidth());
+		double valY = this.getVvalue() * (innerBounds.getHeight() - viewportBounds.getHeight());
 
-		zoomTo(scaleValue);
-	}
+		scaleValue = scaleValue * zoomFactor;
+		updateScale();
+		this.layout(); // refresh ScrollPane scroll positions & target bounds
 
-	public void zoomIn() {
-		scaleValue = scaleValue + (scaleValue * delta);
+		// convert target coordinates to zoomTarget coordinates
+		Point2D posInZoomTarget = target.parentToLocal(zoomNode.parentToLocal(mousePoint));
 
-		if (Double.compare(scaleValue, 10) > 0) {
-			scaleValue = 10;
-		}
+		// calculate adjustment of scroll position (pixels)
+		Point2D adjustment = target.getLocalToParentTransform()
+				.deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
 
-		zoomTo(scaleValue);
-	}
-
-	/**
-	 * 
-	 * @param minimizeOnly If the content fits already into the viewport, then we
-	 *                     don't zoom if this parameter is true.
-	 */
-	public void zoomToFit(boolean minimizeOnly) {
-		double scaleX = getViewportBounds().getWidth() / getContent().getBoundsInLocal().getWidth();
-		double scaleY = getViewportBounds().getHeight() / getContent().getBoundsInLocal().getHeight();
-
-		// consider current scale (in content calculation)
-		scaleX *= scaleValue;
-		scaleY *= scaleValue;
-
-		// distorted zoom: we don't want it => we search the minimum scale
-		// factor and apply it
-		double scale = Math.min(scaleX, scaleY);
-
-		// check precondition
-		if (minimizeOnly) {
-
-			// check if zoom factor would be an enlargement and if so, just set
-			// it to 1
-			if (Double.compare(scale, 1) > 0) {
-				scale = 1;
-			}
-		}
-
-		// apply zoom
-		zoomTo(scale);
-	}
-
-	private class ZoomHandler implements EventHandler<ScrollEvent> {
-
-		@Override
-		public void handle(ScrollEvent scrollEvent) {
-			// if (scrollEvent.isControlDown())
-			{
-
-				if (scrollEvent.getDeltaY() < 0) {
-					scaleValue -= delta;
-				} else {
-					scaleValue += delta;
-				}
-
-				zoomTo(scaleValue);
-
-				scrollEvent.consume();
-			}
-		}
+		// convert back to [0, 1] range
+		// (too large/small values are automatically corrected by ScrollPane)
+		Bounds updatedInnerBounds = zoomNode.getBoundsInLocal();
+		this.setHvalue((valX + adjustment.getX()) / (updatedInnerBounds.getWidth() - viewportBounds.getWidth()));
+		this.setVvalue((valY + adjustment.getY()) / (updatedInnerBounds.getHeight() - viewportBounds.getHeight()));
 	}
 }
