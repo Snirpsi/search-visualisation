@@ -22,7 +22,7 @@ public class SearchNode extends GameObject {
 
 	private final String action;
 
-	private Solution solution;
+	private Path solution;
 
 	public SearchNodeMetadataObject metadata;
 
@@ -42,7 +42,7 @@ public class SearchNode extends GameObject {
 				this.parent.children.add(this);
 			}
 		}
-		this.solution = new Solution(this);
+		this.solution = new Path(this);
 
 		this.metadata.expanding = parent;
 
@@ -83,7 +83,7 @@ public class SearchNode extends GameObject {
 	/**
 	 * @return the solution
 	 */
-	public Solution getSolutionActions() {
+	public Path getPath() {
 		return solution;
 	}
 

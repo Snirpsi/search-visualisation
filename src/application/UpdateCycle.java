@@ -25,7 +25,7 @@ public class UpdateCycle {
 				framecounter++;
 				frameTimeLast = frameTimeThis;
 				frameTimeThis = System.currentTimeMillis();
-				
+
 				// Time between frames (may be used by physics systems)
 				deltaT = (frameTimeThis - frameTimeLast) / 1000.0f;
 
@@ -34,6 +34,7 @@ public class UpdateCycle {
 				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
 					rootGameObjects.update(deltaT);
 				}
+
 				GameObjectRegistry.initializePendingGameObjects();
 
 				GameObjectRegistry.largeUpdatePendingComponents();

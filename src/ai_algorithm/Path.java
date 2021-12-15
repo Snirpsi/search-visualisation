@@ -6,10 +6,10 @@ import java.util.List;
 import ai_algorithm.problems.Problem;
 import ecs.GameObject;
 
-public class Solution extends GameObject {
+public class Path extends GameObject {
 	SearchNode searchNode;
 
-	public Solution(SearchNode searchNode) {
+	public Path(SearchNode searchNode) {
 		this.searchNode = searchNode;
 	}
 	
@@ -18,7 +18,7 @@ public class Solution extends GameObject {
 	}
 	
 	
-	public List<String> getSolutionActions() {
+	public List<String> getPathActions() {
 		List<String> actionList = new LinkedList<String>();
 		SearchNode next = this.searchNode;
 		while (next != null) {

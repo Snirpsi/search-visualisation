@@ -46,7 +46,11 @@ public class Graphics extends Component {
 
 	@Override
 	public void update(float deltaT) {
-		Vector2D pos = this.entity.getComponent(Position.class).getPosition();
+		Vector2D pos = new Vector2D();
+		if (this.entity.hasComponent(Position.class)) {
+			pos = this.entity.getComponent(Position.class).getPosition();
+		}
+
 		pane.setTranslateX(pos.x);
 		pane.setTranslateY(pos.y);
 	}
@@ -57,10 +61,11 @@ public class Graphics extends Component {
 		// quickfix
 		if (this.graphicsContext == Globals.treeRepresentationGraphicsContext) {
 			this.pane.toBack();
-			//this.pane.setViewOrder(-2000000);
-			
-			//to debug javaFX fills
-			//this.pane.setBackground(new Background(new BackgroundFill(new Color(0.5, 0.5, 0.5, 0.1), null, null)));
+			// this.pane.setViewOrder(-2000000);
+
+			// to debug javaFX fills
+			// this.pane.setBackground(new Background(new BackgroundFill(new Color(0.5, 0.5,
+			// 0.5, 0.1), null, null)));
 		}
 	}
 
@@ -90,8 +95,7 @@ public class Graphics extends Component {
 
 		if (entity.hasComponent(ConnectionLine.class)) {
 			newDrawables.addAll(entity.getComponent(ConnectionLine.class).getShapes());
-			
-			
+
 		}
 
 		if (entity.hasComponent(Text.class)) {
@@ -102,6 +106,6 @@ public class Graphics extends Component {
 		this.pane.getChildren().addAll(newDrawables);
 		this.drawables = newDrawables;
 
-		this.update(0);// instant update of graphics to remove flikering
+		// this.update(0);// instant update of graphics to remove flikering
 	}
 }
