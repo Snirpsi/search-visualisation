@@ -7,7 +7,6 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.Path;
 import ai_algorithm.State;
-import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.problems.raster_path.RasterPathState;
 import application.Globals;
@@ -27,7 +26,6 @@ import ecs.components.graphics.drawables.ConnectionLine;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
-import javafx.print.Collation;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -110,6 +108,10 @@ public class InitialisationVisitor extends Visitor {
 
 			}
 		}
+
+		System.out.println("" + actions);
+		Text t = new Text(actions.toString());
+		path.addComponent(t);
 
 		g.show();
 
