@@ -1,5 +1,6 @@
 package application;
 
+import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearch;
@@ -20,6 +21,7 @@ public class Main extends Application {
 			primaryStage.show();
 
 			RasterPathProblem problem = new RasterPathProblem();
+			GermanyRouteProblem grp = new GermanyRouteProblem("Berlin", "Hamburg");
 
 			DepthFirstSearch searchiDepth = new DepthFirstSearch(problem);
 			BreadthFirstSearch searchiBreadth = new BreadthFirstSearch(problem);
