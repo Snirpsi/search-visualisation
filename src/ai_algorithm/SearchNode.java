@@ -97,7 +97,7 @@ public class SearchNode extends GameObject {
 		State state = this.getState();
 		Problem prob = state.getProblem();
 		for (String action : prob.getActions(state)) {
-			Debugger.pause();
+			Debugger.pause("EXPANSION: " + action );
 
 			State succState = prob.getSuccessor(state, action);
 			SearchNode succ = new SearchNode(this, succState,

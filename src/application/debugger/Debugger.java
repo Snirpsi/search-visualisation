@@ -10,6 +10,8 @@ public class Debugger {
 
 	private static String consoleText = "";
 
+	private static DebuggerUI debuggerUi;
+
 	public static void pause() {
 		if (autostep) {
 			try {
@@ -33,6 +35,12 @@ public class Debugger {
 	public static void pause(String breakpointDescription) {
 		if (breakpointDescription != null) {
 			consoleText = consoleText + "\n" + breakpointDescription;
+
+			if (isConnected()) {
+				synchronized (debuggerUi) {
+					debuggerUi.apprise();
+				}
+			}
 		}
 		pause();
 	}
@@ -47,6 +55,7 @@ public class Debugger {
 	}
 
 	protected static void autostepEnable() {
+		Debugger.resume();
 		autostep = true;
 	}
 
@@ -65,6 +74,17 @@ public class Debugger {
 	protected static String getConsoleText() {
 		return consoleText;
 	}
-	
-	
+
+	protected static void connectToUi(DebuggerUI ui) {
+		debuggerUi = ui;
+	}
+
+	private static boolean isConnected() {
+
+		if (debuggerUi != null) {
+			return true;
+		}
+		return false;
+	}
+
 }

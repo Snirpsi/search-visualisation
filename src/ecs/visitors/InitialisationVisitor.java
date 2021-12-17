@@ -74,49 +74,6 @@ public class InitialisationVisitor extends Visitor {
 		gameObject.addComponent(sprite);
 	}
 
-	private void visit(Path path, RasterPathProblem prob) {
-//
-		path.addComponent(new Position());
-
-		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-		path.addComponent(g);
-
-		Sprite sprite = new Sprite();
-		path.addComponent(sprite);
-
-		List<State> states = path.getVisitedStates();
-		List<String> actions = path.getPathActions();
-
-		TileMap2D tileM = new TileMap2D();
-		if (prob.hasComponent(TileMap2D.class)) {
-			tileM = prob.getComponent(TileMap2D.class);
-		}
-
-		if (states.size() >= 2) {
-			RasterPathState statePrev = (RasterPathState) states.get(0);
-			RasterPathState stateSucc = (RasterPathState) states.get(0);
-			for (int i = 1; i < states.size(); i++) {
-				statePrev = stateSucc;
-				stateSucc = (RasterPathState) states.get(i);
-
-				Vector2D startLine = tileM.fitToTilemap(new Vector2DInt(statePrev.getPosition()), null);
-				Vector2D endLine = tileM.fitToTilemap(new Vector2DInt(stateSucc.getPosition()), null);
-
-				Line line = new Line(startLine.x, startLine.y, endLine.x, endLine.y);
-				line.setStroke(new Color(1.0, 0, 0, 0.3));
-				sprite.addShape(line);
-
-			}
-		}
-
-		System.out.println("" + actions);
-		Text t = new Text(actions.toString());
-		path.addComponent(t);
-
-		g.show();
-
-	}
-
 	// SearchNode
 	public void visit(SearchNode searchNode) {
 		super.visit(searchNode);
@@ -270,4 +227,48 @@ public class InitialisationVisitor extends Visitor {
 		g.show();
 
 	}
+
+	private void visit(Path path, RasterPathProblem prob) {
+//
+		path.addComponent(new Position());
+
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+		path.addComponent(g);
+
+		Sprite sprite = new Sprite();
+		path.addComponent(sprite);
+
+		List<State> states = path.getVisitedStates();
+		List<String> actions = path.getPathActions();
+
+		TileMap2D tileM = new TileMap2D();
+		if (prob.hasComponent(TileMap2D.class)) {
+			tileM = prob.getComponent(TileMap2D.class);
+		}
+
+		if (states.size() >= 2) {
+			RasterPathState statePrev = (RasterPathState) states.get(0);
+			RasterPathState stateSucc = (RasterPathState) states.get(0);
+			for (int i = 1; i < states.size(); i++) {
+				statePrev = stateSucc;
+				stateSucc = (RasterPathState) states.get(i);
+
+				Vector2D startLine = tileM.fitToTilemap(new Vector2DInt(statePrev.getPosition()), null);
+				Vector2D endLine = tileM.fitToTilemap(new Vector2DInt(stateSucc.getPosition()), null);
+
+				Line line = new Line(startLine.x, startLine.y, endLine.x, endLine.y);
+				line.setStroke(new Color(1.0, 0, 0, 0.3));
+				sprite.addShape(line);
+
+			}
+		}
+
+		System.out.println("" + actions);
+		Text t = new Text(actions.toString());
+		path.addComponent(t);
+
+		g.show();
+
+	}
+
 }
