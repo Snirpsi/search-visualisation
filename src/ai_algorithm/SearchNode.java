@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ai_algorithm.problems.Problem;
-import application.Debugger;
+import application.debugger.Debugger;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import javafx.scene.Node;

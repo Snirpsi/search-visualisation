@@ -24,7 +24,7 @@ public class Main extends Application {
 			DepthFirstSearch searchiDepth = new DepthFirstSearch(problem);
 			BreadthFirstSearch searchiBreadth = new BreadthFirstSearch(problem);
 
-			SearchThread s = new SearchThread(searchiDepth);
+			SearchThread s = new SearchThread(searchiBreadth);
 
 			s.start();
 

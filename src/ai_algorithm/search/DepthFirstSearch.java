@@ -5,7 +5,7 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
-import application.Debugger;
+import application.debugger.Debugger;
 
 public class DepthFirstSearch extends SearchAlgorithm {
 
@@ -24,18 +24,18 @@ public class DepthFirstSearch extends SearchAlgorithm {
 		explored.add(problem.getInitialState());
 
 		Debugger.pause();
-		
+
 		if (this.problem.isGoalState(start.getState())) {
 			return start;
 		}
 
 		frontier.add(start);
+		Debugger.pause();
 
 		while (!frontier.isEmpty()) {
 
-			Debugger.pause();
-
 			SearchNode node = frontier.removeLast();
+			Debugger.pause();
 			System.out.println(node);
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
@@ -44,6 +44,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 					return child;
 				}
 				if (!explored.contains(state)) {
+					Debugger.pause();
 					explored.add(state);
 					frontier.add(child);
 				}
