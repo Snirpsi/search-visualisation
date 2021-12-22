@@ -44,8 +44,6 @@ public class SearchNode extends GameObject {
 		}
 		this.solution = new Path(this);
 
-		this.metadata.expanding = parent;
-
 	}
 
 	public SearchNode getParent() {
@@ -88,6 +86,9 @@ public class SearchNode extends GameObject {
 	}
 
 	public List<SearchNode> expand() {
+		this.metadata.expanding = this;// <-- marker auf die expandierenden knoten setzen
+		GameObjectRegistry.registerForLargeComponentUpdate(this);
+		Debugger.pause("Expanding: " + parent);
 		List<SearchNode> futureCildren = new ArrayList<>();
 
 		if (this.getChildren() != null && this.getChildren().size() != 0) {
@@ -97,14 +98,13 @@ public class SearchNode extends GameObject {
 		State state = this.getState();
 		Problem prob = state.getProblem();
 		for (String action : prob.getActions(state)) {
-			Debugger.pause("EXPANSION: " + action );
 
 			State succState = prob.getSuccessor(state, action);
 			SearchNode succ = new SearchNode(this, succState,
 					this.getPathCost() + prob.getCost(state, action, succState), action);
 			futureCildren.add(succ);
+			Debugger.pause("EXPANSION: " + action);
 		}
-
 		this.children.addAll(futureCildren);
 
 		return this.children;

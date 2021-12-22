@@ -17,16 +17,18 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		frontier = new ArrayList<SearchNode>();
 	}
 
-	public void add(SearchNode sn) {
+	public void add(SearchNode node) {
 		// eventuell notify hinzufügen für fallunterscheidung von verschiedenen aktionen
-		this.frontier.add(sn);
-		GameObjectRegistry.registerForLargeComponentUpdate(sn);
+		this.frontier.add(node);
+		node.metadata.isInFrontier = true;
+		GameObjectRegistry.registerForLargeComponentUpdate(node);
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
 	public void addAll(List<SearchNode> nodes) {
 		frontier.addAll(nodes);
 		for (SearchNode node : nodes) {
+			node.metadata.isInFrontier = true;
 			GameObjectRegistry.registerForLargeComponentUpdate(node);
 		}
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
@@ -55,14 +57,18 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		if (frontier.isEmpty()) {
 			return null;
 		}
-		return frontier.remove(0);
+		SearchNode first = frontier.remove(0);
+		first.metadata.isInFrontier = false;
+		return first;
 	}
 
 	public SearchNode removeLast() {
 		if (frontier.isEmpty()) {
 			return null;
 		}
-		return frontier.remove(frontier.size() - 1);
+		SearchNode last = frontier.remove(frontier.size()-1);
+		last.metadata.isInFrontier = false;
+		return last;
 	}
 
 	public boolean contains(SearchNode searchnode) {

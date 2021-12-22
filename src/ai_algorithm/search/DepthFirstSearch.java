@@ -21,7 +21,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 		ExploredSet explored = new ExploredSet();
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
-		explored.add(problem.getInitialState());
+		explored.add(start);
 
 		Debugger.pause();
 
@@ -45,7 +45,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 				}
 				if (!explored.contains(state)) {
 					Debugger.pause();
-					explored.add(state);
+					explored.add(child);
 					frontier.add(child);
 				}
 			}

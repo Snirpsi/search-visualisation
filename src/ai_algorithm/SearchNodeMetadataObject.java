@@ -9,4 +9,6 @@ public class SearchNodeMetadataObject {
 
 	public boolean isInFrontier;
 	public boolean isInMemory;
+	public boolean isInExploredSet;
+	
 }
