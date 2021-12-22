@@ -149,7 +149,6 @@ public class InitialisationVisitor extends Visitor {
 	// Frontier
 	public void visit(Frontier gameObject) {
 		super.visit(gameObject);
-
 	}
 
 	// PathProblem
@@ -157,7 +156,6 @@ public class InitialisationVisitor extends Visitor {
 		super.visit(rasterPathProblem);
 
 		rasterPathProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
-
 		// can cause createt objects that have not been initialized not apera
 		// TODO: change how get all works to realy add all objects
 		// Fetch all Frontiers
@@ -170,13 +168,26 @@ public class InitialisationVisitor extends Visitor {
 
 		for (int i = 0; i < rasterPathProblem.GAMESIZE; i++) {
 			for (int j = 0; j < rasterPathProblem.GAMESIZE; j++) {
-
+				Rectangle r = new Rectangle();
+				
+				
 				if (rasterPathProblem.labyrinth[i][j] == 'e') {
-					tilemap.setTile(new Vector2DInt(i, j), new Rectangle(), Color.WHITE);
+					tilemap.insertTile(new Vector2DInt(i, j), r, Color.WHITE);
 				} else {
-					tilemap.setTile(new Vector2DInt(i, j), new Rectangle(), Color.BLUE);
+					tilemap.insertTile(new Vector2DInt(i, j), r, Color.BLUE);
 				}
-
+				final int ic = i;
+				final int jc = j;
+				r.setOnMouseClicked(  e -> {
+					if(rasterPathProblem.labyrinth[ic][jc] =='e') {
+						rasterPathProblem.labyrinth[ic][jc] ='w';
+						tilemap.insertTile(new Vector2DInt(ic,jc), r, Color.BLUE);
+					}else
+					{
+						rasterPathProblem.labyrinth[ic][jc] ='e';
+						tilemap.insertTile(new Vector2DInt(ic,jc), r, Color.WHITE);
+					}
+				});
 			}
 		}
 
@@ -195,7 +206,6 @@ public class InitialisationVisitor extends Visitor {
 		sprites.addShape(startCircle);
 
 		rasterPathProblem.getComponent(Graphics.class).show();
-
 	}
 
 	public void visit(RasterPathState rasterPathState) {
@@ -229,9 +239,7 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 	private void visit(Path path, RasterPathProblem prob) {
-//
 		path.addComponent(new Position());
-
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
 		path.addComponent(g);
 

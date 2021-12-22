@@ -113,7 +113,7 @@ public class TreeLayouter extends Component {
 
 				Position siblingPos = sibling.entity.getComponent(Position.class);
 				// set sibling neighboring own node
-				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber())), 0);
+				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber()+1)), 0);
 				Vector2D newSiblingPos = new Vector2D(ownPos.getFuturePosition()).add(relativSiblingPos);
 				siblingPos.setPosition(newSiblingPos);
 
