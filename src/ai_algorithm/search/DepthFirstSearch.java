@@ -40,7 +40,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
-					System.out.println("Finished");
+					Debugger.pause("Finished");
 					return child;
 				}
 				if (!explored.contains(state)) {

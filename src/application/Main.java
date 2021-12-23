@@ -1,9 +1,17 @@
 package application;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
+import java.util.List;
+
+import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.cityState.CityState;
 import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearch;
+import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,22 +28,15 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
-			RasterPathProblem problem = new RasterPathProblem();
-			GermanyRouteProblem grp = new GermanyRouteProblem("Berlin", "Hamburg");
-
-			DepthFirstSearch searchiDepth = new DepthFirstSearch(problem);
-			BreadthFirstSearch searchiBreadth = new BreadthFirstSearch(problem);
-
-			SearchThread s = new SearchThread(searchiBreadth);
-
-			s.start();
-
-			UpdateCycle updater = new UpdateCycle();
+			UpdateCycle updater = new UpdateCycle(); // <- not a thread
 			updater.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+
+
 
 	public static void main(String[] args) {
 		launch(args);
