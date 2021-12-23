@@ -4,7 +4,8 @@ import ai_algorithm.search.SearchAlgorithm;
 
 public class SearchThread extends Thread {
 
-	SearchAlgorithm search;
+	SearchAlgorithm search = null;
+	
 
 	public SearchThread(SearchAlgorithm search) {
 		this.search = search;
@@ -13,6 +14,8 @@ public class SearchThread extends Thread {
 	@Override
 	public void run() {
 		super.run();
+		
+		
 		
 		search.search();
 		return;
