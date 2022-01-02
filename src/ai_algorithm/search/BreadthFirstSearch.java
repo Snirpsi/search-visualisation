@@ -11,6 +11,10 @@ import application.debugger.Debugger;
 
 public class BreadthFirstSearch extends SearchAlgorithm {
 
+	public BreadthFirstSearch() {
+		super();
+	}
+
 	public BreadthFirstSearch(Problem problem) {
 		super(problem);
 	}
@@ -19,15 +23,20 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 	public SearchNode search() {
 
 		Frontier frontier = new Frontier();
+		Debugger.pause("INIT Frontier");
 
 		ExploredSet explored = new ExploredSet();
+		Debugger.pause("INIT ExploredSet");
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
-		explored.add(problem.getInitialState());
+		Debugger.pause("INIT First Search Node");
 
-		Debugger.pause("INIT");
+		
+		explored.add(problem.getInitialState());
+		Debugger.pause("add initial state to ExploredSet");
 
 		if (this.problem.isGoalState(start.getState())) {
+			Debugger.consolePrintln("goal is first");
 			return start;
 		}
 
@@ -45,9 +54,10 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 					return child;
 				}
 				if (!explored.contains(state)) {
-					Debugger.pause("Add to frontier");
+					
 					explored.add(state);
 					frontier.add(child);
+					Debugger.pause("Add to frontier");
 				}
 			}
 
