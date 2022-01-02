@@ -45,7 +45,8 @@ public class DebuggerUI {
 		});
 
 		controlElements.getChildren().addAll(step, autostep, pauseTime);
-		Debugger.connectToUi(this); // << wegen der zeile geht alle kaputt warum ???
+		Debugger.connectToUi(this); // << wegen der zeile geht alle kaputt warum ??? weil javafx nicht thread save ist
+
 	}
 
 	public Node getUiElements() {

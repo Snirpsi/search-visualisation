@@ -2,3 +2,8 @@
 pane {
     -fx-border-color: black;
 }
+
+togglebutton {
+	-fx-base: lightblue;
+	-fx-background-color: green;
+}
