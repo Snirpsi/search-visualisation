@@ -36,7 +36,7 @@ public class TileMap2D extends Drawable {
 		return tiles.get(coords);
 	}
 
-	public void setTile(Vector2DInt coords, Shape shape, Color color) {
+	public void insertTile(Vector2DInt coords, Shape shape, Color color) {
 		shape.setFill(color);
 		shape.setStyle(" -fx-stroke: black; -fx-stroke-width: " + this.borderWith + ";");
 		this.tiles.put(coords, shape);
@@ -51,6 +51,19 @@ public class TileMap2D extends Drawable {
 			c.setRadius(tileSize / 2);
 		}
 
+		if (this.entity != null) {
+			this.entity.getComponent(Graphics.class).notifyNewDrawable();
+		}
+	}
+	
+	public void setTileColor(Vector2DInt coords, Color color) {
+		Shape shape = tiles.get(coords);
+		if(shape == null) {
+			return;
+		}
+		shape .setFill(color);
+		shape.setStyle(" -fx-stroke: black; -fx-stroke-width: " + this.borderWith + ";");
+		//this.tiles.put(coords, shape);
 		if (this.entity != null) {
 			this.entity.getComponent(Graphics.class).notifyNewDrawable();
 		}

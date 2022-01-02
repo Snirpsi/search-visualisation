@@ -29,10 +29,10 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		Debugger.pause("INIT ExploredSet");
 
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
+
 		Debugger.pause("INIT First Search Node");
 
-		
-		explored.add(problem.getInitialState());
+		explored.add(start);
 		Debugger.pause("add initial state to ExploredSet");
 
 		if (this.problem.isGoalState(start.getState())) {
@@ -54,8 +54,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 					return child;
 				}
 				if (!explored.contains(state)) {
-					
-					explored.add(state);
+					explored.add(child);
 					frontier.add(child);
 					Debugger.pause("Add to frontier");
 				}

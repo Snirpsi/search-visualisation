@@ -13,34 +13,39 @@ public class ExploredSet extends GameObject {
 	public ExploredSet() {
 		super();
 		explored = new HashSet<State>();
+
 	}
 
-	public void add(State state) {
+	public void add(SearchNode node) {
+		State state = node.getState();
 		this.explored.add(state);
+		node.metadata.isInExploredSet = true;
 		GameObjectRegistry.registerForLargeComponentUpdate(state);
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
 
-	public void addAll(List<State> states) {
-		explored.addAll(states);
-		for (State state : states) {
-			GameObjectRegistry.registerForLargeComponentUpdate(state);
+	public void addAll(List<SearchNode> nodes) {
+
+		for (SearchNode node : nodes) {
+			explored.add(node.getState());
+			node.metadata.isInExploredSet = true;
+			GameObjectRegistry.registerForLargeComponentUpdate(node.getState());
 		}
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
-	
-	public boolean isEmpty () {
+
+	public boolean isEmpty() {
 		return explored.isEmpty();
 	}
-	
-	public boolean contains (State state) {
-		if(explored.contains(state)) {
+
+	public boolean contains(State state) {
+		if (explored.contains(state)) {
 			return true;
 		}
 		return false;
 	}
-	
-	public  void clear() {
+
+	public void clear() {
 		explored.clear();
 	}
 
