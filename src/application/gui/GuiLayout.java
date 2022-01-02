@@ -53,7 +53,6 @@ public class GuiLayout {
 		problemSelect.getItems().addAll(SearchThreadFactory.getProblemNames());
 		topMenue.getChildren().add(problemSelect);
 		algoSelect.getItems().addAll(SearchThreadFactory.getSearchAlgoritmNames());
-		System.out.println(SearchThreadFactory.getSearchAlgoritmNames());
 		topMenue.getChildren().add(algoSelect);
 
 		var debugg = new DebuggerUI();

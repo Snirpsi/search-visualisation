@@ -6,7 +6,9 @@ public class Debugger {
 
 	private static double pauseTimeInSeconds = 1.0;
 
-	private static final Object mutex = new Object();
+	private static final Object pauseMutex = new Object();
+
+	private static final Object textChangeMutex = new Object();
 
 	private static String consoleText = "";
 
@@ -21,11 +23,10 @@ public class Debugger {
 			}
 		} else {
 
-			synchronized (mutex) {
+			synchronized (pauseMutex) {
 				try {
-					mutex.wait();
+					pauseMutex.wait();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -33,30 +34,40 @@ public class Debugger {
 	}
 
 	public static void pause(String breakpointDescription) {
-		if (breakpointDescription != null) {
-			consoleText = consoleText + "\n" + breakpointDescription;
-
-			if (isConnected()) {
-				synchronized (debuggerUi) {
-					debuggerUi.apprise();
+		synchronized (textChangeMutex) {
+			if (breakpointDescription != null) {
+				consoleText = consoleText + "\n" + breakpointDescription;
+				if (isConnected()) {
+					debuggerUi.notifyTextChange();
 				}
+
 			}
 		}
 		pause();
+
+	}
+
+	public static void consolePrintln(String string) {
+		synchronized (textChangeMutex) {
+			if (string != null) {
+				consoleText = consoleText + "\n" + string;
+				if (isConnected()) {
+					debuggerUi.notifyTextChange();
+				}
+			}
+		}
 	}
 
 	protected static void resume() {
-		System.out.println("RESUME1");
-		synchronized (mutex) {
-			System.out.println("RESUME2");
-			mutex.notifyAll();
+		synchronized (pauseMutex) {
+			pauseMutex.notify();
 		}
 
 	}
 
 	protected static void autostepEnable() {
-		Debugger.resume();
 		autostep = true;
+		Debugger.resume();
 	}
 
 	protected static void autostepDisable() {
@@ -80,11 +91,18 @@ public class Debugger {
 	}
 
 	private static boolean isConnected() {
-
 		if (debuggerUi != null) {
 			return true;
 		}
 		return false;
+	}
+
+	public static  DebuggerUI getDebuggerUI() {
+		if (debuggerUi != null) {
+			return debuggerUi;
+		} else {
+			return null;
+		}
 	}
 
 }

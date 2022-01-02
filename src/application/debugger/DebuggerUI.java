@@ -1,8 +1,5 @@
 package application.debugger;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -11,11 +8,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
-import tools.Appriseble;
 
-public class DebuggerUI implements Appriseble {
+public class DebuggerUI {
 	private HBox controlElements;
 	private TextArea console;
+	private boolean textChanged;
 
 	public DebuggerUI() {
 		controlElements = new HBox();
@@ -48,7 +45,7 @@ public class DebuggerUI implements Appriseble {
 		});
 
 		controlElements.getChildren().addAll(step, autostep, pauseTime);
-		// Debugger.connectToUi(this); << wegen der zeile geht alle kaputt warum ???
+		Debugger.connectToUi(this); // << wegen der zeile geht alle kaputt warum ???
 	}
 
 	public Node getUiElements() {
@@ -59,10 +56,23 @@ public class DebuggerUI implements Appriseble {
 		return console;
 	}
 
-	@Override
-	public void apprise() {
-		console.setText(Debugger.getConsoleText());
-		console.setScrollTop(Double.MAX_VALUE);
+	public void notifyTextChange() {
+		this.textChanged = true;
+	}
+
+	// true if text has changed since last call
+	private boolean hasTextChanged() {
+		boolean ret = textChanged;
+		textChanged = false;
+		return ret;
+
+	}
+
+	public void updateText() {
+		if (hasTextChanged()) {
+			console.setText(Debugger.getConsoleText());
+			console.setScrollTop(Double.MAX_VALUE);
+		}
 	}
 
 }

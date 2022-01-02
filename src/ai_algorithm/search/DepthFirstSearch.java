@@ -8,7 +8,11 @@ import ai_algorithm.problems.Problem;
 import application.debugger.Debugger;
 
 public class DepthFirstSearch extends SearchAlgorithm {
-
+//default construchtor required
+	public DepthFirstSearch() {
+		super();
+	}
+	
 	public DepthFirstSearch(Problem problem) {
 		super(problem);
 	}

@@ -24,7 +24,7 @@ public class SearchThreadFactory {
 		}
 
 		Problem problem = getProblemWithName(GuiLayout.problemSelect.getValue());
-		SearchAlgorithm algo = getSearchAlgoritmWithName(GuiLayout.problemSelect.getValue(), problem);
+		SearchAlgorithm algo = getSearchAlgoritmWithName(GuiLayout.algoSelect.getValue(), problem);
 
 		SearchThread s = new SearchThread(algo);
 		s.start();
@@ -63,6 +63,8 @@ public class SearchThreadFactory {
 	}
 
 	public static SearchAlgorithm getSearchAlgoritmWithName(String searchAlgorithmName, Problem problem) {
+
+		System.out.println("search algoritm " + searchAlgorithmName);
 		SearchAlgorithm algoKS = null;
 		if (problem == null) {
 			return null;
@@ -70,16 +72,14 @@ public class SearchThreadFactory {
 
 		try {
 
-			// Siehe:
-			// https://stackoverflow.com/questions/7495785/java-how-to-instantiate-a-class-from-string
 			Class<SearchAlgorithm> algoClass = (Class<SearchAlgorithm>) Class.forName(searchAlgorithmName);
 
-			System.out.println(Problem.class);
-			System.out.println(RasterPathProblem.class);
-			System.out.println(algoClass);
+			Constructor<SearchAlgorithm> cosntructor = algoClass.getConstructor();
+			System.out.println(" CLASSEEEEEE" + cosntructor.newInstance().getClass());
+			algoKS = cosntructor.newInstance();
+			System.out.println(algoKS.getClass());
 
-			Constructor<SearchAlgorithm> cosntructor = algoClass.getConstructor(Problem.class);
-			algoKS = cosntructor.newInstance(problem);
+			algoKS.setProblem(problem);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block

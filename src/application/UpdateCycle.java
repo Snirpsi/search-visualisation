@@ -1,5 +1,7 @@
 package application;
 
+import application.debugger.Debugger;
+import application.debugger.DebuggerUI;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import javafx.animation.AnimationTimer;
@@ -38,6 +40,9 @@ public class UpdateCycle {
 				GameObjectRegistry.initializePendingGameObjects();
 
 				GameObjectRegistry.largeUpdatePendingComponents();
+				if (Debugger.getDebuggerUI() != null) {
+						Debugger.getDebuggerUI().updateText();
+				}
 			}
 		};
 	}
