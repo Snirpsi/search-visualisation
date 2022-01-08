@@ -10,7 +10,7 @@ import ai_algorithm.problems.cityState.CityState;
 import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
-import ai_algorithm.search.DepthFirstSearch;
+import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import javafx.application.Application;

@@ -4,9 +4,19 @@ import java.util.List;
 
 import tools.Vector2D;
 
+/**
+ * The {@link Vector2D} class is used to describe a 2D vector with floating
+ * point precision. The class offers many functions for 2D Vector arithmetics.
+ *
+ * @version 1.0
+ */
 public class Vector2D {
 
 	public float x, y;
+	
+	/**
+	 * 
+	 */
 	public final static Vector2D ZERO = new Vector2D(0, 0);
 	public final static Vector2D ONE = new Vector2D(1, 1);
 	public final static Vector2D UP = new Vector2D(0, -1);
@@ -14,72 +24,160 @@ public class Vector2D {
 	public final static Vector2D LEFT = new Vector2D(-1, 0);
 	public final static Vector2D RIGHT = new Vector2D(1, 0);
 
+	/**
+	 * Constructor initializes the vector with the given values.
+	 * 
+	 * @param x The x (first) value of the vector.
+	 * @param y The y (second) value of the vector.
+	 */
 	public Vector2D(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * Default Constructor initializes the vector with 0.0 values.
+	 */
 	public Vector2D() {
 		this.x = 0.0f;
 		this.y = 0.0f;
 	}
 
+	/**
+	 * Constructor initializes the vector with the given values.
+	 * 
+	 * @param v is the other vector, witch is used to initialize this vector.
+	 */
 	public Vector2D(Vector2D v) {
 		this.x = v.x;
 		this.y = v.y;
 	}
 
+	/**
+	 * Constructor initializes the vector with the given values.
+	 * 
+	 * @param x The x (first) value of the vector.
+	 * @param y The y (second) value of the vector.
+	 */
 	public Vector2D(double x, double y) {
-		this.x = (float) x;
-		this.y = (float) y;
-
+		this((float) x, (float) y);
 	}
 
+	/**
+	 * @return The length of this vector.
+	 */
 	public float length() {
 		return (float) Math.sqrt(x * x + y * y);
 	}
 
+	/**
+	 * Returns the distance between the two points the vectors are pointing to.
+	 * 
+	 * @param v The other vector.
+	 * @return The distance between the two vectors.
+	 */
 	public float distanceTo(Vector2D v) {
 		return (float) Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
 	};
 
-	// add
+	/**
+	 * This function calculates the arithmetic sum of two vectors and returns it in
+	 * an new vector.
+	 * 
+	 * @param v The other vector.
+	 * @return A new Vector witch is the sum of this and the other vector v.
+	 */
 	public Vector2D add(Vector2D v) {
 		return new Vector2D(this.x + v.x, this.y + v.y);
 	};
 
-	// sub
+	/**
+	 * This function calculates the arithmetic subtraction of two vectors and
+	 * returns it in an new vector.
+	 * 
+	 * @param v The vector witch is subtracted from this vector.
+	 * @return A new Vector witch is subtracted of this and the other vector v.
+	 */
 	public Vector2D sub(Vector2D v) {
 		return new Vector2D(this.x - v.x, this.y - v.y);
 	};
 
-	// mul
+	/**
+	 * This function calculates the arithmetic multiplication of two vectors and
+	 * returns it in an new vector.
+	 * 
+	 * @param f The number witch is multiplicated to this vector.
+	 * @return A new Vector witch is the multiplication of this and the value f.
+	 */
 	public Vector2D mul(float f) {
 		return new Vector2D(this.x * f, this.y * f);
 	}
 
+	/**
+	 * This function calculates the arithmetic multiplication of two vectors and
+	 * returns it in an new vector.
+	 * 
+	 * @param v The vector witch is multiplicated to this vector.
+	 * @return A new Vector witch is the multiplication of this and the other vector
+	 *         v.
+	 */
 	public Vector2D mul(Vector2D v) { // changes this.vector
 		return new Vector2D(this.x * v.x, this.y * v.y);
 	};
 
-	// div
+	/**
+	 * This function calculates the arithmetic division of two vectors and returns
+	 * it in an new vector.
+	 * 
+	 * @param v The vector witch is divided on this vector.
+	 * @return A new Vector witch is the division of this and the other vector v.
+	 */
 	public Vector2D div(Vector2D v) { // changes this.vector
 		return new Vector2D(this.x / v.x, this.y / v.y);
 	};
 
-	public Vector2D div(float f) { // changes this.vector
+	/**
+	 * This function calculates the arithmetic division of two vectors and returns
+	 * it in an new vector.
+	 * 
+	 * @param f The number by witch this vector is divided.
+	 * @return A new Vector witch is the division of this and the value f.
+	 */
+	public Vector2D div(float f) {
 		return new Vector2D(this.x / f, this.y / f);
 	};
 
+	/**
+	 * Normalizes This vector and returns a new one. After the normalisation the
+	 * vector has a Length of 1.0
+	 * 
+	 * @return the normalized version of this vector.
+	 */
 	public Vector2D normalized() {
 		float length = length();
 		return new Vector2D(this.x / length, this.y / length);
 	}
 
+	/**
+	 * This function calculates the direction from the point this vector is pointing
+	 * to to the point the other vector is pointing to and returns it as a new
+	 * normalized vector.
+	 * 
+	 * @param v The other vector.
+	 * @return A new Vector with the pointing direction.
+	 */
 	public Vector2D directionTo(Vector2D v) {
 		return new Vector2D(v.x - this.x, v.y - this.y).normalized();
 	}
 
+	/**
+	 * This function constrains all values of the vector between a given minimum and
+	 * a given maximum.
+	 * 
+	 * @param min The minimum value a value of the vector can have.
+	 * @param max The maximum value a value of the vector can have.
+	 * @return A new clamped vector.
+	 */
 	public Vector2D clamp(Vector2D min, Vector2D max) {
 		Vector2D ret = new Vector2D();
 		ret.x = Math.min(Math.max(min.x, this.x), max.x);
@@ -88,6 +186,13 @@ public class Vector2D {
 		return ret;
 	}
 
+	/**
+	 * This function rotates the vector by an angle, in radians and returns it as a
+	 * new vector.
+	 * 
+	 * @param angle The angle the vector is rotated, in radians.
+	 * @return The new rotated vector.
+	 */
 	public Vector2D rotate(double angle) {
 		Vector2D ret = new Vector2D();
 		ret.x = (float) (this.x * Math.cos(angle) - this.y * Math.sin(angle));
@@ -95,24 +200,45 @@ public class Vector2D {
 		return ret;
 	}
 
-	public Vector2D interpolate(Vector2D other, double factor) {
+	/**
+	 * This function linear interpolates between two vectors. A value must be given
+	 * to represent the influence of the interpolated vector. A new vector is
+	 * returned.
+	 * 
+	 * @param v      The other vector.
+	 * @param factor represents the influence of this vector 1.0 means the
+	 *               interpolated vector is equal to this vector, 0.0 means the new
+	 *               vector is equal to the other vector v.
+	 * @return The new interpolated vector.
+	 */
+	public Vector2D interpolate(Vector2D v, double factor) {
 		var vA = this.mul((float) factor);
-		var vB = other.mul((float) (1.0 - factor));
+		var vB = v.mul((float) (1.0 - factor));
 		return vA.add(vB);
 	}
 
-	public Vector2D interpolate(List<Vector2D> vectors) {
+	/**
+	 * Calculates the average between a list of vectors.
+	 * 
+	 * @param vectors A list of vectors to average
+	 * @return The new average vector.
+	 */
+	public Vector2D average(List<Vector2D> vectors) {
 		float x = 0;
 		float y = 0;
 		for (Vector2D vector : vectors) {
 			x += vector.x / vectors.size();
 			y += vector.y / vectors.size();
 		}
-
 		Vector2D ret = new Vector2D(x, y);
 		return ret;
 	}
 
+	/**
+	 * Creates a string representation of the transposed vector.
+	 * 
+	 * @return The string representation.
+	 */
 	public String toString() {
 		return "(" + this.x + ", " + this.y + ")";
 	}

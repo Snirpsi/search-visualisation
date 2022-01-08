@@ -97,6 +97,7 @@ public class Vector2DInt {
 		return Objects.hash(x, y);
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

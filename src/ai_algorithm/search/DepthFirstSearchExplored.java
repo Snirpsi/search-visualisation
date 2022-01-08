@@ -7,14 +7,13 @@ import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
 import application.debugger.Debugger;
 
-public class DepthFirstSearch extends SearchAlgorithm {
+public class DepthFirstSearchExplored extends SearchAlgorithm {
 //default construchtor required
-
-	public DepthFirstSearch() {
+	public DepthFirstSearchExplored() {
 		super();
 	}
-
-	public DepthFirstSearch(Problem problem) {
+	
+	public DepthFirstSearchExplored(Problem problem) {
 		super(problem);
 	}
 
@@ -23,7 +22,10 @@ public class DepthFirstSearch extends SearchAlgorithm {
 
 		Frontier frontier = new Frontier();
 
+		ExploredSet explored = new ExploredSet();
+
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
+		explored.add(start);
 
 		Debugger.pause();
 
@@ -39,24 +41,20 @@ public class DepthFirstSearch extends SearchAlgorithm {
 			SearchNode node = frontier.removeLast();
 			Debugger.pause();
 			System.out.println(node);
-			if (problem.isGoalState(node.getState())) {
-				return node;
-			}
-
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
 					Debugger.pause("Finished");
 					return child;
 				}
-				if (!node.contains(state)) {
+				if (!explored.contains(state)) {
+					Debugger.pause();
+					explored.add(child);
 					frontier.add(child);
 				}
-
 			}
 
 		}
-		Debugger.pause("No Sulution found");
 		return null;
 	}
 

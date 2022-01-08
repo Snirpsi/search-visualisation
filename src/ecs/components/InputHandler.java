@@ -7,8 +7,6 @@ import javafx.event.Event;
 
 public class InputHandler extends Component {
 
-
-
 	Function<Event, ?> action = null;
 
 	public InputHandler(Function<Event, ?> action) {
@@ -21,6 +19,10 @@ public class InputHandler extends Component {
 	}
 
 	public void handle(Event event) {
+		if (event == null) {
+			this.action.apply(event);
+		}
+
 		System.out.println("HANDLE EVENT" + event);
 		/*
 		 * System.out.println("Handle event");

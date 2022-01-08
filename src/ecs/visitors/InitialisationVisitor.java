@@ -135,7 +135,9 @@ public class InitialisationVisitor extends Visitor {
 				System.out.println("Components Missing");
 			}
 
-			e.consume();
+			if (e != null) {
+				e.consume();
+			}
 			return null;
 		});
 		searchNode.addComponent(ihhover);
@@ -169,8 +171,7 @@ public class InitialisationVisitor extends Visitor {
 		for (int i = 0; i < rasterPathProblem.GAMESIZE; i++) {
 			for (int j = 0; j < rasterPathProblem.GAMESIZE; j++) {
 				Rectangle r = new Rectangle();
-				
-				
+
 				if (rasterPathProblem.labyrinth[i][j] == 'e') {
 					tilemap.insertTile(new Vector2DInt(i, j), r, Color.WHITE);
 				} else {
@@ -178,14 +179,13 @@ public class InitialisationVisitor extends Visitor {
 				}
 				final int ic = i;
 				final int jc = j;
-				r.setOnMouseClicked(  e -> {
-					if(rasterPathProblem.labyrinth[ic][jc] =='e') {
-						rasterPathProblem.labyrinth[ic][jc] ='w';
-						tilemap.insertTile(new Vector2DInt(ic,jc), r, Color.BLUE);
-					}else
-					{
-						rasterPathProblem.labyrinth[ic][jc] ='e';
-						tilemap.insertTile(new Vector2DInt(ic,jc), r, Color.WHITE);
+				r.setOnMouseClicked(e -> {
+					if (rasterPathProblem.labyrinth[ic][jc] == 'e') {
+						rasterPathProblem.labyrinth[ic][jc] = 'w';
+						tilemap.insertTile(new Vector2DInt(ic, jc), r, Color.BLUE);
+					} else {
+						rasterPathProblem.labyrinth[ic][jc] = 'e';
+						tilemap.insertTile(new Vector2DInt(ic, jc), r, Color.WHITE);
 					}
 				});
 			}

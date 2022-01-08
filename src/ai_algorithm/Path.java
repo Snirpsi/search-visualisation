@@ -9,10 +9,17 @@ import ecs.GameObject;
 public class Path extends GameObject {
 	SearchNode searchNode;
 
+	 /**
+     * The Constructor is used to get the Path from the initial searchnode to the currend node in the Tree structure.
+     * @param searchNode the searchnode from witch the path will be build
+     */
 	public Path(SearchNode searchNode) {
 		this.searchNode = searchNode;
 	}
 	
+	 /**
+     * Returns the problem the Path is Corresponding to.
+     */
 	public Problem getProblem() {
 		return this.searchNode.getState().getProblem();
 	}

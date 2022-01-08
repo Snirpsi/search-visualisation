@@ -10,6 +10,7 @@ import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearch;
+import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 
@@ -42,8 +43,9 @@ public class SearchThreadFactory {
 	public static List<String> getSearchAlgoritmNames() {
 		var ret = new LinkedList<String>();
 		// !! Hier neue Algorithmus einfügen !
-		ret.add(DepthFirstSearch.class.getName());
+		ret.add(DepthFirstSearchExplored.class.getName());
 		ret.add(BreadthFirstSearch.class.getName());
+		ret.add(DepthFirstSearch.class.getName());
 		return ret;
 	}
 
