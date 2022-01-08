@@ -20,6 +20,8 @@ public class ExploredSet extends GameObject {
 		State state = node.getState();
 		this.explored.add(state);
 		node.metadata.isInExploredSet = true;
+		node.metadata.isInMemory = true;
+		GameObjectRegistry.registerForLargeComponentUpdate(node);
 		GameObjectRegistry.registerForLargeComponentUpdate(state);
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
@@ -29,7 +31,9 @@ public class ExploredSet extends GameObject {
 		for (SearchNode node : nodes) {
 			explored.add(node.getState());
 			node.metadata.isInExploredSet = true;
+			node.metadata.isInMemory = true;
 			GameObjectRegistry.registerForLargeComponentUpdate(node.getState());
+			GameObjectRegistry.registerForLargeComponentUpdate(node);
 		}
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}

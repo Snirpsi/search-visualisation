@@ -21,6 +21,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		// eventuell notify hinzufügen für fallunterscheidung von verschiedenen aktionen
 		this.frontier.add(node);
 		node.metadata.isInFrontier = true;
+		node.metadata.isInMemory = true;
 		GameObjectRegistry.registerForLargeComponentUpdate(node);
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 	}
@@ -29,6 +30,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		frontier.addAll(nodes);
 		for (SearchNode node : nodes) {
 			node.metadata.isInFrontier = true;
+			node.metadata.isInMemory = true;
 			GameObjectRegistry.registerForLargeComponentUpdate(node);
 		}
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
@@ -59,6 +61,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		}
 		SearchNode first = frontier.remove(0);
 		first.metadata.isInFrontier = false;
+		first.metadata.isInMemory = false;
 		return first;
 	}
 
@@ -68,6 +71,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		}
 		SearchNode last = frontier.remove(frontier.size()-1);
 		last.metadata.isInFrontier = false;
+		last.metadata.isInMemory = false;
 		return last;
 	}
 

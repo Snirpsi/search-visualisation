@@ -113,7 +113,8 @@ public class TreeLayouter extends Component {
 
 				Position siblingPos = sibling.entity.getComponent(Position.class);
 				// set sibling neighboring own node
-				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber()+1)), 0);
+				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber() + 1)),
+						0);
 				Vector2D newSiblingPos = new Vector2D(ownPos.getFuturePosition()).add(relativSiblingPos);
 				siblingPos.setPosition(newSiblingPos);
 
@@ -139,7 +140,7 @@ public class TreeLayouter extends Component {
 			vectors.add(child.entity.getComponent(Position.class).getFuturePosition());
 		}
 
-		Vector2D newParentPos = new Vector2D(new Vector2D().interpolate(vectors).x,
+		Vector2D newParentPos = new Vector2D(new Vector2D().average(vectors).x,
 				(float) (PARENT_DISTANCE * (treeOwn.updateDepth())));
 
 		// positioniere unter first child
@@ -151,8 +152,8 @@ public class TreeLayouter extends Component {
 		if (!treeOwn.isRoot()) {
 			treeOwn.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 		}
-		//MABY NEEDET AFTER REWORK		
-		//this.placeSiblingsRecursivLayout();
+		// MABY NEEDET AFTER REWORK
+		// this.placeSiblingsRecursivLayout();
 		return;
 	}
 

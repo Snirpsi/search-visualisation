@@ -100,7 +100,7 @@ public class GermanyRouteProblem extends Problem {
     private final CityState goalCity;
 
     public GermanyRouteProblem() {
-        this("Berlin", "Hamburg");
+        this("Berlin", "Hamburgg");
     }
 
     public GermanyRouteProblem(String startCity, String goalCity) {

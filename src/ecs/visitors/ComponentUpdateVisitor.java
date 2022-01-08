@@ -5,11 +5,13 @@ import java.util.List;
 
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
+import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.State;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.problems.raster_path.RasterPathState;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
+import ecs.components.InputHandler;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.TileMap2D;
@@ -36,45 +38,65 @@ public class ComponentUpdateVisitor extends Visitor {
 		System.out.println("No Maching component");
 	}
 
-	public void visit(SearchNode gameObject) {
-		super.visit(gameObject);
+	public void visit(SearchNode searchNode) {
+		super.visit(searchNode);
 		numUpdates++;
+
+		if (searchNode.metadata.expanding != null && searchNode.metadata.expanding.hasComponent(InputHandler.class)) {
+			var ih = searchNode.metadata.expanding.getComponent(InputHandler.class);
+			ih.handle(null);
+		}
+
 		System.out.println("NumUpdates: " + numUpdates);
-		if (gameObject.metadata.expanding == gameObject) {
-			var c = gameObject.metadata.expanding.getComponent(Coloring.class);
-			c.setColor(Settings.DEFAULTCOLORS.EXPANDED);
-		}
-		if (isInFrontier(gameObject)) {
-			var c = gameObject.getComponent(Coloring.class);
-			c.setColor(Settings.DEFAULTCOLORS.IN_FRONTIER);
-		} else {
-			var c = gameObject.getComponent(Coloring.class);
-			c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY);
-		}
 
-		if (gameObject.getState().getProblem().isGoalState(gameObject.getState())) {
-			var c = gameObject.getComponent(Coloring.class);
+		var c = searchNode.getComponent(Coloring.class);
+
+		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
 			c.setColor(Settings.DEFAULTCOLORS.GOAL);
-		}
-
-		if (gameObject == gameObject.metadata.expanding) {
-			var c = gameObject.getComponent(Coloring.class);
-			c.setColor(Settings.DEFAULTCOLORS.EXPANDING);
-		}
-
-		if (gameObject.getParent() != null) {
-			TreeLayouter parentTreeLayouter = gameObject.getParent().getComponent(TreeLayouter.class);
-			parentTreeLayouter.layout();
-			System.out.println("parent layouted");
+		} else if (SearchNodeMetadataObject.expanding == searchNode) {
+			var col = SearchNodeMetadataObject.expanding.getComponent(Coloring.class);
+			col.setColor(Settings.DEFAULTCOLORS.EXPANDING);
+		} else if (searchNode.metadata.isInFrontier) {
+			c.setColor(Settings.DEFAULTCOLORS.IN_FRONTIER);
+		} else if (searchNode.getChildren() != null && searchNode.metadata.isInExploredSet) {
+			System.out.println("EXPANDED COLORING !!!!!!!!!!!!!!!!!!!!!");
+			c.setColor(Settings.DEFAULTCOLORS.EXPANDED);
+		} else if (searchNode.metadata.isInExploredSet) {
+			c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY);
+		} else if (searchNode.metadata.isInMemory) {
+			c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY);
 		} else {
-			gameObject.getComponent(TreeLayouter.class).layout();
+			c.setColor(Settings.DEFAULTCOLORS.NOT_IN_MEMORY);
 		}
 
-		GameObjectRegistry.registerForLargeComponentUpdate(gameObject.getState().getProblem());
+		/*
+		 * if (searchNode.metadata.expanding == searchNode) { var c =
+		 * searchNode.metadata.expanding.getComponent(Coloring.class);
+		 * c.setColor(Settings.DEFAULTCOLORS.EXPANDING); } if (isInFrontier(searchNode))
+		 * { var c = searchNode.getComponent(Coloring.class);
+		 * c.setColor(Settings.DEFAULTCOLORS.IN_FRONTIER); } else { var c =
+		 * searchNode.getComponent(Coloring.class);
+		 * c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY); }
+		 * 
+		 * if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
+		 * var c = searchNode.getComponent(Coloring.class);
+		 * c.setColor(Settings.DEFAULTCOLORS.GOAL); }
+		 * 
+		 * if (searchNode.getChildren() != null ) { var c =
+		 * searchNode.getComponent(Coloring.class);
+		 * c.setColor(Settings.DEFAULTCOLORS.EXPANDED); }
+		 * 
+		 * if (searchNode.getParent() != null) { TreeLayouter parentTreeLayouter =
+		 * searchNode.getParent().getComponent(TreeLayouter.class);
+		 * parentTreeLayouter.layout(); System.out.println("parent layouted"); } else {
+		 * searchNode.getComponent(TreeLayouter.class).layout(); }
+		 */
+
+		GameObjectRegistry.registerForLargeComponentUpdate(searchNode.getState().getProblem());
 	}
 
 	public void visit(RasterPathProblem rasterPathProblem) {
-		//Makieren von Frontier und Explored set in dem spezifischen Problem,
+		// Makieren von Frontier und Explored set in dem spezifischen Problem,
 		// ist Problemabhängig ob es geht oder nicht.
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
@@ -84,13 +106,13 @@ public class ComponentUpdateVisitor extends Visitor {
 				Vector2DInt statePos = state.getPosition();
 				if (rasterPathProblem.labyrinth[statePos.x][statePos.y] == 'e') {
 					if (node == node.metadata.expanding) {
-						//Makiere knoten der Expandiert wird
+						// Makiere knoten der Expandiert wird
 						t2d.setTileColor(statePos, Settings.DEFAULTCOLORS.EXPANDING);
 					} else if (node.metadata.isInFrontier) {
-						//Makiere knoten der in frontier ist wird
+						// Makiere knoten der in frontier ist wird
 						t2d.setTileColor(statePos, Settings.DEFAULTCOLORS.IN_FRONTIER);
 					} else if (node.metadata.isInExploredSet) {
-						//Makiere Zustand in ExploredSet
+						// Makiere Zustand in ExploredSet
 						t2d.setTileColor(statePos, Settings.DEFAULTCOLORS.EXPANDED);
 					}
 				}
