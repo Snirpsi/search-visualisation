@@ -14,9 +14,6 @@ public class Vector2D {
 
 	public float x, y;
 	
-	/**
-	 * 
-	 */
 	public final static Vector2D ZERO = new Vector2D(0, 0);
 	public final static Vector2D ONE = new Vector2D(1, 1);
 	public final static Vector2D UP = new Vector2D(0, -1);
@@ -46,7 +43,7 @@ public class Vector2D {
 	/**
 	 * Constructor initializes the vector with the given values.
 	 * 
-	 * @param v is the other vector, witch is used to initialize this vector.
+	 * @param v is the other vector, which is used to initialize this vector.
 	 */
 	public Vector2D(Vector2D v) {
 		this.x = v.x;
@@ -64,6 +61,7 @@ public class Vector2D {
 	}
 
 	/**
+	 * Calculates the length of this vector.
 	 * @return The length of this vector.
 	 */
 	public float length() {
@@ -85,7 +83,7 @@ public class Vector2D {
 	 * an new vector.
 	 * 
 	 * @param v The other vector.
-	 * @return A new Vector witch is the sum of this and the other vector v.
+	 * @return A new Vector which is the sum of this and the other vector v.
 	 */
 	public Vector2D add(Vector2D v) {
 		return new Vector2D(this.x + v.x, this.y + v.y);
@@ -95,8 +93,8 @@ public class Vector2D {
 	 * This function calculates the arithmetic subtraction of two vectors and
 	 * returns it in an new vector.
 	 * 
-	 * @param v The vector witch is subtracted from this vector.
-	 * @return A new Vector witch is subtracted of this and the other vector v.
+	 * @param v The vector which is subtracted from this vector.
+	 * @return A new Vector which is subtracted of this and the other vector v.
 	 */
 	public Vector2D sub(Vector2D v) {
 		return new Vector2D(this.x - v.x, this.y - v.y);
@@ -106,8 +104,8 @@ public class Vector2D {
 	 * This function calculates the arithmetic multiplication of two vectors and
 	 * returns it in an new vector.
 	 * 
-	 * @param f The number witch is multiplicated to this vector.
-	 * @return A new Vector witch is the multiplication of this and the value f.
+	 * @param f The number which is multiplicated to this vector.
+	 * @return A new Vector which is the multiplication of this and the value f.
 	 */
 	public Vector2D mul(float f) {
 		return new Vector2D(this.x * f, this.y * f);
@@ -117,8 +115,8 @@ public class Vector2D {
 	 * This function calculates the arithmetic multiplication of two vectors and
 	 * returns it in an new vector.
 	 * 
-	 * @param v The vector witch is multiplicated to this vector.
-	 * @return A new Vector witch is the multiplication of this and the other vector
+	 * @param v The vector which is multiplicated to this vector.
+	 * @return A new Vector which is the multiplication of this and the other vector
 	 *         v.
 	 */
 	public Vector2D mul(Vector2D v) { // changes this.vector
@@ -129,8 +127,8 @@ public class Vector2D {
 	 * This function calculates the arithmetic division of two vectors and returns
 	 * it in an new vector.
 	 * 
-	 * @param v The vector witch is divided on this vector.
-	 * @return A new Vector witch is the division of this and the other vector v.
+	 * @param v The vector which is divided on this vector.
+	 * @return A new Vector which is the division of this and the other vector v.
 	 */
 	public Vector2D div(Vector2D v) { // changes this.vector
 		return new Vector2D(this.x / v.x, this.y / v.y);
@@ -140,18 +138,18 @@ public class Vector2D {
 	 * This function calculates the arithmetic division of two vectors and returns
 	 * it in an new vector.
 	 * 
-	 * @param f The number by witch this vector is divided.
-	 * @return A new Vector witch is the division of this and the value f.
+	 * @param f The number by which this vector is divided.
+	 * @return A new Vector which is the division of this and the value f.
 	 */
 	public Vector2D div(float f) {
 		return new Vector2D(this.x / f, this.y / f);
 	};
 
 	/**
-	 * Normalizes This vector and returns a new one. After the normalisation the
+	 * Normalizes this vector and returns a new one. After the normalization the new
 	 * vector has a Length of 1.0
 	 * 
-	 * @return the normalized version of this vector.
+	 * @return The normalized version of this vector.
 	 */
 	public Vector2D normalized() {
 		float length = length();
