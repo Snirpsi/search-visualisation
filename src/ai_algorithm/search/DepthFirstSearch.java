@@ -49,7 +49,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 					Debugger.pause("Finished");
 					return child;
 				}
-				if (!node.contains(state)) {
+				if (!contains2(node, state)) {
 					frontier.add(child);
 				}
 
@@ -58,6 +58,19 @@ public class DepthFirstSearch extends SearchAlgorithm {
 		}
 		Debugger.pause("No Sulution found");
 		return null;
+	}
+
+	public boolean contains(SearchNode sn, State state) {
+		if (sn.getState().equals(state)) {
+			return true;
+		} else if (sn.getParent() != null) {
+			return contains(sn.getParent(), state);
+		}
+		return false;
+	}
+
+	public boolean contains2(SearchNode sn, State state) {
+		return sn.getPath().getVisitedStates().contains(state);
 	}
 
 }
