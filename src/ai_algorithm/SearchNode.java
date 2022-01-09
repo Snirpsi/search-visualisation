@@ -86,6 +86,7 @@ public class SearchNode extends GameObject {
 	}
 
 	public List<SearchNode> expand() {
+		GameObjectRegistry.registerForLargeComponentUpdate(this.metadata.expanding);
 		this.metadata.expanding = this;// <-- marker auf die expandierenden knoten setzen
 		GameObjectRegistry.registerForStateChange(this);
 		Debugger.pause("Expanding: " + parent);
@@ -108,15 +109,5 @@ public class SearchNode extends GameObject {
 		GameObjectRegistry.registerForStateChange(this);
 		return this.children;
 	}
-	
-	 public boolean contains(State state) {
-	        if (this.state.equals(state)) {
-	            return true;
-	        } else if (parent != null) {
-	            return parent.contains(state);
-	        }
-	        return false;
-	    }
-
 
 }

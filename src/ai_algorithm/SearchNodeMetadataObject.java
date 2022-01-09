@@ -1,16 +1,16 @@
 package ai_algorithm;
 
 public class SearchNodeMetadataObject {
-	
-	public static SearchNode lastTouched;
-	public static SearchNode selected;
-	public static SearchNode root;
-	
-	public static SearchNode expanding;
-	public static boolean justExpandend;
-	
-	public boolean isInFrontier;
-	public boolean isInMemory;
-	public boolean isInExploredSet;
-	
+
+	public volatile static SearchNode lastTouched;
+	public volatile static SearchNode selected;
+	public volatile static SearchNode root;
+
+	public volatile static SearchNode expanding;
+	public volatile static boolean justExpandend;
+
+	public volatile boolean isInFrontier;
+	public volatile boolean isInMemory;
+	public volatile boolean isInExploredSet;
+
 }
