@@ -14,6 +14,9 @@ import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 
+/**
+ * This class provides the functionality
+ */
 public class SearchThreadFactory {
 
 	public static void startSearchIfReady() {

@@ -86,6 +86,7 @@ public class SearchNode extends GameObject {
 	}
 
 	public List<SearchNode> expand() {
+		GameObjectRegistry.registerForLargeComponentUpdate(this.metadata.expanding);
 		this.metadata.expanding = this;// <-- marker auf die expandierenden knoten setzen
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 		Debugger.pause("Expanding: " + parent);
