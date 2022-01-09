@@ -22,6 +22,7 @@ import tools.Vector2DInt;
  * which key is the {@link Component} class. In the Constructor the
  * {@link GameObject} is registered for initialization at the
  * {@link GameObjectRegistry} where it gets its components assigned.
+ * The {@link GameObject} is the Entity in the Entity Component System (ECS).
  * 
  * @version 1.0
  */

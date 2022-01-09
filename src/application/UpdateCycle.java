@@ -35,12 +35,10 @@ public class UpdateCycle {
 
 				GameObjectRegistry.initializePendingGameObjects();
 
-				GameObjectRegistry.largeUpdatePendingComponents();
+				GameObjectRegistry.changePendingGameobjects();
 
 				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
-
 					rootGameObjects.update(deltaT);
-
 				}
 
 				if (Debugger.getDebuggerUI() != null) {

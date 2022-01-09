@@ -1,25 +1,27 @@
 package ecs.visitors;
 
-import java.util.Iterator;
 import java.util.List;
-
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
-import ai_algorithm.State;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.problems.raster_path.RasterPathState;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import ecs.components.InputHandler;
 import ecs.components.graphics.Coloring;
-import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.TileMap2D;
-import javafx.scene.paint.Color;
 import settings.Settings;
 import tools.Vector2DInt;
 
-public class ComponentUpdateVisitor extends Visitor {
+/**
+ * This class handles the change of every possible {@link GameObject}.
+ * 
+ * @author Severin
+ *
+ */
+
+public class GameObjectChangedVisitor extends Visitor {
 
 	private static long numUpdates = 0L;
 
@@ -92,7 +94,7 @@ public class ComponentUpdateVisitor extends Visitor {
 		 * searchNode.getComponent(TreeLayouter.class).layout(); }
 		 */
 
-		GameObjectRegistry.registerForLargeComponentUpdate(searchNode.getState().getProblem());
+		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
 	}
 
 	public void visit(RasterPathProblem rasterPathProblem) {
