@@ -22,8 +22,8 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		this.frontier.add(node);
 		node.metadata.isInFrontier = true;
 		node.metadata.isInMemory = true;
-		GameObjectRegistry.registerForLargeComponentUpdate(node);
-		GameObjectRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForStateChange(node);
+		GameObjectRegistry.registerForStateChange(this);
 	}
 
 	public void addAll(List<SearchNode> nodes) {
@@ -31,9 +31,9 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		for (SearchNode node : nodes) {
 			node.metadata.isInFrontier = true;
 			node.metadata.isInMemory = true;
-			GameObjectRegistry.registerForLargeComponentUpdate(node);
+			GameObjectRegistry.registerForStateChange(node);
 		}
-		GameObjectRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForStateChange(this);
 	}
 
 	public void sort(Function<SearchNode, Double> evaluationFunction) {
@@ -48,7 +48,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 				}
 			}
 		});
-		GameObjectRegistry.registerForLargeComponentUpdate(this);
+		GameObjectRegistry.registerForStateChange(this);
 	}
 
 	public boolean isEmpty() {
