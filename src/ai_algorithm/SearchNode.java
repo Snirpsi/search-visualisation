@@ -109,15 +109,5 @@ public class SearchNode extends GameObject {
 		GameObjectRegistry.registerForLargeComponentUpdate(this);
 		return this.children;
 	}
-	
-	 public boolean contains(State state) {
-	        if (this.state.equals(state)) {
-	            return true;
-	        } else if (parent != null) {
-	            return parent.contains(state);
-	        }
-	        return false;
-	    }
-
 
 }

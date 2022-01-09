@@ -45,9 +45,15 @@ public class ComponentUpdateVisitor extends Visitor {
 		}
 
 		System.out.println("NumUpdates: " + numUpdates);
+		//loock for memory
+		
+		
+		if (SearchNodeMetadataObject.expanding == searchNode) {
+		
+		}
 
 		var c = searchNode.getComponent(Coloring.class);
-
+		//set node collor
 		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
 			c.setColor(Settings.DEFAULTCOLORS.GOAL);
 		} else if (SearchNodeMetadataObject.expanding == searchNode) {
