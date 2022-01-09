@@ -44,15 +44,22 @@ public class GameObjectChangedVisitor extends Visitor {
 		super.visit(searchNode);
 		numUpdates++;
 
-		if (searchNode.metadata.expanding != null && searchNode.metadata.expanding.hasComponent(InputHandler.class)) {
+		if (SearchNodeMetadataObject.expanding != null
+				&& searchNode.metadata.expanding.hasComponent(InputHandler.class)) {
 			var ih = searchNode.metadata.expanding.getComponent(InputHandler.class);
 			ih.handle(null);
 		}
 
 		System.out.println("NumUpdates: " + numUpdates);
+		//loock for memory
+		
+		
+		if (SearchNodeMetadataObject.expanding == searchNode) {
+		
+		}
 
 		var c = searchNode.getComponent(Coloring.class);
-
+		//set node collor
 		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
 			c.setColor(Settings.DEFAULTCOLORS.GOAL);
 		} else if (SearchNodeMetadataObject.expanding == searchNode) {
