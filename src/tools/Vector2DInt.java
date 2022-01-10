@@ -203,7 +203,7 @@ public class Vector2DInt {
 	/**
 	 * This function test if two {@link Vector2DInt} have the same value.
 	 * 
-	 * @param v The other vector this one is compared with.
+	 * @param obj The other vector this one is compared with.
 	 * @return If both are equal true is returned else false.
 	 */
 	@Override

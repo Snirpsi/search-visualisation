@@ -4,6 +4,11 @@ import ecs.Component;
 
 import tools.Vector2D;
 
+/**
+ * This class represetns the position of a Gameobect.
+ * @author Severin
+ *
+ */
 public class Position extends Component {
 
 	private Vector2D position;
@@ -46,6 +51,7 @@ public class Position extends Component {
 
 	}
 
+	
 	public Vector2D getFuturePosition() {
 		if (super.entity.hasComponent(Animation.class)) {
 			return super.entity.getComponent(Animation.class).endPos;
