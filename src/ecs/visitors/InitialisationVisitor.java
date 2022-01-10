@@ -133,11 +133,11 @@ public class InitialisationVisitor extends Visitor {
 		InputHandler ihhover = new InputHandler(e -> {
 			System.out.println("INPUT SearchNode");
 			try {
-				// searchNode.getState().getComponent(Graphics.class).clearPane();
 				searchNode.getState().getProblem().getComponent(Graphics.class).show();
 				searchNode.getState().getComponent(Graphics.class).show();
 				searchNode.getPath().getComponent(Graphics.class).show();
 				searchNode.getComponent(TreeLayouter.class).layout();
+				GameObjectRegistry.registerForStateChange(searchNode);
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
 			}
@@ -220,7 +220,7 @@ public class InitialisationVisitor extends Visitor {
 
 		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
 		/// LÖSUNG PASIEREN
-		//Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
 		Graphics problem = rasterPathState.getProblem().getComponent(Graphics.class);
 
