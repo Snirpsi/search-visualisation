@@ -33,13 +33,6 @@ import javafx.scene.shape.Rectangle;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
-/**
- * This class equips every possible {@link GameObject} with the, for that object
- * visualization and behavior required, components.
- * 
- * @author Severin
- *
- */
 public class InitialisationVisitor extends Visitor {
 	// default
 	public void visit(GameObject gameObject) {
@@ -133,11 +126,11 @@ public class InitialisationVisitor extends Visitor {
 		InputHandler ihhover = new InputHandler(e -> {
 			System.out.println("INPUT SearchNode");
 			try {
+				// searchNode.getState().getComponent(Graphics.class).clearPane();
 				searchNode.getState().getProblem().getComponent(Graphics.class).show();
 				searchNode.getState().getComponent(Graphics.class).show();
 				searchNode.getPath().getComponent(Graphics.class).show();
 				searchNode.getComponent(TreeLayouter.class).layout();
-				GameObjectRegistry.registerForStateChange(searchNode);
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
 			}
@@ -149,7 +142,9 @@ public class InitialisationVisitor extends Visitor {
 		});
 		searchNode.addComponent(ihhover);
 		circle.setOnMouseEntered(InputConnector.getInputConnector(searchNode));
+		
 		GameObjectRegistry.registerForStateChange(searchNode);
+		
 		searchNode.getComponent(Graphics.class).notifyNewDrawable();
 		searchNode.getComponent(Graphics.class).show();
 
@@ -220,7 +215,7 @@ public class InitialisationVisitor extends Visitor {
 
 		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
 		/// LÖSUNG PASIEREN
-		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
 		Graphics problem = rasterPathState.getProblem().getComponent(Graphics.class);
 
