@@ -142,7 +142,9 @@ public class InitialisationVisitor extends Visitor {
 		});
 		searchNode.addComponent(ihhover);
 		circle.setOnMouseEntered(InputConnector.getInputConnector(searchNode));
-		GameObjectRegistry.registerForLargeComponentUpdate(searchNode);
+		
+		GameObjectRegistry.registerForStateChange(searchNode);
+		
 		searchNode.getComponent(Graphics.class).notifyNewDrawable();
 		searchNode.getComponent(Graphics.class).show();
 

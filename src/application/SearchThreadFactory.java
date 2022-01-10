@@ -37,6 +37,7 @@ public class SearchThreadFactory {
 		// !! Hier neue Probleme einf�gen !
 		ret.add(RasterPathProblem.class.getName());
 		ret.add(GermanyRouteProblem.class.getName());
+
 		return ret;
 	}
 

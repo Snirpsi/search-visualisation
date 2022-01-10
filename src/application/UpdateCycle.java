@@ -33,15 +33,16 @@ public class UpdateCycle {
 
 				Globals.fps = (int) (1 / deltaT);
 
+				GameObjectRegistry.initializePendingGameObjects();
+
+				GameObjectRegistry.changePendingGameobjects();
+
 				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
 					rootGameObjects.update(deltaT);
 				}
 
-				GameObjectRegistry.initializePendingGameObjects();
-
-				GameObjectRegistry.largeUpdatePendingComponents();
 				if (Debugger.getDebuggerUI() != null) {
-						Debugger.getDebuggerUI().updateText();
+					Debugger.getDebuggerUI().updateText();
 				}
 			}
 		};

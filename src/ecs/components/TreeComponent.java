@@ -9,6 +9,13 @@ import ecs.Component;
 // Diese Klasse ist etwas redundant, sie ermöglicht es aber den Komponenten 
 // auf einer Baumstruktur unabhängig von der "echten Baumstruktur" zu navigieren
 
+
+/**
+ * This class allows to represent a tree datastructure between Gameobjects independent of the datastructure the search algorithm is creating.
+ * 
+ * @author Severin
+ *
+ */
 public class TreeComponent extends Component {
 
 	TreeComponent parent = null;

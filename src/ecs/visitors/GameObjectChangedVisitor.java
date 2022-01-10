@@ -1,7 +1,6 @@
 package ecs.visitors;
 
 import java.util.List;
-
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
@@ -15,7 +14,14 @@ import ecs.components.graphics.drawables.TileMap2D;
 import settings.Settings;
 import tools.Vector2DInt;
 
-public class ComponentUpdateVisitor extends Visitor {
+/**
+ * This class handles the change of every possible {@link GameObject}.
+ * 
+ * @author Severin
+ *
+ */
+
+public class GameObjectChangedVisitor extends Visitor {
 
 	private static long numUpdates = 0L;
 
@@ -38,22 +44,28 @@ public class ComponentUpdateVisitor extends Visitor {
 		super.visit(searchNode);
 		numUpdates++;
 
-		if (SearchNodeMetadataObject.expanding != null
-				&& searchNode.metadata.expanding.hasComponent(InputHandler.class)) {
-			var ih = searchNode.metadata.expanding.getComponent(InputHandler.class);
-			ih.handle(null);
-		}
-
 		System.out.println("NumUpdates: " + numUpdates);
-		//loock for memory
-		
-		
-		if (SearchNodeMetadataObject.expanding == searchNode) {
-		
+
+		// not in memory
+		SearchNode parr = searchNode;
+		while (parr.getParent() != null) {
+			if (parr.metadata.isInExploredSet || parr.metadata.isInFrontier) {
+				parr.metadata.isInMemory = true;
+			} else {
+				parr.metadata.isInMemory = false;
+			}
+			parr = parr.getParent();
+		}
+		// is in memory
+		parr = SearchNodeMetadataObject.expanding;
+
+		while (parr != null && parr.getParent() != null) {
+			parr.metadata.isInMemory = true;
+			parr = parr.getParent();
 		}
 
 		var c = searchNode.getComponent(Coloring.class);
-		//set node collor
+		// set node collor
 		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
 			c.setColor(Settings.DEFAULTCOLORS.GOAL);
 		} else if (SearchNodeMetadataObject.expanding == searchNode) {
@@ -72,30 +84,7 @@ public class ComponentUpdateVisitor extends Visitor {
 			c.setColor(Settings.DEFAULTCOLORS.NOT_IN_MEMORY);
 		}
 
-		/*
-		 * if (searchNode.metadata.expanding == searchNode) { var c =
-		 * searchNode.metadata.expanding.getComponent(Coloring.class);
-		 * c.setColor(Settings.DEFAULTCOLORS.EXPANDING); } if (isInFrontier(searchNode))
-		 * { var c = searchNode.getComponent(Coloring.class);
-		 * c.setColor(Settings.DEFAULTCOLORS.IN_FRONTIER); } else { var c =
-		 * searchNode.getComponent(Coloring.class);
-		 * c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY); }
-		 * 
-		 * if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
-		 * var c = searchNode.getComponent(Coloring.class);
-		 * c.setColor(Settings.DEFAULTCOLORS.GOAL); }
-		 * 
-		 * if (searchNode.getChildren() != null ) { var c =
-		 * searchNode.getComponent(Coloring.class);
-		 * c.setColor(Settings.DEFAULTCOLORS.EXPANDED); }
-		 * 
-		 * if (searchNode.getParent() != null) { TreeLayouter parentTreeLayouter =
-		 * searchNode.getParent().getComponent(TreeLayouter.class);
-		 * parentTreeLayouter.layout(); System.out.println("parent layouted"); } else {
-		 * searchNode.getComponent(TreeLayouter.class).layout(); }
-		 */
-
-		GameObjectRegistry.registerForLargeComponentUpdate(searchNode.getState().getProblem());
+		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
 	}
 
 	public void visit(RasterPathProblem rasterPathProblem) {
@@ -104,7 +93,14 @@ public class ComponentUpdateVisitor extends Visitor {
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
 		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.-
-			RasterPathState state = (RasterPathState) node.getState();
+			RasterPathState state;
+			try {
+				state = (RasterPathState) node.getState();
+			} catch (Exception e) {
+				System.out.println("state is not of type Rasterpath");
+				return;
+			}
+
 			if (t2d.getTile(state.getPosition()) != null) {
 				Vector2DInt statePos = state.getPosition();
 				if (rasterPathProblem.labyrinth[statePos.x][statePos.y] == 'e') {
