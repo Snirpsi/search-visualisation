@@ -11,7 +11,6 @@ import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
-import ai_algorithm.search.RecursiveDepthSearch;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 
@@ -41,7 +40,7 @@ public class SearchThreadFactory {
 		// !! Hier neue Probleme einfügen !
 		ret.add(RasterPathProblem.class.getName());
 		ret.add(GermanyRouteProblem.class.getName());
-	
+
 		return ret;
 	}
 
@@ -51,7 +50,6 @@ public class SearchThreadFactory {
 		ret.add(DepthFirstSearchExplored.class.getName());
 		ret.add(BreadthFirstSearch.class.getName());
 		ret.add(DepthFirstSearch.class.getName());
-		ret.add(RecursiveDepthSearch.class.getName());
 		return ret;
 	}
 
