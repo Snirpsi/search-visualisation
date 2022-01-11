@@ -5,6 +5,7 @@ import java.util.List;
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
+import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.Path;
 import ai_algorithm.State;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
@@ -126,11 +127,9 @@ public class InitialisationVisitor extends Visitor {
 		InputHandler ihhover = new InputHandler(e -> {
 			System.out.println("INPUT SearchNode");
 			try {
-				// searchNode.getState().getComponent(Graphics.class).clearPane();
-				searchNode.getState().getProblem().getComponent(Graphics.class).show();
-				searchNode.getState().getComponent(Graphics.class).show();
-				searchNode.getPath().getComponent(Graphics.class).show();
-				searchNode.getComponent(TreeLayouter.class).layout();
+				//wenn input 
+				SearchNodeMetadataObject.select(searchNode);
+				GameObjectRegistry.registerForStateChange(searchNode);
 			} catch (Exception exeption) {
 				System.out.println("Components Missing");
 			}
@@ -142,9 +141,9 @@ public class InitialisationVisitor extends Visitor {
 		});
 		searchNode.addComponent(ihhover);
 		circle.setOnMouseEntered(InputConnector.getInputConnector(searchNode));
-		
+
 		GameObjectRegistry.registerForStateChange(searchNode);
-		
+
 		searchNode.getComponent(Graphics.class).notifyNewDrawable();
 		searchNode.getComponent(Graphics.class).show();
 

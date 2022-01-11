@@ -86,9 +86,7 @@ public class SearchNode extends GameObject {
 	}
 
 	public List<SearchNode> expand() {
-		GameObjectRegistry.registerForStateChange(this.metadata.expanding);
-		this.metadata.expanding = this;// <-- marker auf die expandierenden knoten setzen
-		GameObjectRegistry.registerForStateChange(this);
+		SearchNodeMetadataObject.setExpandingSearchnode(this);
 		Debugger.pause("Expanding: " + parent);
 		List<SearchNode> futureCildren = new ArrayList<>();
 
@@ -106,6 +104,7 @@ public class SearchNode extends GameObject {
 			Debugger.pause("EXPANSION: " + action);
 		}
 		this.children.addAll(futureCildren);
+		
 		GameObjectRegistry.registerForStateChange(this);
 		return this.children;
 	}

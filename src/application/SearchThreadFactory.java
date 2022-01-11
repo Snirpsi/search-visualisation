@@ -48,6 +48,7 @@ public class SearchThreadFactory {
 		ret.add(BreadthFirstSearch.class.getName());
 		ret.add(DepthFirstSearch.class.getName());
 		ret.add(RecursiveDepthSearch.class.getName());
+		ret.add(ManualSearch.class.getName());
 		return ret;
 	}
 

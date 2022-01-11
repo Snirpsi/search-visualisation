@@ -16,6 +16,7 @@ public class Text extends Drawable {
 		this.text = new Label("EMPTY TEXT");
 		this.text.setFont(new Font(4));
 		this.text.setTextFill(Color.HOTPINK);
+		this.text.setMouseTransparent(true);
 	}
 
 	public Text(String string) {

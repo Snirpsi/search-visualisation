@@ -34,7 +34,7 @@ public class DebuggerUI {
 
 		});
 
-		Slider pauseTime = new Slider(0.1, 10, 1);
+		Slider pauseTime = new Slider(0.1, 2, 1);
 		pauseTime.setMaxWidth(300);
 		pauseTime.valueProperty().addListener(new ChangeListener<Number>() {
 

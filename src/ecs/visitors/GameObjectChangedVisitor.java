@@ -10,7 +10,11 @@ import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import ecs.components.InputHandler;
 import ecs.components.graphics.Coloring;
+import ecs.components.graphics.Graphics;
+import ecs.components.graphics.TreeLayouter;
+import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.TileMap2D;
+import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
 
@@ -46,24 +50,63 @@ public class GameObjectChangedVisitor extends Visitor {
 
 		System.out.println("NumUpdates: " + numUpdates);
 
-		// not in memory
-		SearchNode parr = searchNode;
-		while (parr.getParent() != null) {
-			if (parr.metadata.isInExploredSet || parr.metadata.isInFrontier) {
-				parr.metadata.isInMemory = true;
-			} else {
-				parr.metadata.isInMemory = false;
+		// not in memory setzen
+		if (searchNode == SearchNodeMetadataObject.prevExpanding) {
+			SearchNode prevExp = SearchNodeMetadataObject.prevExpanding;
+
+			while (prevExp != null && prevExp.getParent() != null) {
+				if (prevExp.metadata.isInExploredSet || prevExp.metadata.isInFrontier) {
+					prevExp.metadata.isInMemory = true;
+				} else {
+					prevExp.metadata.isInMemory = false;
+				}
+				setCollorAccordingToState(prevExp);
+				prevExp = prevExp.getParent();
+
 			}
-			parr = parr.getParent();
 		}
-		// is in memory
-		parr = SearchNodeMetadataObject.expanding;
+		// is in memory setzen
+		SearchNode exp = SearchNodeMetadataObject.expanding;
 
-		while (parr != null && parr.getParent() != null) {
-			parr.metadata.isInMemory = true;
-			parr = parr.getParent();
+		while (exp != null && exp.getParent() != null) {
+			exp.metadata.isInMemory = true;
+			setCollorAccordingToState(exp);
+			exp = exp.getParent();
+
 		}
 
+		setCollorAccordingToState(searchNode);
+
+		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
+
+		if (searchNode == SearchNodeMetadataObject.selected) {
+			Sprite s = searchNode.getComponent(Sprite.class);
+			s.getShapes().forEach(gNode -> {
+				if (gNode instanceof Shape shape) {
+					shape.setStyle(" -fx-stroke: pink; -fx-stroke-width: " + 10 + ";");
+				}
+			});
+
+			SearchNode desel = SearchNodeMetadataObject.deselected;
+			if (desel != null && desel != SearchNodeMetadataObject.selected) {
+				s = desel.getComponent(Sprite.class);
+				s.getShapes().forEach(gNode -> {
+					if (gNode instanceof Shape shape) {
+						shape.setStyle("-fx-stroke-width: " + 0 + ";");
+					}
+				});
+			}
+		}
+		// aktiven zustand zeichnen
+		if (searchNode != SearchNodeMetadataObject.prevExpanding && searchNode != SearchNodeMetadataObject.expanding) {
+			searchNode.getState().getProblem().getComponent(Graphics.class).show();
+			searchNode.getState().getComponent(Graphics.class).show();
+			searchNode.getPath().getComponent(Graphics.class).show();
+			searchNode.getComponent(TreeLayouter.class).layout();
+		}
+	}
+
+	private void setCollorAccordingToState(SearchNode searchNode) {
 		var c = searchNode.getComponent(Coloring.class);
 		// set node collor
 		if (searchNode.getState().getProblem().isGoalState(searchNode.getState())) {
@@ -83,8 +126,6 @@ public class GameObjectChangedVisitor extends Visitor {
 		} else {
 			c.setColor(Settings.DEFAULTCOLORS.NOT_IN_MEMORY);
 		}
-
-		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
 	}
 
 	public void visit(RasterPathProblem rasterPathProblem) {
@@ -92,7 +133,8 @@ public class GameObjectChangedVisitor extends Visitor {
 		// ist Problemabhängig ob es geht oder nicht.
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
-		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.-
+		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser währe alle frontiers und exploredsets zu
+										// bekommen
 			RasterPathState state;
 			try {
 				state = (RasterPathState) node.getState();
