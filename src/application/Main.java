@@ -26,6 +26,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			Thread.currentThread().setPriority(10);
+			
 			Scene scene = new Scene((Parent) GuiLayout.createGuiBasicStructure(), 400, 400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);

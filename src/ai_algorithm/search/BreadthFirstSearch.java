@@ -1,7 +1,5 @@
 package ai_algorithm.search;
 
-import java.util.HashSet;
-
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
@@ -32,7 +30,6 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		explored.add(start);
 		Debugger.pause("INIT ExploredSet");
 
-
 		Debugger.pause("add initial state to ExploredSet");
 
 		if (this.problem.isGoalState(start.getState())) {
@@ -46,7 +43,6 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 		while (!frontier.isEmpty()) {
 
 			SearchNode node = frontier.removeFirst();
-			System.out.println(node);
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
@@ -56,7 +52,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 				if (!explored.contains(state)) {
 					explored.add(child);
 					frontier.add(child);
-					Debugger.pause("Add to frontier");
+					Debugger.pause("Add to frontier " + child);
 				}
 			}
 

@@ -34,6 +34,7 @@ public class SearchThreadRegistryAndFactory {
 
 		SearchThread s = new SearchThread(algo);
 		searchThreads.add(s);
+		s.setPriority(1);
 		s.start();
 
 	}
