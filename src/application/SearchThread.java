@@ -2,6 +2,7 @@ package application;
 
 import ai_algorithm.search.SearchAlgorithm;
 import application.debugger.Debugger;
+import settings.Settings;
 
 public class SearchThread extends Thread {
 
@@ -21,7 +22,8 @@ public class SearchThread extends Thread {
 		try {
 			search.search();
 		} catch (RuntimeException e) {
-			System.out.print("savely stoped");
+			if (Settings.DEBUGMODE)
+				System.out.print("savely stoped");
 		}
 		return;
 	}
@@ -29,7 +31,8 @@ public class SearchThread extends Thread {
 	@Override
 	public void interrupt() {
 		super.interrupt(); // <-- awake from sleep
-		System.out.println("interrupted");
+		if (Settings.DEBUGMODE)
+			System.out.println("interrupted");
 		this.toBeStoped = true;
 		// continues thread to next pause then cleans it up
 		Debugger.resume();

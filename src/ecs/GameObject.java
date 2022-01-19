@@ -10,6 +10,7 @@ import java.util.function.Function;
 import ecs.components.Animation;
 import ecs.visitors.Visitor;
 import javafx.print.Collation;
+import settings.Settings;
 import tools.Vector2DInt;
 
 /**
@@ -89,8 +90,10 @@ public class GameObject {
 		try {
 			T newComp = componentClass.getConstructor().newInstance();
 			addComponent(newComp);
-			System.out.println("WARNING: Component " + newComp.getClass().getName() + " created by getComponent method "
-					+ this.getClass().getName() + ".");
+			if (Settings.DEBUGMODE) {
+				System.out.println("WARNING: Component " + newComp.getClass().getName()
+						+ " created by getComponent method " + this.getClass().getName() + ".");
+			}
 			return (T) newComp;
 
 		} catch (Exception e) {

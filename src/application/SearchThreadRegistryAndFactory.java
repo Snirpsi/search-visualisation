@@ -12,6 +12,7 @@ import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.RasterPathProblem;
 import ai_algorithm.search.*;
 import application.gui.GuiLayout;
+import settings.Settings;
 
 /**
  * This class provides the functionality
@@ -74,8 +75,9 @@ public class SearchThreadRegistryAndFactory {
 	}
 
 	public static SearchAlgorithm getSearchAlgoritmWithName(String searchAlgorithmName, Problem problem) {
-		System.out.println("search algoritm " + searchAlgorithmName);
-		SearchAlgorithm algoKS = null;
+		if (Settings.DEBUGMODE)
+			System.out.println("search algoritm: " + searchAlgorithmName);
+		SearchAlgorithm algo = null;
 		if (problem == null) {
 			return null;
 		}
@@ -85,23 +87,24 @@ public class SearchThreadRegistryAndFactory {
 			Class<SearchAlgorithm> algoClass = (Class<SearchAlgorithm>) Class.forName(searchAlgorithmName);
 
 			Constructor<SearchAlgorithm> cosntructor = algoClass.getConstructor();
-			System.out.println(" CLASSEEEEEE" + cosntructor.newInstance().getClass());
-			algoKS = cosntructor.newInstance();
-			System.out.println(algoKS.getClass());
+			algo = cosntructor.newInstance();
+			if (Settings.DEBUGMODE)
+				System.out.println(algo.getClass());
 
-			algoKS.setProblem(problem);
+			algo.setProblem(problem);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return algoKS;
+		return algo;
 	}
 
 	public static void stopAllThreads() {
 		for (SearchThread thread : searchThreads) {
 			thread.interrupt();
-			System.out.println("theads Stoped!");
+			if (Settings.DEBUGMODE)
+				System.out.println("theads Stoped!");
 		}
 		searchThreads.clear();
 
@@ -109,7 +112,6 @@ public class SearchThreadRegistryAndFactory {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

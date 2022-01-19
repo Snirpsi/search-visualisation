@@ -4,6 +4,11 @@ import application.debugger.Debugger;
 import javafx.scene.paint.Color;
 
 public class Settings {
+	
+	
+	public final static boolean DEBUGMODE = false;
+	
+	
 
 	/**
 	 * INITIALISATION_PER_FRAME_MAX_COUNT detemens the maximum of how many

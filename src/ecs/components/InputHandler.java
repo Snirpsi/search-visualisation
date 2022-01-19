@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import ecs.Component;
 import javafx.event.Event;
+import settings.Settings;
 
 public class InputHandler extends Component {
 
@@ -22,17 +23,8 @@ public class InputHandler extends Component {
 		if (event == null) {
 			this.action.apply(event);
 		}
-
-		System.out.println("HANDLE EVENT" + event);
-		/*
-		 * System.out.println("Handle event");
-		 * System.out.println(this.componentAssignableObject);
-		 * 
-		 * this.componentAssignableObject.getComponent(Graphics.class).clicked();
-		 * 
-		 * this.componentAssignableObject.getComponent(StateRepresentationGraphics.class
-		 * ).showStateRepresentation();
-		 */
+		if (Settings.DEBUGMODE)
+			System.out.println("HANDLE EVENT" + event);
 		this.action.apply(event);
 	}
 }
