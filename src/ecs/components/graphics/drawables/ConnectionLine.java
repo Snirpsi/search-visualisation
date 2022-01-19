@@ -16,6 +16,7 @@ public class ConnectionLine extends Drawable {
 
 	public ConnectionLine() {
 		this.connection = new Line(0, 0, 0, 0);
+		connection.setStyle("-fx-stroke: DimGray;");
 	}
 
 	@Override
@@ -37,6 +38,7 @@ public class ConnectionLine extends Drawable {
 		connection.setStartY(0);
 		connection.setEndX(relativVector.x);
 		connection.setEndY(relativVector.y);
+	
 	}
 	
 	

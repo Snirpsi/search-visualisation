@@ -44,6 +44,7 @@ public class RasterPathProblem extends Problem {
 		return new RasterPathState(this, startPos);
 	}
 
+	@Override
 	public State getGoalState() {
 		return new RasterPathState(this, goalPos);
 	}
@@ -67,12 +68,27 @@ public class RasterPathProblem extends Problem {
 
 	@Override
 	public List<String> getActions(State state) {
-
 		LinkedList<String> l = new LinkedList<String>();
-		l.add("UP");
-		l.add("DOWN");
-		l.add("LEFT");
-		l.add("RIGHT");
+
+		if (state instanceof RasterPathState rpState) {
+
+			Vector2DInt neuPos = rpState.getPosition().add(Vector2DInt.UP);
+			if (testPosition(neuPos)) {
+				l.add("UP");
+			}
+			neuPos = rpState.getPosition().add(Vector2DInt.DOWN);
+			if (testPosition(neuPos)) {
+				l.add("DOWN");
+			}
+			neuPos = rpState.getPosition().add(Vector2DInt.LEFT);
+			if (testPosition(neuPos)) {
+				l.add("LEFT");
+			}
+			neuPos = rpState.getPosition().add(Vector2DInt.RIGHT);
+			if (testPosition(neuPos)) {
+				l.add("RIGHT");
+			}
+		}
 		return l;
 	}
 

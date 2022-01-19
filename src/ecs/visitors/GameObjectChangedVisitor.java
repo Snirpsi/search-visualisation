@@ -41,14 +41,14 @@ public class GameObjectChangedVisitor extends Visitor {
 			return;
 		}
 
-		System.out.println("No Maching component");
+		// System.out.println("No Maching component");
 	}
 
 	public void visit(SearchNode searchNode) {
 		super.visit(searchNode);
 		numUpdates++;
 
-		System.out.println("NumUpdates: " + numUpdates);
+		// System.out.println("NumUpdates: " + numUpdates);
 
 		// not in memory setzen
 		if (searchNode == SearchNodeMetadataObject.prevExpanding) {
@@ -78,7 +78,7 @@ public class GameObjectChangedVisitor extends Visitor {
 		setCollorAccordingToState(searchNode);
 
 		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
-
+		// selektieren
 		if (searchNode == SearchNodeMetadataObject.selected) {
 			Sprite s = searchNode.getComponent(Sprite.class);
 			s.getShapes().forEach(gNode -> {
@@ -104,6 +104,7 @@ public class GameObjectChangedVisitor extends Visitor {
 			searchNode.getPath().getComponent(Graphics.class).show();
 			searchNode.getComponent(TreeLayouter.class).layout();
 		}
+
 	}
 
 	private void setCollorAccordingToState(SearchNode searchNode) {
@@ -117,7 +118,6 @@ public class GameObjectChangedVisitor extends Visitor {
 		} else if (searchNode.metadata.isInFrontier) {
 			c.setColor(Settings.DEFAULTCOLORS.IN_FRONTIER);
 		} else if (searchNode.getChildren() != null && searchNode.metadata.isInExploredSet) {
-			System.out.println("EXPANDED COLORING !!!!!!!!!!!!!!!!!!!!!");
 			c.setColor(Settings.DEFAULTCOLORS.EXPANDED);
 		} else if (searchNode.metadata.isInExploredSet) {
 			c.setColor(Settings.DEFAULTCOLORS.IN_MEMORY);
@@ -139,7 +139,6 @@ public class GameObjectChangedVisitor extends Visitor {
 			try {
 				state = (RasterPathState) node.getState();
 			} catch (Exception e) {
-				System.out.println("state is not of type Rasterpath");
 				return;
 			}
 
@@ -159,20 +158,6 @@ public class GameObjectChangedVisitor extends Visitor {
 				}
 			}
 		}
-	}
-
-	private boolean isInFrontier(SearchNode s) {
-		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
-		for (Frontier frontier : frontiers) {
-			if (frontier.contains(s)) {
-				System.out.println("is in frontier " + s);
-				return true;
-			}
-			System.out.println("FRONITIER >>> " + frontier);
-		}
-		System.out.println("Not in frontier");
-
-		return false;
 	}
 
 }

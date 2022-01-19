@@ -19,7 +19,6 @@ public class Coloring extends Component {
 		this.color = color;
 
 		if (!this.entity.hasComponent(Sprite.class)) {
-			System.out.println("No sprites to collor found");
 			return;
 		}
 

@@ -1,18 +1,12 @@
 package ecs.components.graphics;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
-import ai_algorithm.SearchNode;
 import ecs.Component;
-import ecs.GameObjectRegistry;
 import ecs.components.Position;
 import ecs.components.TreeComponent;
-import javafx.geometry.Pos;
 import tools.Vector2D;
-import tools.Vector2DInt;
 
 //Source --> https://stackoverflow.com/questions/33328245/radial-tree-layout-algorithm
 
@@ -35,6 +29,8 @@ public class TreeLayouter extends Component {
 	}
 
 	public void layout2() {
+		// Source -->
+		// https://stackoverflow.com/questions/33328245/radial-tree-layout-algorithm
 		// Benötigte Komponenten holen
 		// System.out.println("BAUM UPDATE LAYOUT");
 		TreeComponent nodeComp = super.entity.getComponent(TreeComponent.class);
@@ -69,7 +65,7 @@ public class TreeLayouter extends Component {
 		}
 	}
 
-	public void layout() { // temporary
+	public void layout() {
 
 		TreeComponent treeOwn = super.entity.getComponent(TreeComponent.class);
 		TreeComponent treeRoot = treeOwn.getRoot();
@@ -81,7 +77,7 @@ public class TreeLayouter extends Component {
 			Position leavePos = leave.entity.getComponent(Position.class);
 			leavePos.setPosition(new Vector2D(i * leaveDistance, (float) (PARENT_DISTANCE * (leave.updateDepth()))));
 			i++;
-			if (leave.getParent() != null) {
+			if (!leave.isRoot()) {
 				leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 			}
 		}
@@ -89,7 +85,7 @@ public class TreeLayouter extends Component {
 		for (TreeComponent leaf : leafs) {
 			if (!leaf.isRoot()) {
 				// number of tree layout iterations more means more beautifull
-				for (int j = 0; j < 3; j++) {
+				for (int j = 0; j < 2; j++) {
 					leaf.getParent().entity.getComponent(TreeLayouter.class).placeSiblingsRecursivLayout();
 					leaf.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
 				}

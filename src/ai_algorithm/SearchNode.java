@@ -87,7 +87,7 @@ public class SearchNode extends GameObject {
 
 	public List<SearchNode> expand() {
 		SearchNodeMetadataObject.setExpandingSearchnode(this);
-		Debugger.pause("Expanding: " + parent);
+		Debugger.pause("Expanding: " + this);
 		List<SearchNode> futureCildren = new ArrayList<>();
 
 		if (this.getChildren() != null && this.getChildren().size() != 0) {

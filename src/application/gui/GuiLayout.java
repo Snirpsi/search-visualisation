@@ -1,8 +1,9 @@
 package application.gui;
 
 import application.Globals;
-import application.SearchThreadFactory;
+import application.SearchThreadRegistryAndFactory;
 import application.debugger.DebuggerUI;
+import ecs.GameObjectRegistry;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -43,16 +44,24 @@ public class GuiLayout {
 		root.setCenter(aiVisualisation);
 
 		HBox topMenue = new HBox();
-
+		// Resetbutton
+		Button resetButton = new Button("RESET");
+		resetButton.setOnAction(e -> {
+			SearchThreadRegistryAndFactory.stopAllThreads();
+			GameObjectRegistry.removeAllGameObjects();
+		});
+		topMenue.getChildren().add(resetButton);
+		// Strart Button
 		Button startButton = new Button("START");
 		startButton.setOnAction(e -> {
-			SearchThreadFactory.startSearchIfReady();
+			SearchThreadRegistryAndFactory.startSearchIfReady();
 		});
 		topMenue.getChildren().add(startButton);
 
-		problemSelect.getItems().addAll(SearchThreadFactory.getProblemNames());
+		problemSelect.getItems().addAll(SearchThreadRegistryAndFactory.getProblemNames());
 		topMenue.getChildren().add(problemSelect);
-		algoSelect.getItems().addAll(SearchThreadFactory.getSearchAlgoritmNames());
+
+		algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getSearchAlgoritmNames());
 		topMenue.getChildren().add(algoSelect);
 
 		var debugg = new DebuggerUI();
@@ -61,13 +70,10 @@ public class GuiLayout {
 		root.setTop(topMenue);
 
 		// console layout
-
 		var cons = debugg.getConsole();
 		cons.maxHeight(300);
 		cons.minHeight(100);
-
 		root.setBottom(cons);
-
 		return root;
 	}
 }

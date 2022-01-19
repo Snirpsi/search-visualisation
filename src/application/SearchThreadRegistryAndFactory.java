@@ -2,6 +2,8 @@ package application;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +16,9 @@ import application.gui.GuiLayout;
 /**
  * This class provides the functionality
  */
-public class SearchThreadFactory {
+public class SearchThreadRegistryAndFactory {
+
+	private static List<SearchThread> searchThreads = Collections.synchronizedList(new ArrayList<SearchThread>());
 
 	public static void startSearchIfReady() {
 		if (GuiLayout.problemSelect.getValue() == null) {
@@ -28,13 +32,14 @@ public class SearchThreadFactory {
 		SearchAlgorithm algo = getSearchAlgoritmWithName(GuiLayout.algoSelect.getValue(), problem);
 
 		SearchThread s = new SearchThread(algo);
+		searchThreads.add(s);
 		s.start();
 
 	}
 
 	public static List<String> getProblemNames() {
 		var ret = new LinkedList<String>();
-		// !! Hier neue Probleme einfï¿½gen !
+		// !! Hier neue Probleme einfügen !
 		ret.add(RasterPathProblem.class.getName());
 		ret.add(GermanyRouteProblem.class.getName());
 
@@ -43,12 +48,13 @@ public class SearchThreadFactory {
 
 	public static List<String> getSearchAlgoritmNames() {
 		var ret = new LinkedList<String>();
-		// !! Hier neue Algorithmus einfï¿½gen !
+		// !! Hier neue Algorithmus einfügen !
 		ret.add(DepthFirstSearchExplored.class.getName());
 		ret.add(BreadthFirstSearch.class.getName());
 		ret.add(DepthFirstSearch.class.getName());
 		ret.add(RecursiveDepthSearch.class.getName());
 		ret.add(ManualSearch.class.getName());
+		ret.add(BidirectionalBreadthFirstSearch.class.getName());
 		return ret;
 	}
 
@@ -68,7 +74,6 @@ public class SearchThreadFactory {
 	}
 
 	public static SearchAlgorithm getSearchAlgoritmWithName(String searchAlgorithmName, Problem problem) {
-
 		System.out.println("search algoritm " + searchAlgorithmName);
 		SearchAlgorithm algoKS = null;
 		if (problem == null) {
@@ -91,6 +96,23 @@ public class SearchThreadFactory {
 			e.printStackTrace();
 		}
 		return algoKS;
+	}
+
+	public static void stopAllThreads() {
+		for (SearchThread thread : searchThreads) {
+			thread.interrupt();
+			System.out.println("theads Stoped!");
+		}
+		searchThreads.clear();
+
+		// time for threads to finish
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

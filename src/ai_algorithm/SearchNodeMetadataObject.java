@@ -20,7 +20,6 @@ public class SearchNodeMetadataObject {
 	public volatile boolean isInExploredSet;
 
 	public static void setExpandingSearchnode(SearchNode searchNode) {
-
 		prevExpanding = expanding;
 		expanding = searchNode;
 		GameObjectRegistry.registerForStateChange(expanding);
@@ -32,6 +31,13 @@ public class SearchNodeMetadataObject {
 	public static void select(SearchNode searchNode) {
 		deselected = selected;
 		selected = searchNode;
+	}
+
+	public static void reset() {
+		deselected = null;
+		selected = null;
+		prevExpanding = null;
+		expanding = null;
 	}
 
 }

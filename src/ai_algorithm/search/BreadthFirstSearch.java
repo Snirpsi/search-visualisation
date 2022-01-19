@@ -22,17 +22,17 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 	@Override
 	public SearchNode search() {
 
+		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
+		Debugger.pause("INIT First Search Node");
+
 		Frontier frontier = new Frontier();
 		Debugger.pause("INIT Frontier");
 
 		ExploredSet explored = new ExploredSet();
+		explored.add(start);
 		Debugger.pause("INIT ExploredSet");
 
-		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
 
-		Debugger.pause("INIT First Search Node");
-
-		explored.add(start);
 		Debugger.pause("add initial state to ExploredSet");
 
 		if (this.problem.isGoalState(start.getState())) {

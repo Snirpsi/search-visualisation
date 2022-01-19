@@ -21,8 +21,8 @@ import tools.Vector2DInt;
  * {@link GameObject}. The {@link Component}s are managed by a {@link HashMap}
  * which key is the {@link Component} class. In the Constructor the
  * {@link GameObject} is registered for initialization at the
- * {@link GameObjectRegistry} where it gets its components assigned.
- * The {@link GameObject} is the Entity in the Entity Component System (ECS).
+ * {@link GameObjectRegistry} where it gets its components assigned. The
+ * {@link GameObject} is the Entity in the Entity Component System (ECS).
  * 
  * @version 1.0
  */
@@ -148,8 +148,6 @@ public class GameObject {
 			child.update(deltaT);
 		}
 
-//		Component [] comps = (Component[]) components.values()
-
 		for (Component comp : components.values()) { // TODO: Componenten werden in der laufzeit erstellt führt zu
 			// modifikation im iterator
 			comp.update(deltaT);
@@ -204,7 +202,7 @@ public class GameObject {
 	 *                {@link GameObject}.
 	 */
 	public void accept(Visitor visitor) {
-		System.out.println("Blub" + this.getClass());
 		visitor.visit(this);// this.getClass().cast(this));
 	}
+
 }

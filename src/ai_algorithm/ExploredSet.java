@@ -1,5 +1,6 @@
 package ai_algorithm;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -8,17 +9,17 @@ import ecs.GameObjectRegistry;
 
 public class ExploredSet extends GameObject {
 
-	HashSet<State> explored;
+	HashMap<State, SearchNode> explored;
 
 	public ExploredSet() {
 		super();
-		explored = new HashSet<State>();
+		explored = new HashMap<State, SearchNode>();
 
 	}
 
 	public void add(SearchNode node) {
 		State state = node.getState();
-		this.explored.add(state);
+		this.explored.put(state, node);
 		node.metadata.isInExploredSet = true;
 		node.metadata.isInMemory = true;
 		GameObjectRegistry.registerForStateChange(node);
@@ -29,7 +30,7 @@ public class ExploredSet extends GameObject {
 	public void addAll(List<SearchNode> nodes) {
 
 		for (SearchNode node : nodes) {
-			explored.add(node.getState());
+			explored.put(node.getState(), node);
 			node.metadata.isInExploredSet = true;
 			node.metadata.isInMemory = true;
 			GameObjectRegistry.registerForStateChange(node.getState());
@@ -43,10 +44,14 @@ public class ExploredSet extends GameObject {
 	}
 
 	public boolean contains(State state) {
-		if (explored.contains(state)) {
+		if (explored.containsKey(state)) {
 			return true;
 		}
 		return false;
+	}
+
+	public SearchNode get(State state) {
+		return explored.get(state);
 	}
 
 	public void clear() {

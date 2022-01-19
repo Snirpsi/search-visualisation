@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import application.Globals;
 import ecs.visitors.GameObjectChangedVisitor;
 import ecs.visitors.InitialisationVisitor;
 import ecs.visitors.Visitor;
+import settings.Settings;
 
 /**
  * This class allows the Framework to manage all GameObjects whether they need
@@ -43,11 +45,17 @@ public class GameObjectRegistry {
 	 * should only be called by the main GameLoop.
 	 */
 	public static void initializePendingGameObjects() {
-		while (!needsGameObjectInitialisation.isEmpty()) {
+
+		int initialisationCount = 0; // load counter << if to many gameobjects initialized in one frame it is aborded
+		// and will be done in the next frame
+
+		while (!needsGameObjectInitialisation.isEmpty()
+				&& initialisationCount < Settings.INITIALISATION_PER_FRAME_MAX_COUNT) {
 			GameObject gameObject = needsGameObjectInitialisation.remove(0);
 			gameObject.accept(initialisationVisitor);// initialisieren
 			gameObjectRegistry.add(gameObject);
 			gameObject.start();
+			initialisationCount++;
 		}
 	}
 
@@ -66,9 +74,12 @@ public class GameObjectRegistry {
 	 * {@link GameObjectChangedVisitor} to it.
 	 */
 	public static void changePendingGameobjects() {
-		while (!largeSingleUpdate.isEmpty()) {
+		int updateCount = 0;
+		final int UPDATE_MAX_PER_FRAME = 30; // this should never be reached
+		while (!largeSingleUpdate.isEmpty() && updateCount < UPDATE_MAX_PER_FRAME) {
 			GameObject gameObject = largeSingleUpdate.remove(0);
 			gameObject.accept(componentUpdateVisitor);
+			updateCount++;
 		}
 	}
 
@@ -89,6 +100,17 @@ public class GameObjectRegistry {
 			}
 		}
 		return ret;
+	}
+
+	public static void removeAllGameObjects() {
+
+		needsGameObjectInitialisation.clear();
+		largeSingleUpdate.clear();
+		gameObjectRegistry.clear();
+
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Globals.treeRepresentationGraphicsContext.getChildren().clear();
+
 	}
 
 }

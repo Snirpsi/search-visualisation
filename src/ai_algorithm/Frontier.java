@@ -55,6 +55,10 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		return frontier.isEmpty();
 	}
 
+	public int size() {
+		return frontier.size();
+	}
+
 	public SearchNode removeFirst() {
 		if (frontier.isEmpty()) {
 			return null;
@@ -69,7 +73,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		if (frontier.isEmpty()) {
 			return null;
 		}
-		SearchNode last = frontier.remove(frontier.size()-1);
+		SearchNode last = frontier.remove(frontier.size() - 1);
 		last.metadata.isInFrontier = false;
 		last.metadata.isInMemory = false;
 		return last;

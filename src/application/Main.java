@@ -14,7 +14,10 @@ import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -27,7 +30,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-
+			
 			UpdateCycle updater = new UpdateCycle(); // <- not a thread
 			updater.start();
 		} catch (Exception e) {

@@ -1,4 +1,12 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
+
+/*
+.button { 
+   -fx-background-color: red; 
+   -fx-text-fill: white; 
+}
+
 pane {
     -fx-border-color: black;
 }
@@ -7,3 +15,5 @@ togglebutton {
 	-fx-base: lightblue;
 	-fx-background-color: green;
 }
+*/
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */

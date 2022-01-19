@@ -1,5 +1,8 @@
 package application.debugger;
 
+import application.SearchThread;
+import settings.Settings;
+
 public class Debugger {
 
 	private static boolean autostep = false;
@@ -15,11 +18,15 @@ public class Debugger {
 	private static DebuggerUI debuggerUi;
 
 	public static void pause() {
+		// wen thread getötet werden muss:
+		killIfStoped();
+
 		if (autostep) {
 			try {
 				Thread.sleep((long) (pauseTimeInSeconds * 1000));
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				killIfStoped();
 			}
 		} else {
 
@@ -27,7 +34,8 @@ public class Debugger {
 				try {
 					pauseMutex.wait();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
+					killIfStoped();
 				}
 			}
 		}
@@ -58,9 +66,19 @@ public class Debugger {
 		}
 	}
 
-	protected static void resume() {
+	public static void resume() {
 		synchronized (pauseMutex) {
-			pauseMutex.notify();
+			pauseMutex.notifyAll();
+		}
+
+	}
+
+	private static void killIfStoped() {
+		SearchThread searcher = (SearchThread) Thread.currentThread();
+
+		if (searcher.toBeStoped) {
+			System.out.println("threadstoper");
+			throw new RuntimeException("ThreadStoper");
 		}
 
 	}
@@ -75,10 +93,12 @@ public class Debugger {
 	}
 
 	protected static void setPauseTime(double seconds) {
-		if (seconds < 0.01) {
-			pauseTimeInSeconds = 0.01;
+
+		if (seconds < Settings.DEBUGGER_MINIMUM_TIME_DELAY) {
+			pauseTimeInSeconds = Settings.DEBUGGER_MINIMUM_TIME_DELAY;
 			return;
 		}
+
 		pauseTimeInSeconds = seconds;
 	}
 
@@ -97,7 +117,7 @@ public class Debugger {
 		return false;
 	}
 
-	public static  DebuggerUI getDebuggerUI() {
+	public static DebuggerUI getDebuggerUI() {
 		if (debuggerUi != null) {
 			return debuggerUi;
 		} else {

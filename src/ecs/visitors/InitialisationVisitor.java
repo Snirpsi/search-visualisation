@@ -60,7 +60,6 @@ public class InitialisationVisitor extends Visitor {
 			}
 		}
 
-		System.out.println("defaultVisitor");
 		// Platzhalter zum prüfen
 		Component position = new Position(Vector2D.ZERO);
 		gameObject.addComponent(position);
@@ -125,14 +124,9 @@ public class InitialisationVisitor extends Visitor {
 		searchNode.addComponent(treeLayouter);
 
 		InputHandler ihhover = new InputHandler(e -> {
-			System.out.println("INPUT SearchNode");
-			try {
-				//wenn input 
-				SearchNodeMetadataObject.select(searchNode);
-				GameObjectRegistry.registerForStateChange(searchNode);
-			} catch (Exception exeption) {
-				System.out.println("Components Missing");
-			}
+			// wenn input
+			SearchNodeMetadataObject.select(searchNode);
+			GameObjectRegistry.registerForStateChange(searchNode);
 
 			if (e != null) {
 				e.consume();
@@ -272,7 +266,6 @@ public class InitialisationVisitor extends Visitor {
 			}
 		}
 
-		System.out.println("" + actions);
 		Text t = new Text(actions.toString());
 		path.addComponent(t);
 

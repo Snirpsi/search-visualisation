@@ -8,6 +8,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
+import settings.Settings;
 
 public class DebuggerUI {
 	private HBox controlElements;
@@ -34,7 +35,7 @@ public class DebuggerUI {
 
 		});
 
-		Slider pauseTime = new Slider(0.1, 2, 1);
+		Slider pauseTime = new Slider(Settings.DEBUGGER_MINIMUM_TIME_DELAY, Settings.DEBUGGER_MAXIMUM_TIME_DELAY, 1);
 		pauseTime.setMaxWidth(300);
 		pauseTime.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -45,7 +46,8 @@ public class DebuggerUI {
 		});
 
 		controlElements.getChildren().addAll(step, autostep, pauseTime);
-		Debugger.connectToUi(this); // << wegen der zeile geht alle kaputt warum ??? weil javafx nicht thread save ist
+		Debugger.connectToUi(this); // << wegen der zeile geht alle kaputt warum ??? weil javafx nicht thread save
+									// ist
 
 	}
 
@@ -75,5 +77,7 @@ public class DebuggerUI {
 			console.setScrollTop(Double.MAX_VALUE);
 		}
 	}
+	
+
 
 }
