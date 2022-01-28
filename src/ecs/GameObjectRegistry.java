@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import application.Globals;
-import ecs.visitors.GameObjectChangedVisitor;
+import ecs.visitors.ChangeVisitor;
 import ecs.visitors.InitialisationVisitor;
 import ecs.visitors.Visitor;
 import settings.Settings;
@@ -27,7 +27,7 @@ public class GameObjectRegistry {
 			.synchronizedList(new ArrayList<GameObject>());
 
 	public static InitialisationVisitor initialisationVisitor = new InitialisationVisitor();
-	public static GameObjectChangedVisitor componentUpdateVisitor = new GameObjectChangedVisitor();
+	public static ChangeVisitor componentUpdateVisitor = new ChangeVisitor();
 
 	/**
 	 * allows new {@link GameObject}to be registered to the framework for
@@ -71,7 +71,7 @@ public class GameObjectRegistry {
 
 	/**
 	 * Applies all changes to the pending {@link GameObject} by applying the
-	 * {@link GameObjectChangedVisitor} to it.
+	 * {@link ChangeVisitor} to it.
 	 */
 	public static void changePendingGameobjects() {
 		int updateCount = 0;

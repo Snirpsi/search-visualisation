@@ -6,6 +6,7 @@ import java.util.List;
 import ecs.GameObject;
 import ecs.components.Association;
 import ecs.components.Position;
+import ecs.components.graphics.Drawable;
 import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import tools.Vector2D;

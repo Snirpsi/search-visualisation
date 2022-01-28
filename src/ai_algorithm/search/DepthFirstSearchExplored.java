@@ -3,10 +3,14 @@ package ai_algorithm.search;
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
-import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.State;
 import application.debugger.Debugger;
-
+/**
+ * Tiefensuche mit Explored-Set
+ * @author Severin
+ *
+ */
 public class DepthFirstSearchExplored extends SearchAlgorithm {
 //default construchtor required
 	public DepthFirstSearchExplored() {

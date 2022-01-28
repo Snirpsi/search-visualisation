@@ -3,6 +3,7 @@ package ai_algorithm.search;
 import ai_algorithm.ExploredSet;
 import ai_algorithm.SearchNode;
 /**
+ * Tiefensuche aus Nutzerstudie
  *
  * @author Tizian Dippold (tizian.dippold@tum.de)
  *

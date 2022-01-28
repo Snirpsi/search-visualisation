@@ -6,9 +6,15 @@ import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
-import ai_algorithm.problems.raster_path.RasterPathPath;
+import ai_algorithm.problems.raster_path.GridMazePath;
 import application.debugger.Debugger;
-
+/**
+ * 
+ * @author Severin
+ *
+ * Bidirektionale suche nach Russle and Norvig
+ *
+ */
 public class BidirectionalBreadthFirstSearch extends SearchAlgorithm {
 
 	@Override
@@ -52,7 +58,8 @@ public class BidirectionalBreadthFirstSearch extends SearchAlgorithm {
 		return startF;
 
 	}
-
+	
+	
 	private List<String> proceed(String dir, Frontier frontier, ExploredSet reached, ExploredSet reachedOther) {
 		SearchNode searchnode = frontier.removeFirst();
 		for (SearchNode child : searchnode.expand()) {

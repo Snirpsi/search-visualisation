@@ -2,22 +2,39 @@ package ai_algorithm.problems.raster_path;
 
 import java.util.Objects;
 
-import ai_algorithm.State;
+import ai_algorithm.problems.State;
 import tools.Vector2DInt;
 
-public class RasterPathState extends State {
+/**
+ * @author Severin
+ *
+ *Repräsentiert Zustand (Psoition) in der sich ein Spieler befindet.
+ *
+ */
+public class GridMazeState extends State {
 
-	public RasterPathProblem problem;
+	/**
+	 * verweis auf das Problem
+	 */
+	public GridMazeProblem problem;
 
+	/**
+	 * verweis auf die Position
+	 */
 	private Vector2DInt position;
 	
-	public RasterPathState(RasterPathProblem problem ,Vector2DInt position) {
+	/**
+	 * initialisiert zustand mit problem und Position
+	 * @param problem
+	 * @param position
+	 */
+	public GridMazeState(GridMazeProblem problem ,Vector2DInt position) {
 		this.problem = problem;
 		this.setPosition(position);
 	}
 
 	@Override
-	public RasterPathProblem getProblem() {
+	public GridMazeProblem getProblem() {
 		return this.problem;
 	}
 
@@ -35,11 +52,18 @@ public class RasterPathState extends State {
 		this.position = position;
 	}
 
+	/**
+	 * hash funktion
+	 * @return hash-wert
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(position);
 	}
 
+	/**
+	 * überprüft auf gleichwertigkeit
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,10 +72,14 @@ public class RasterPathState extends State {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RasterPathState other = (RasterPathState) obj;
+		GridMazeState other = (GridMazeState) obj;
 		return Objects.equals(position, other.position);
 	}
 
+	/**
+	 * Position als repräsentant in form eines strings
+	 * @return string repräsentation
+	 */
 	@Override
 	public String toString() {
 

@@ -4,8 +4,9 @@ import java.util.List;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
-import ai_algorithm.problems.raster_path.RasterPathProblem;
-import ai_algorithm.problems.raster_path.RasterPathState;
+import ai_algorithm.problems.raster_path.GridMazeProblem;
+import ai_algorithm.problems.raster_path.GridMazeState;
+import application.Globals;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import ecs.components.InputHandler;
@@ -25,7 +26,7 @@ import tools.Vector2DInt;
  *
  */
 
-public class GameObjectChangedVisitor extends Visitor {
+public class ChangeVisitor extends Visitor {
 
 	private static long numUpdates = 0L;
 
@@ -36,10 +37,11 @@ public class GameObjectChangedVisitor extends Visitor {
 			this.visit(s);
 			return;
 		}
-		if (gameObject instanceof RasterPathProblem p) {
+		if (gameObject instanceof GridMazeProblem p) {
 			this.visit(p);
 			return;
 		}
+		
 
 		// System.out.println("No Maching component");
 	}
@@ -77,7 +79,9 @@ public class GameObjectChangedVisitor extends Visitor {
 
 		setCollorAccordingToState(searchNode);
 
+		// problem aktualisieren
 		GameObjectRegistry.registerForStateChange(searchNode.getState().getProblem());
+
 		// selektieren
 		if (searchNode == SearchNodeMetadataObject.selected) {
 			Sprite s = searchNode.getComponent(Sprite.class);
@@ -97,14 +101,13 @@ public class GameObjectChangedVisitor extends Visitor {
 				});
 			}
 		}
-		// aktiven zustand zeichnen
-		if (searchNode != SearchNodeMetadataObject.prevExpanding && searchNode != SearchNodeMetadataObject.expanding) {
-			searchNode.getState().getProblem().getComponent(Graphics.class).show();
-			searchNode.getState().getComponent(Graphics.class).show();
-			searchNode.getPath().getComponent(Graphics.class).show();
-			searchNode.getComponent(TreeLayouter.class).layout();
-		}
 
+		// aktiven zustand zeichnen
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		searchNode.getState().getProblem().getComponent(Graphics.class).show();
+		searchNode.getState().getComponent(Graphics.class).show();
+		searchNode.getPath().getComponent(Graphics.class).show();
+		searchNode.getComponent(TreeLayouter.class).layout();
 	}
 
 	private void setCollorAccordingToState(SearchNode searchNode) {
@@ -128,16 +131,16 @@ public class GameObjectChangedVisitor extends Visitor {
 		}
 	}
 
-	public void visit(RasterPathProblem rasterPathProblem) {
+	public void visit(GridMazeProblem rasterPathProblem) {
 		// Makieren von Frontier und Explored set in dem spezifischen Problem,
 		// ist Problemabhängig ob es geht oder nicht.
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
 		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser währe alle frontiers und exploredsets zu
 										// bekommen
-			RasterPathState state;
+			GridMazeState state;
 			try {
-				state = (RasterPathState) node.getState();
+				state = (GridMazeState) node.getState();
 			} catch (Exception e) {
 				return;
 			}

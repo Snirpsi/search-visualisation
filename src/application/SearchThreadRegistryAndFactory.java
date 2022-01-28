@@ -9,7 +9,8 @@ import java.util.List;
 
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.cityState.GermanyRouteProblem;
-import ai_algorithm.problems.raster_path.RasterPathProblem;
+import ai_algorithm.problems.raster_path.GridMazeProblem;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
 import ai_algorithm.search.*;
 import application.gui.GuiLayout;
 import settings.Settings;
@@ -42,8 +43,9 @@ public class SearchThreadRegistryAndFactory {
 	public static List<String> getProblemNames() {
 		var ret = new LinkedList<String>();
 		// !! Hier neue Probleme einfügen !
-		ret.add(RasterPathProblem.class.getName());
+		ret.add(GridMazeProblem.class.getName());
 		ret.add(GermanyRouteProblem.class.getName());
+		ret.add(SlidingTileProblem.class.getName());
 
 		return ret;
 	}

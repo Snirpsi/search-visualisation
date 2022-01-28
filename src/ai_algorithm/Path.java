@@ -4,27 +4,35 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.State;
 import ecs.GameObject;
 
 public class Path extends GameObject {
 	SearchNode searchNode;
 
-	 /**
-     * The Constructor is used to get the Path from the initial searchnode to the currend node in the Tree structure.
-     * @param searchNode the searchnode from witch the path will be build
-     */
+	/**
+	 * The Constructor is used to get the Path from the initial searchnode to the
+	 * currend node in the Tree structure.
+	 * 
+	 * @param searchNode the searchnode from witch the path will be build
+	 */
 	public Path(SearchNode searchNode) {
 		this.searchNode = searchNode;
 	}
-	
-	 /**
-     * Returns the problem the Path is Corresponding to.
-     */
+
+	/**
+	 * Returns the problem the Path is Corresponding to.
+	 */
 	public Problem getProblem() {
 		return this.searchNode.getState().getProblem();
 	}
-	
-	
+
+	/**
+	 * gibt die aktionen die auf einem pfad liegen aus
+	 * 
+	 * @return
+	 */
+
 	public List<String> getPathActions() {
 		List<String> actionList = new LinkedList<String>();
 		SearchNode next = this.searchNode;
@@ -35,6 +43,11 @@ public class Path extends GameObject {
 		return actionList;
 	}
 
+	/**
+	 * gibt die zustände aus die auf einem pfad liegen
+	 * 
+	 * @return
+	 */
 	public List<State> getVisitedStates() {
 		List<State> stateList = new LinkedList<State>();
 		SearchNode next = this.searchNode;
@@ -44,5 +57,5 @@ public class Path extends GameObject {
 		}
 		return stateList;
 	}
-	
+
 }

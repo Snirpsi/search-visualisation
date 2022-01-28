@@ -3,7 +3,7 @@ package ai_algorithm.problems.raster_path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.Path;
 
-public class RasterPathPath extends Path {
+public class GridMazePath extends Path {
 
 	
 	 /**
@@ -11,7 +11,7 @@ public class RasterPathPath extends Path {
      * @param searchNode the searchnode from witch the path will be build
      * @since version 1.1
      */
-	public RasterPathPath(SearchNode searchNode) {
+	public GridMazePath(SearchNode searchNode) {
 		super(searchNode);
 	}
 

@@ -2,14 +2,34 @@ package ai_algorithm.problems.slidingTilePuzzle;
 
 import java.util.Arrays;
 
-import ai_algorithm.State;
 import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.State;
+import tools.Vector2DInt;
 
 public class SlidingTileState extends State {
-	private int[][] field;
+	volatile private int[][] field;
+	private SlidingTileProblem problem;
+
+	public SlidingTileState(SlidingTileProblem problem, int[][] field) {
+		this.problem = problem;
+		this.field = arrayDeepCoppy(field);
+
+	}
+
+	public Vector2DInt getSize() {
+		return this.problem.getSize();
+	}
+
+	public void setField(int[][] field) {
+		if (field == null) {
+			return;
+		}
+
+		this.field = arrayDeepCoppy(field);
+	}
 
 	public int[][] getField() {
-		return field;
+		return arrayDeepCoppy(field);
 	}
 
 	protected static int[][] arrayDeepCoppy(int[][] from) {
@@ -29,18 +49,6 @@ public class SlidingTileState extends State {
 			}
 		}
 		return to;
-	}
-
-	public void setField(int[][] field) {
-		if (field == null) {
-			return;
-		}
-
-		this.field = arrayDeepCoppy(field);
-	}
-
-	public SlidingTileState() {
-
 	}
 
 	@Override
@@ -65,6 +73,12 @@ public class SlidingTileState extends State {
 
 	@Override
 	public Problem getProblem() {
-		return this.getProblem();
+		return this.problem;
+	}
+
+	@Override
+	public String toString() {
+
+		return Arrays.deepToString(getField());
 	}
 }

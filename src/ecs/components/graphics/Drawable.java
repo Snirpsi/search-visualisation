@@ -1,9 +1,8 @@
-package ecs.components.graphics.drawables;
+package ecs.components.graphics;
 
 import java.util.List;
 
 import ecs.Component;
-import ecs.components.graphics.Graphics;
 import javafx.scene.Node;
 
 public abstract class Drawable extends Component {

@@ -5,9 +5,16 @@ import javafx.scene.paint.Color;
 
 public class Settings {
 	
-	
+	/**
+	 * Enables or disables the debugg mode.
+	 */
 	public final static boolean DEBUGMODE = false;
 	
+	static public class TREE_LAYOUT {
+		public static final int LEAF_DISTANCE = 20;
+		public static final double PARENT_DISTANCE = 40;
+		public static final double SIBLING_DISTANCE = 1;
+	}
 	
 
 	/**

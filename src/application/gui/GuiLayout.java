@@ -54,6 +54,8 @@ public class GuiLayout {
 		// Strart Button
 		Button startButton = new Button("START");
 		startButton.setOnAction(e -> {
+			SearchThreadRegistryAndFactory.stopAllThreads();
+			GameObjectRegistry.removeAllGameObjects();
 			SearchThreadRegistryAndFactory.startSearchIfReady();
 		});
 		topMenue.getChildren().add(startButton);

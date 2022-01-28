@@ -4,9 +4,16 @@ import java.util.List;
 
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
-import ai_algorithm.problems.raster_path.RasterPathProblem;
+import ai_algorithm.problems.raster_path.GridMazeProblem;
 import application.debugger.Debugger;
 
+/**
+ * Manuelle suche: Knoten der expandiert werden soll selektieren und
+ * anschlieﬂend step klicken
+ * 
+ * @author Severin
+ *
+ */
 public class ManualSearch extends SearchAlgorithm {
 
 	@Override

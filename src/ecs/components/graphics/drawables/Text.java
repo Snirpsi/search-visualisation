@@ -3,6 +3,7 @@ package ecs.components.graphics.drawables;
 import java.util.LinkedList;
 import java.util.List;
 
+import ecs.components.graphics.Drawable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;

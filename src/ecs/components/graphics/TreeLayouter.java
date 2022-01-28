@@ -6,17 +6,19 @@ import java.util.List;
 import ecs.Component;
 import ecs.components.Position;
 import ecs.components.TreeComponent;
+import settings.Settings;
 import tools.Vector2D;
 
 //Source --> https://stackoverflow.com/questions/33328245/radial-tree-layout-algorithm
 
 public class TreeLayouter extends Component {
 
-	public static final int leaveDistance = 20;
+
 
 	public static final Vector2D OFFSET = new Vector2D(0, 0);
-	public static final double PARENT_DISTANCE = 100;
-	public static final double SIBLING_DISTANCE = 40;
+	public static final int LEAF_DISTANCE = Settings.TREE_LAYOUT.LEAF_DISTANCE;
+	public static final double PARENT_DISTANCE = Settings.TREE_LAYOUT.PARENT_DISTANCE;
+	public static final double SIBLING_DISTANCE = Settings.TREE_LAYOUT.SIBLING_DISTANCE;
 	double angle = 0;
 	double angleRange = 0;
 
@@ -75,7 +77,7 @@ public class TreeLayouter extends Component {
 		int i = 0;
 		for (TreeComponent leave : leafs) {
 			Position leavePos = leave.entity.getComponent(Position.class);
-			leavePos.setPosition(new Vector2D(i * leaveDistance, (float) (PARENT_DISTANCE * (leave.updateDepth()))));
+			leavePos.setPosition(new Vector2D(i * LEAF_DISTANCE, (float) (PARENT_DISTANCE * (leave.updateDepth()))));
 			i++;
 			if (!leave.isRoot()) {
 				leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout();
@@ -109,7 +111,7 @@ public class TreeLayouter extends Component {
 
 				Position siblingPos = sibling.entity.getComponent(Position.class);
 				// set sibling neighboring own node
-				Vector2D relativSiblingPos = new Vector2D((float) (leaveDistance * (sibling.getSiblingNumber() + 1)),
+				Vector2D relativSiblingPos = new Vector2D((float) (LEAF_DISTANCE * (sibling.getSiblingNumber() + 1)),
 						0);
 				Vector2D newSiblingPos = new Vector2D(ownPos.getFuturePosition()).add(relativSiblingPos);
 				siblingPos.setPosition(newSiblingPos);
@@ -117,7 +119,7 @@ public class TreeLayouter extends Component {
 			}
 
 		}
-		Vector2D relativeOwnPos = new Vector2D((float) (leaveDistance * (treeOwn.getSiblingNumber())), 0);
+		Vector2D relativeOwnPos = new Vector2D((float) (LEAF_DISTANCE * (treeOwn.getSiblingNumber())), 0);
 		Vector2D newOwnPos = new Vector2D(ownPos.getFuturePosition()).add(relativeOwnPos);
 		ownPos.setPosition(newOwnPos);
 	}

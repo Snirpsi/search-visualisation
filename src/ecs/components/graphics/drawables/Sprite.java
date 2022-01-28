@@ -6,6 +6,7 @@ import java.util.List;
 import application.Globals;
 import ecs.components.Association;
 import ecs.components.Position;
+import ecs.components.graphics.Drawable;
 import ecs.components.graphics.Graphics;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;

@@ -7,9 +7,10 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.Path;
-import ai_algorithm.State;
-import ai_algorithm.problems.raster_path.RasterPathProblem;
-import ai_algorithm.problems.raster_path.RasterPathState;
+import ai_algorithm.problems.State;
+import ai_algorithm.problems.raster_path.GridMazeProblem;
+import ai_algorithm.problems.raster_path.GridMazeState;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -27,6 +28,7 @@ import ecs.components.graphics.drawables.ConnectionLine;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -44,17 +46,23 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(p);
 			return;
 		}
-		if (gameObject.getClass().isAssignableFrom(RasterPathState.class)) {
-			this.visit((RasterPathState) gameObject);
+		if (gameObject.getClass().isAssignableFrom(GridMazeState.class)) {
+			this.visit((GridMazeState) gameObject);
 			return;
 		}
-		if (gameObject.getClass().isAssignableFrom(RasterPathProblem.class)) {
-			this.visit((RasterPathProblem) gameObject);
+		if (gameObject.getClass().isAssignableFrom(GridMazeProblem.class)) {
+			this.visit((GridMazeProblem) gameObject);
 			return;
 		}
+
+		if (gameObject instanceof SlidingTileState slider) {
+			this.visit(slider);
+			return;
+		}
+
 		// Hmmmm..... ka ob das so gut ist ... O.o
 		if (gameObject instanceof Path s) {
-			if (s.getProblem()instanceof RasterPathProblem prob) {
+			if (s.getProblem()instanceof GridMazeProblem prob) {
 				this.visit(s, prob);
 				return;
 			}
@@ -149,10 +157,10 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 	// PathProblem
-	public void visit(RasterPathProblem rasterPathProblem) {
-		super.visit(rasterPathProblem);
+	public void visit(GridMazeProblem gridMazeProblem) {
+		super.visit(gridMazeProblem);
 
-		rasterPathProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
+		gridMazeProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 		// can cause createt objects that have not been initialized not apera
 		// TODO: change how get all works to realy add all objects
 		// Fetch all Frontiers
@@ -161,25 +169,25 @@ public class InitialisationVisitor extends Visitor {
 		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
 		TileMap2D tilemap = new TileMap2D();
-		rasterPathProblem.addComponent(tilemap);
+		gridMazeProblem.addComponent(tilemap);
 
-		for (int i = 0; i < rasterPathProblem.GAMESIZE; i++) {
-			for (int j = 0; j < rasterPathProblem.GAMESIZE; j++) {
+		for (int i = 0; i < gridMazeProblem.GAMESIZE; i++) {
+			for (int j = 0; j < gridMazeProblem.GAMESIZE; j++) {
 				Rectangle r = new Rectangle();
 
-				if (rasterPathProblem.labyrinth[i][j] == 'e') {
+				if (gridMazeProblem.labyrinth[i][j] == 'e') {
 					tilemap.insertTile(new Vector2DInt(i, j), r, Color.WHITE);
 				} else {
-					tilemap.insertTile(new Vector2DInt(i, j), r, Color.BLUE);
+					tilemap.insertTile(new Vector2DInt(i, j), r, Color.gray(0.2));
 				}
 				final int ic = i;
 				final int jc = j;
 				r.setOnMouseClicked(e -> {
-					if (rasterPathProblem.labyrinth[ic][jc] == 'e') {
-						rasterPathProblem.labyrinth[ic][jc] = 'w';
-						tilemap.insertTile(new Vector2DInt(ic, jc), r, Color.BLUE);
+					if (gridMazeProblem.labyrinth[ic][jc] == 'e') {
+						gridMazeProblem.labyrinth[ic][jc] = 'w';
+						tilemap.insertTile(new Vector2DInt(ic, jc), r, Color.gray(0.2));
 					} else {
-						rasterPathProblem.labyrinth[ic][jc] = 'e';
+						gridMazeProblem.labyrinth[ic][jc] = 'e';
 						tilemap.insertTile(new Vector2DInt(ic, jc), r, Color.WHITE);
 					}
 				});
@@ -187,53 +195,84 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		Sprite sprites = new Sprite();
-		rasterPathProblem.addComponent(sprites);
+		gridMazeProblem.addComponent(sprites);
 
 		Circle goalCircle = new Circle();
 		goalCircle.setFill(Color.RED);
-		tilemap.fitToTilemap(((RasterPathState) rasterPathProblem.getGoalState()).getPosition(), goalCircle);
+		tilemap.fitToTilemap(((GridMazeState) gridMazeProblem.getGoalState()).getPosition(), goalCircle);
 
 		Circle startCircle = new Circle();
 		startCircle.setFill(Color.GREEN);
-		tilemap.fitToTilemap(((RasterPathState) rasterPathProblem.getInitialState()).getPosition(), startCircle);
+		tilemap.fitToTilemap(((GridMazeState) gridMazeProblem.getInitialState()).getPosition(), startCircle);
 
 		sprites.addShape(goalCircle);
 		sprites.addShape(startCircle);
 
-		rasterPathProblem.getComponent(Graphics.class).show();
+		gridMazeProblem.getComponent(Graphics.class).show();
 	}
 
-	public void visit(RasterPathState rasterPathState) {
-		super.visit(rasterPathState);
+	public void visit(GridMazeState gridMazeState) {
+		super.visit(gridMazeState);
 
 		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
 		/// LÖSUNG PASIEREN
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
-		Graphics problem = rasterPathState.getProblem().getComponent(Graphics.class);
+		Graphics problem = gridMazeState.getProblem().getComponent(Graphics.class);
 
 		problem.show();
 
 		Component position = new Position(Vector2D.ZERO);
-		rasterPathState.addComponent(position);
+		gridMazeState.addComponent(position);
 
 		Circle stateC = new Circle();
-		rasterPathState.getProblem().getComponent(TileMap2D.class).fitToTilemap(rasterPathState.getPosition(), stateC);
+		gridMazeState.getProblem().getComponent(TileMap2D.class).fitToTilemap(gridMazeState.getPosition(), stateC);
 		stateC.setRadius(4);
 		stateC.setFill(Color.CYAN);
 
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-		rasterPathState.addComponent(g);
+		gridMazeState.addComponent(g);
 
 		Sprite sprite = new Sprite();
-		rasterPathState.addComponent(sprite);
+		gridMazeState.addComponent(sprite);
 		sprite.addShape(stateC);
 
 		g.show();
 
 	}
 
-	private void visit(Path path, RasterPathProblem prob) {
+	public void visit(SlidingTileState slidingTileState) {
+		if (slidingTileState.getField() == null) {
+			Globals.stateRepresentationGraphicsContext.getChildren().clear();
+			return;
+		}
+
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+
+		slidingTileState.addComponent(g);
+
+		slidingTileState.getComponent(Position.class);
+		TileMap2D tilemap = new TileMap2D();
+		slidingTileState.addComponent(tilemap);
+
+		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
+		for (int x = 0; x < slidingTileState.getSize().x; x++) {
+			for (int y = 0; y < slidingTileState.getSize().y; y++) {
+				if (slidingTileState.getField()[y][x] == 0) {
+					continue;
+				}
+				Rectangle r = new Rectangle();
+				double colval = slidingTileState.getField()[y][x] / (double) maxval;
+				colval = Math.min(1.0, Math.max(0.0, colval));
+				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
+			}
+		}
+
+		g.show();
+	}
+
+	private void visit(Path path, GridMazeProblem prob) {
 		path.addComponent(new Position());
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
 		path.addComponent(g);
@@ -250,17 +289,18 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		if (states.size() >= 2) {
-			RasterPathState statePrev = (RasterPathState) states.get(0);
-			RasterPathState stateSucc = (RasterPathState) states.get(0);
+			GridMazeState statePrev = (GridMazeState) states.get(0);
+			GridMazeState stateSucc = (GridMazeState) states.get(0);
 			for (int i = 1; i < states.size(); i++) {
 				statePrev = stateSucc;
-				stateSucc = (RasterPathState) states.get(i);
+				stateSucc = (GridMazeState) states.get(i);
 
 				Vector2D startLine = tileM.fitToTilemap(new Vector2DInt(statePrev.getPosition()), null);
 				Vector2D endLine = tileM.fitToTilemap(new Vector2DInt(stateSucc.getPosition()), null);
 
 				Line line = new Line(startLine.x, startLine.y, endLine.x, endLine.y);
 				line.setStroke(new Color(1.0, 0, 0, 0.3));
+				line.setStyle("-fx-stroke-width: " + 4 + ";");
 				sprite.addShape(line);
 
 			}

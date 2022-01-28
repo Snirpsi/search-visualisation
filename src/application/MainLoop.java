@@ -6,14 +6,14 @@ import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import javafx.animation.AnimationTimer;
 
-public class UpdateCycle {
+public class MainLoop {
 	// grafischer gameloop (javaFX)
 	AnimationTimer animationTimer;
 
 	// Suchalgorithmus gameloop
 	// SearchTread searchAlgorithm;
 
-	public UpdateCycle() {
+	public MainLoop() {
 		animationTimer = new AnimationTimer() {
 
 			long framecounter = 0;

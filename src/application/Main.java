@@ -8,7 +8,7 @@ import java.util.List;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.cityState.CityState;
 import ai_algorithm.problems.cityState.GermanyRouteProblem;
-import ai_algorithm.problems.raster_path.RasterPathProblem;
+import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.search.BreadthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.SearchAlgorithm;
@@ -28,12 +28,12 @@ public class Main extends Application {
 		try {
 			Thread.currentThread().setPriority(10);
 			
-			Scene scene = new Scene((Parent) GuiLayout.createGuiBasicStructure(), 400, 400);
+			Scene scene = new Scene((Parent) GuiLayout.createGuiBasicStructure(), 1080	,720 );
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			UpdateCycle updater = new UpdateCycle(); // <- not a thread
+			MainLoop updater = new MainLoop(); // <- not a thread
 			updater.start();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import ecs.components.graphics.Drawable;
 import ecs.components.graphics.Graphics;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
