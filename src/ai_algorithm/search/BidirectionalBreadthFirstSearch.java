@@ -8,7 +8,6 @@ import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.raster_path.GridMazePath;
 import application.debugger.Debugger;
-
 /**
  * 
  * @author Severin
@@ -87,4 +86,3 @@ public class BidirectionalBreadthFirstSearch extends SearchAlgorithm {
 	}
 
 }
-
