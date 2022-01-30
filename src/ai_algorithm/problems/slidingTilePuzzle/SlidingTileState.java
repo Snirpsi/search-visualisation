@@ -12,7 +12,7 @@ public class SlidingTileState extends State {
 
 	public SlidingTileState(SlidingTileProblem problem, int[][] field) {
 		this.problem = problem;
-		this.field = arrayDeepCoppy(field);
+		this.field = field;
 
 	}
 
@@ -25,7 +25,7 @@ public class SlidingTileState extends State {
 			return;
 		}
 
-		this.field = arrayDeepCoppy(field);
+		this.field = field;
 	}
 
 	public int[][] getField() {

@@ -60,6 +60,11 @@ public class InitialisationVisitor extends Visitor {
 			return;
 		}
 
+		if (gameObject instanceof Frontier frontier) {
+			this.visit(frontier);
+			return;
+		}
+
 		// Hmmmm..... ka ob das so gut ist ... O.o
 		if (gameObject instanceof Path s) {
 			if (s.getProblem()instanceof GridMazeProblem prob) {
@@ -129,6 +134,10 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		TreeLayouter treeLayouter = new TreeLayouter();
+		// für zweiten baum nach ben wachsen
+		if (searchNode.isRoot() && searchNode.metadata.number == 2) {
+			treeLayouter.setGrowUp(true);
+		}
 		searchNode.addComponent(treeLayouter);
 
 		InputHandler ihhover = new InputHandler(e -> {
@@ -151,9 +160,16 @@ public class InitialisationVisitor extends Visitor {
 
 	}
 
-	// Frontier
-	public void visit(Frontier gameObject) {
-		super.visit(gameObject);
+	// Frontier Inicialization
+	public void visit(Frontier frontier) {
+		super.visit(frontier);
+		Graphics g = new Graphics(Globals.treeRepresentationGraphicsContext);
+		frontier.addComponent(g);
+		var text = frontier.getComponent(Text.class);
+		text.setText("Frontier: " + frontier.size());
+		text.setFontSize(30);
+		frontier.getComponent(Position.class).setPosition(new Vector2D(-100, 0));
+		g.show();
 	}
 
 	// PathProblem

@@ -14,6 +14,7 @@ import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
 import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.Sprite;
+import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.shape.Shape;
 import settings.Settings;
@@ -41,9 +42,18 @@ public class ChangeVisitor extends Visitor {
 			this.visit(p);
 			return;
 		}
-		
+
+		if (gameObject instanceof Frontier frontier) {
+			this.visit(frontier);
+			return;
+		}
 
 		// System.out.println("No Maching component");
+	}
+
+	// Frontier ändern
+	public void visit(Frontier frontier) {
+		frontier.getComponent(Text.class).setText("Frontier: " + frontier.size());
 	}
 
 	public void visit(SearchNode searchNode) {

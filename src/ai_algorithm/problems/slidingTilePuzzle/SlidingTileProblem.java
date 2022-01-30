@@ -13,11 +13,10 @@ import tools.Vector2DInt;
 
 public class SlidingTileProblem extends Problem {
 
-	
 	private Random rand = new Random(192);
 
 	int SCHUFFLE_MAX = 30;
-	
+
 	Vector2DInt size;
 
 	Vector2DInt emptyTile;
@@ -212,6 +211,11 @@ public class SlidingTileProblem extends Problem {
 		}
 
 		return succ;
+	}
+
+	@Override
+	public State getGoalState() {
+		return goalState;
 	}
 
 	@Override

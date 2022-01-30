@@ -12,10 +12,11 @@ import javafx.scene.text.Font;
 public class Text extends Drawable {
 
 	private Label text = null;
+	private int fontsize = 4;
 
 	public Text() {
 		this.text = new Label("EMPTY TEXT");
-		this.text.setFont(new Font(4));
+		this.text.setFont(new Font(fontsize));
 		this.text.setTextFill(Color.BLACK);
 		this.text.setMouseTransparent(true);
 	}
@@ -24,6 +25,11 @@ public class Text extends Drawable {
 		this();
 		this.text.setText(string);
 
+	}
+
+	public void setFontSize(int fontsize) {
+		this.fontsize = fontsize;
+		text.setFont(new Font(fontsize));
 	}
 
 	public void setText(String s) {

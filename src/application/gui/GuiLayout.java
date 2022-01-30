@@ -1,5 +1,6 @@
 package application.gui;
 
+import ai_algorithm.SearchNodeMetadataObject;
 import application.Globals;
 import application.SearchThreadRegistryAndFactory;
 import application.debugger.DebuggerUI;
@@ -49,6 +50,7 @@ public class GuiLayout {
 		resetButton.setOnAction(e -> {
 			SearchThreadRegistryAndFactory.stopAllThreads();
 			GameObjectRegistry.removeAllGameObjects();
+			SearchNodeMetadataObject.reset();
 		});
 		topMenue.getChildren().add(resetButton);
 		// Strart Button
@@ -56,6 +58,7 @@ public class GuiLayout {
 		startButton.setOnAction(e -> {
 			SearchThreadRegistryAndFactory.stopAllThreads();
 			GameObjectRegistry.removeAllGameObjects();
+			SearchNodeMetadataObject.reset();
 			SearchThreadRegistryAndFactory.startSearchIfReady();
 		});
 		topMenue.getChildren().add(startButton);

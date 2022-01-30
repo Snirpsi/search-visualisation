@@ -6,42 +6,27 @@ import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import application.debugger.Debugger;
+
 /**
  * Tiefensuche mit Explored-Set
+ * 
  * @author Severin
  *
  */
 public class DepthFirstSearchExplored extends SearchAlgorithm {
-//default construchtor required
-	public DepthFirstSearchExplored() {
-		super();
-	}
-	
-	public DepthFirstSearchExplored(Problem problem) {
-		super(problem);
-	}
-
 	@Override
 	public SearchNode search() {
-
-		Frontier frontier = new Frontier();
-
-		ExploredSet explored = new ExploredSet();
-
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
+		Frontier frontier = new Frontier();
+		ExploredSet explored = new ExploredSet();
 		explored.add(start);
-
 		Debugger.pause();
-
 		if (this.problem.isGoalState(start.getState())) {
 			return start;
 		}
-
 		frontier.add(start);
 		Debugger.pause();
-
 		while (!frontier.isEmpty()) {
-
 			SearchNode node = frontier.removeLast();
 			Debugger.pause();
 			System.out.println(node);
@@ -57,9 +42,7 @@ public class DepthFirstSearchExplored extends SearchAlgorithm {
 					frontier.add(child);
 				}
 			}
-
 		}
 		return null;
 	}
-
 }

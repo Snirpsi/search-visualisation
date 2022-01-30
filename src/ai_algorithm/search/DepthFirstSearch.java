@@ -25,29 +25,21 @@ public class DepthFirstSearch extends SearchAlgorithm {
 
 	@Override
 	public SearchNode search() {
-
-		Frontier frontier = new Frontier();
-
 		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
-
+		Frontier frontier = new Frontier();
 		Debugger.pause();
-
 		if (this.problem.isGoalState(start.getState())) {
 			return start;
 		}
-
 		frontier.add(start);
 		Debugger.pause();
-
 		while (!frontier.isEmpty()) {
-
 			SearchNode node = frontier.removeLast();
 			Debugger.pause();
 			System.out.println(node);
 			if (problem.isGoalState(node.getState())) {
 				return node;
 			}
-
 			for (SearchNode child : node.expand()) {
 				State state = child.getState();
 				if (problem.isGoalState(state)) {
@@ -57,9 +49,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
 				if (!contains2(node, state)) {
 					frontier.add(child);
 				}
-
 			}
-
 		}
 		Debugger.pause("No Sulution found");
 		return null;

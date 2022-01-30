@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import ai_algorithm.SearchAndProblemRegister;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.cityState.GermanyRouteProblem;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
@@ -42,23 +43,20 @@ public class SearchThreadRegistryAndFactory {
 
 	public static List<String> getProblemNames() {
 		var ret = new LinkedList<String>();
-		// !! Hier neue Probleme einfügen !
-		ret.add(GridMazeProblem.class.getName());
-		ret.add(GermanyRouteProblem.class.getName());
-		ret.add(SlidingTileProblem.class.getName());
+
+		for (var s : SearchAndProblemRegister.problems) {
+			ret.add(s);
+		}
 
 		return ret;
 	}
 
 	public static List<String> getSearchAlgoritmNames() {
 		var ret = new LinkedList<String>();
-		// !! Hier neue Algorithmus einfügen !
-		ret.add(DepthFirstSearchExplored.class.getName());
-		ret.add(BreadthFirstSearch.class.getName());
-		ret.add(DepthFirstSearch.class.getName());
-		ret.add(RecursiveDepthSearch.class.getName());
-		ret.add(ManualSearch.class.getName());
-		ret.add(BidirectionalBreadthFirstSearch.class.getName());
+
+		for (var s : SearchAndProblemRegister.searchAlgorithms) {
+			ret.add(s);
+		}
 		return ret;
 	}
 

@@ -22,6 +22,8 @@ public class TreeComponent extends Component {
 	List<TreeComponent> children = null;
 	int depth = 0;
 	int sibling = 0;
+	
+	
 
 	public TreeComponent() {
 		this.children = new ArrayList<TreeComponent>();

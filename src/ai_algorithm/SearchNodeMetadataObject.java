@@ -51,6 +51,24 @@ public class SearchNodeMetadataObject {
 	public volatile boolean isInExploredSet;
 
 	/**
+	 * anzahl der suchknoten
+	 */
+	public static volatile int counter = 0;
+
+	/**
+	 * suchknotennummer
+	 */
+	public volatile int number = 0;
+
+	/**
+	 * construktor aufgerufen von Searchnode
+	 */
+	public SearchNodeMetadataObject() {
+		counter++;
+		this.number = counter;
+	}
+
+	/**
 	 * 
 	 * @param searchNode
 	 */
@@ -73,6 +91,9 @@ public class SearchNodeMetadataObject {
 		selected = null;
 		prevExpanding = null;
 		expanding = null;
+		counter = 0;
+		System.out.println("RESET");
+
 	}
 
 }

@@ -60,6 +60,7 @@ public class SearchNode extends GameObject {
 	public SearchNode(SearchNode parent, State state, double pathCost, String action) {
 		super();
 		this.metadata = new SearchNodeMetadataObject();
+		
 
 		this.parent = parent;
 		this.state = state;
