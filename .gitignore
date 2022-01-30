@@ -3,3 +3,7 @@ bin/
 .classpath
 .project
 build.fxbuild
+src/ai_algorithm/problems/cityState/CityState.java
+src/ai_algorithm/problems/cityState/GermanyRouteProblem.java
+
+
