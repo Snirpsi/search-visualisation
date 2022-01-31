@@ -81,6 +81,9 @@ public class Debugger {
 		}
 	}
 
+	/**
+	 * resumes the thread when user clicks step button
+	 */
 	public static void resume() {
 		synchronized (pauseMutex) {
 			pauseMutex.notifyAll();
@@ -88,6 +91,9 @@ public class Debugger {
 
 	}
 
+	/**
+	 * kills the thread if it stops
+	 */
 	private static void killIfStoped() {
 		SearchThread searcher = (SearchThread) Thread.currentThread();
 
@@ -98,15 +104,24 @@ public class Debugger {
 
 	}
 
+	/**
+	 * enables auto stepping
+	 */
 	protected static void autostepEnable() {
 		autostep = true;
 		Debugger.resume();
 	}
 
+	/**
+	 * disables auto stepping
+	 */
 	protected static void autostepDisable() {
 		autostep = false;
 	}
 
+	/**
+	 * pauses thread
+	 */
 	protected static void setPauseTime(double seconds) {
 
 		if (seconds < Settings.DEBUGGER_MINIMUM_TIME_DELAY) {
@@ -117,20 +132,41 @@ public class Debugger {
 		pauseTimeInSeconds = seconds;
 	}
 
+	/**
+	 * returns the text on the console
+	 * 
+	 * @return
+	 */
 	protected static String getConsoleText() {
 		return consoleText;
 	}
 
+	/**
+	 * connects to one user interface to notify for new messages
+	 * 
+	 * @param ui
+	 */
 	protected static void connectToUi(DebuggerUI ui) {
 		debuggerUi = ui;
 	}
 
+	/**
+	 * tests if debugger is connected to the ui
+	 * 
+	 * @param ui
+	 */
 	private static boolean isConnected() {
 		if (debuggerUi != null) {
 			return true;
 		}
 		return false;
 	}
+
+	/**
+	 * get connected ui
+	 * 
+	 * @return the debugger ui
+	 */
 
 	public static DebuggerUI getDebuggerUI() {
 		if (debuggerUi != null) {

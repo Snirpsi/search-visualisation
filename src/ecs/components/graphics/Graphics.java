@@ -17,14 +17,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import settings.Settings;
 import tools.Vector2D;
 
 public class Graphics extends Component {
-	// TODO: Refactor! sollte sich grafische objekte selbstständig holen (Lines,
-	// Sprites, Tilemaps ...)
 
 	/**
-	 * The grapical context the entity is displayed on
+	 * The graphical context the entity is displayed on
 	 */
 	Pane graphicsContext = null;
 
@@ -35,15 +34,15 @@ public class Graphics extends Component {
 
 	/**
 	 * a list of all drawables the component has the drawables are registered in the
-	 * notifyNewDrawable method The Grapics Component is one of few components that
+	 * notifyNewDrawable method The Graphics Component is one of few components that
 	 * has a reference on other components of the game object.
 	 */
 	public List<Node> drawables = null;
 
 	/**
-	 * creates a new Grapics component on the default pane
+	 * creates a new Graphics component on the default pane
 	 */
-	public Graphics() { // abstrakt
+	public Graphics() {
 		this.graphicsContext = Globals.treeRepresentationGraphicsContext;
 		this.drawables = new LinkedList<Node>();
 		this.pane = new Pane();
@@ -55,7 +54,7 @@ public class Graphics extends Component {
 	 * 
 	 * @param graphicsContext
 	 */
-	public Graphics(Pane graphicsContext) { // abstrakt
+	public Graphics(Pane graphicsContext) {
 		this.graphicsContext = graphicsContext;
 		this.drawables = new LinkedList<Node>();
 		this.pane = new Pane();
@@ -89,8 +88,8 @@ public class Graphics extends Component {
 			// this.pane.setViewOrder(-2000000);
 
 			// to debug javaFX fills
-			// this.pane.setBackground(new Background(new BackgroundFill(new Color(0.5, 0.5,
-			// 0.5, 0.1), null, null)));
+			if (Settings.DEBUGMODE)
+				this.pane.setBackground(new Background(new BackgroundFill(new Color(0.5, 0.5, 0.5, 0.1), null, null)));
 		}
 	}
 
@@ -110,7 +109,7 @@ public class Graphics extends Component {
 	}
 
 	/**
-	 * registers for a new drawable 
+	 * registers for a new drawable
 	 */
 	public void notifyNewDrawable() {
 		if (this.entity == null) {

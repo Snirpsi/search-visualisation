@@ -13,17 +13,15 @@ import tools.Vector2D;
 
 public class TreeLayouter extends Component {
 
-
-
 	public static final Vector2D OFFSET = new Vector2D(0, 0);
 	public static final int LEAF_DISTANCE = Settings.TREE_LAYOUT.LEAF_DISTANCE;
 	public static final double PARENT_DISTANCE = Settings.TREE_LAYOUT.PARENT_DISTANCE;
 	public static final double SIBLING_DISTANCE = Settings.TREE_LAYOUT.SIBLING_DISTANCE;
-	
+
 	boolean growUp = false;
 	double angle = 0;
 	double angleRange = 0;
-    
+
 	public TreeLayouter() {
 		this.angleRange = 2 * Math.PI;
 	}
@@ -33,12 +31,13 @@ public class TreeLayouter extends Component {
 	}
 
 	/**
-	 *  um baum nach oben wachsen zu lassen wurzelknoten auf true setzen
+	 * to make tree grow upward put root node on true
 	 */
 	public void setGrowUp(boolean growUp) {
 		this.growUp = growUp;
 	}
-	
+
+	// not in use
 	public void layout2() {
 		// Source -->
 		// https://stackoverflow.com/questions/33328245/radial-tree-layout-algorithm
@@ -76,18 +75,21 @@ public class TreeLayouter extends Component {
 		}
 	}
 
+	/**
+	 * layouts the tree using only {@link TreeComponent}
+	 */
 	public void layout() {
 
 		TreeComponent treeOwn = super.entity.getComponent(TreeComponent.class);
 		TreeComponent treeRoot = treeOwn.getRoot();
-		
-		int growdir= 1;
-		
-		if (treeRoot.entity.hasComponent(TreeLayouter.class) ) {
+
+		int growdir = 1;
+
+		if (treeRoot.entity.hasComponent(TreeLayouter.class)) {
 			var layouter = treeRoot.entity.getComponent(TreeLayouter.class);
-				if (layouter.growUp) {
-					growdir = -1;
-				}
+			if (layouter.growUp) {
+				growdir = -1;
+			}
 		}
 
 		List<TreeComponent> leafs = treeRoot.getLeafsInOrder();
@@ -95,7 +97,8 @@ public class TreeLayouter extends Component {
 		int i = 0;
 		for (TreeComponent leave : leafs) {
 			Position leavePos = leave.entity.getComponent(Position.class);
-			leavePos.setPosition(new Vector2D(i * LEAF_DISTANCE, (float) (PARENT_DISTANCE * (leave.updateDepth()) * growdir )));
+			leavePos.setPosition(
+					new Vector2D(i * LEAF_DISTANCE, (float) (PARENT_DISTANCE * (leave.updateDepth()) * growdir)));
 			i++;
 			if (!leave.isRoot()) {
 				leave.getParent().entity.getComponent(TreeLayouter.class).parentRecursiveLayout(growdir);
@@ -114,6 +117,12 @@ public class TreeLayouter extends Component {
 
 	}
 
+	/**
+	 * placeSiblingsRecursivLayout places the siblings near other siblings that have
+	 * children
+	 * 
+	 * @param growdir
+	 */
 	private void placeSiblingsRecursivLayout(int growdir) {
 		TreeComponent treeOwn = this.entity.getComponent(TreeComponent.class);
 		if (treeOwn.isLeaf()) {
@@ -142,7 +151,12 @@ public class TreeLayouter extends Component {
 		ownPos.setPosition(newOwnPos);
 	}
 
-	private void parentRecursiveLayout( int growdir) {
+	/**
+	 * places parents above children
+	 * 
+	 * @param growdir
+	 */
+	private void parentRecursiveLayout(int growdir) {
 		TreeComponent treeOwn = this.entity.getComponent(TreeComponent.class);
 
 		if (treeOwn.isLeaf()) {
@@ -172,14 +186,11 @@ public class TreeLayouter extends Component {
 		// this.placeSiblingsRecursivLayout();
 		return;
 	}
-	
-	
 
 	@Override
 	public void update(float deltaT) {
 	}
 }
-
 
 /*
  * Copyright (c) 2022 Severin Dippold

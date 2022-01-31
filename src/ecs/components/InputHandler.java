@@ -6,6 +6,12 @@ import ecs.Component;
 import javafx.event.Event;
 import settings.Settings;
 
+/**
+ * executes function if there is a javafx input connected
+ * 
+ * @author Severin
+ *
+ */
 public class InputHandler extends Component {
 
 	Function<Event, ?> action = null;

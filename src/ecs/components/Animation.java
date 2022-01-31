@@ -4,6 +4,12 @@ import ecs.Component;
 
 import tools.Vector2D;
 
+/**
+ * adding animation component to entity enables positional animations
+ * 
+ * @author Severin
+ *
+ */
 public class Animation extends Component {
 
 	Vector2D startPos = new Vector2D();
@@ -38,27 +44,25 @@ public class Animation extends Component {
 
 	@Override
 	public void update(float deltaT) {
-		
-		
+
 		if (timeUntilEnd <= deltaT) {
-			// animation gerade beendet
+			// animation just finished
 			startPos = endPos;
-			// sicherstellen, dass Entitie genau an der richtigen Position angekommen ist
-			
+			// make sure that Entitie has arrived at exactly the right position
+
 		}
-		if (Math.abs( startPos.distanceTo(endPos)) < 0.0001 ) {
+		if (Math.abs(startPos.distanceTo(endPos)) < 0.0001) {
 //			startPos = endPos;
 //			this.entity.getComponent(Position.class).directSetPosition(endPos);
 //			return;
 		}
-		
+
 		if (startPos == endPos) {
 			// Animation beendet
 			timeUntilEnd = duration; // reset timer
 			return;
 		}
 
-		
 		var vneu = startPos.interpolate(endPos, timeUntilEnd / duration);
 		this.entity.getComponent(Position.class).directSetPosition(vneu);
 		this.timeUntilEnd -= deltaT;
@@ -68,7 +72,6 @@ public class Animation extends Component {
 	public void fetchDependencies() {
 	}
 }
-
 
 /*
  * Copyright (c) 2022 Severin Dippold

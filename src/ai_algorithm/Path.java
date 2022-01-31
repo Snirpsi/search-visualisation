@@ -12,9 +12,9 @@ public class Path extends GameObject {
 
 	/**
 	 * The Constructor is used to get the Path from the initial searchnode to the
-	 * currend node in the Tree structure.
+	 * current node in the Tree structure.
 	 * 
-	 * @param searchNode the searchnode from witch the path will be build
+	 * @param searchNode the search node from witch the path will be build
 	 */
 	public Path(SearchNode searchNode) {
 		this.searchNode = searchNode;
@@ -28,7 +28,7 @@ public class Path extends GameObject {
 	}
 
 	/**
-	 * gibt die aktionen die auf einem pfad liegen aus
+	 * outputs the actions that lie on a path
 	 * 
 	 * @return
 	 */
@@ -44,7 +44,7 @@ public class Path extends GameObject {
 	}
 
 	/**
-	 * gibt die zustände aus die auf einem pfad liegen
+	 * outputs the states that lie on a path
 	 * 
 	 * @return
 	 */

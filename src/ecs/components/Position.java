@@ -1,22 +1,22 @@
 package ecs.components;
 
 import ecs.Component;
-
 import tools.Vector2D;
 
 /**
- * This class represetns the position of a Gameobect.
+ * This class represents the position of a GameObject.
+ * 
  * @author Severin
  *
  */
 public class Position extends Component {
 	/**
-	 * pos
+	 * position the object has in parent javafx plane
 	 */
 	private Vector2D position;
 
 	/**
-	 * construchtor
+	 * constructor
 	 */
 	public Position() {
 		this.position = new Vector2D();
@@ -51,12 +51,10 @@ public class Position extends Component {
 
 	public Vector2D getPosition() {
 
-
 		return position;
 
 	}
 
-	
 	public Vector2D getFuturePosition() {
 		if (super.entity.hasComponent(Animation.class)) {
 			return super.entity.getComponent(Animation.class).endPos;
