@@ -9,28 +9,32 @@ import tools.Vector2DInt;
 
 public class GridMazeProblem extends Problem {
 	/**
-	 * Spielfeldgroesse
+	 * field size
 	 */
 	public final int GAMESIZE = 7;
-	/**
-	 * 
-	 */
-	// public final int TILESIZE = 20;
-	// public final int BORDERSIZE = 1;
 
+	/**
+	 * field
+	 */
 	public char[][] labyrinth;
 
+	/**
+	 * Starting position
+	 */
 	Vector2DInt startPos = new Vector2DInt(3, 2);// new Vector2DInt(0, 0);
+	/**
+	 * Goal position
+	 */
 	Vector2DInt goalPos = new Vector2DInt(GAMESIZE - 3, GAMESIZE - 2);// new Vector2DInt(GAMESIZE - 1, GAMESIZE - 1);
 
 	/**
-	 * Standartkonstruktor der das Labyrinth generiert
+	 * Standard constructor that generates the maze
 	 */
 	public GridMazeProblem() {
 		super();
 
-//		startPos = new Vector2DInt((int) (Math.random() * GAMESIZE), (int) (Math.random() * GAMESIZE));
-
+		startPos = new Vector2DInt((int) (Math.random() * GAMESIZE), (int) (Math.random() * GAMESIZE));
+		goalPos = new Vector2DInt((int) (Math.random() * GAMESIZE), (int) (Math.random() * GAMESIZE));
 		labyrinth = new char[GAMESIZE][GAMESIZE];
 
 		// Level generieren
@@ -46,20 +50,22 @@ public class GridMazeProblem extends Problem {
 		labyrinth[0][0] = 'e';
 		labyrinth[GAMESIZE - 1][GAMESIZE - 1] = 'e';
 
-		labyrinth = new char[][] { //
-				{ 'e', 'e', 'e', 'e', 'e', 'w', 'e' }, //
-				{ 'e', 'w', 'e', 'e', 'e', 'w', 'e' }, //
-				{ 'e', 'e', 'w', 'e', 'e', 'e', 'e' }, //
-				{ 'e', 'e', 'e', 'w', 'e', 'w', 'e' }, //
-				{ 'e', 'e', 'e', 'w', 'w', 'e', 'e' }, //
-				{ 'w', 'w', 'e', 'e', 'e', 'w', 'e' }, //
-				{ 'e', 'e', 'e', 'e', 'e', 'e', 'e' } //
-		};
+//		labyrinth = new char[][] { //
+//				{ 'e', 'e', 'e', 'e', 'e', 'w', 'e' }, //
+//				{ 'e', 'w', 'e', 'e', 'e', 'w', 'e' }, //
+//				{ 'e', 'e', 'w', 'e', 'e', 'e', 'e' }, //
+//				{ 'e', 'e', 'e', 'w', 'e', 'w', 'e' }, //
+//				{ 'e', 'e', 'e', 'w', 'w', 'e', 'e' }, //
+//				{ 'w', 'w', 'e', 'e', 'e', 'w', 'e' }, //
+//				{ 'e', 'e', 'e', 'e', 'e', 'e', 'e' } //
+//		};
 
 	}
 
 	/**
-	 * Gibt startposition des Labyrinths aus
+	 * Returns start {@link State} of the maze
+	 * 
+	 * @return start state
 	 */
 	@Override
 	public State getInitialState() {
@@ -67,8 +73,8 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Da der zielzustand von anfang an bekannt ist und es nur eien gibt wird dieser
-	 * zurückgegeben
+	 * Since the goal {@link State} is known from the beginning and there is only
+	 * one it will be returned
 	 */
 	@Override
 	public State getGoalState() {
@@ -76,10 +82,10 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Gibt einen zustand entsprechend der koordinate zurück
+	 * Returns a {@link State} corresponding to the position
 	 * 
-	 * @param coordinate deren zustand erhalten werden soll
-	 * @return Zustand mit entsprechenden Koordinaten
+	 * @param Quadrant whose state is to be obtained
+	 * @return State with corresponding coordinates
 	 */
 	public State getCorresphrondingState(Vector2DInt coordinate) {
 		if (!this.testPosition(coordinate)) {
@@ -90,9 +96,10 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Prueft ob es sich bei einem gegebenen zustand um einen zielzustand dandelt
+	 * Checks whether a given state is a target state
 	 * 
-	 * @param state Zu prüfender zustand
+	 * @param State to be tested
+	 * @return true if state is goal{@link State} else false
 	 */
 	@Override
 	public boolean isGoalState(State state) {
@@ -104,10 +111,10 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Gibt für einen zustand alle möglichen aktionen in form einer liste an
+	 * Specifies all possible actions for a state in the form of a list
 	 * 
-	 * @param state Zu prüfender zustand
-	 * @return eine liste von möglichen aktionen
+	 * @param state State to be tested 
+	 * @return a list of possible actions
 	 */
 	@Override
 	public List<String> getActions(State state) {
@@ -136,12 +143,12 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Gibt für einen zustand und eine Aktion den Folgezustand an
+	 * Specifies the subsequent state for a state and an action
 	 * 
-	 * @param state  Ausgangszustand
-	 * @param action anzuwendende Aktion
+	 * @param state   Initial state
+	 * @param action Action to be applied
 	 * 
-	 * @return Folgezustand
+	 * @return Sequent state
 	 */
 	@Override
 	public State getSuccessor(State state, String action) {
@@ -192,11 +199,12 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Gibt die aktionskosten an um von einem zustand in den nächsten zu gelangen
+	 * Specifies the action cost to move from one state to the next
+
 	 * 
-	 * @param state  Ausgangszustand
-	 * @param action anzuwendende Aktion
-	 * @param succ   Folgezustand
+	 * @param state  Initial state
+	 * @param action Action to be applied
+	 * @param succ   Successor state
 	 * 
 	 * @return Aktionskosten
 	 */
@@ -206,10 +214,10 @@ public class GridMazeProblem extends Problem {
 	}
 
 	/**
-	 * Überprüft ob eine position gültig/wand ist oder nicht
+	 * Checks if a position is valid/wall or not
 	 * 
-	 * @param pos
-	 * @return True oder Flase jeh nachdem ob die position frei ist oder nicht
+	 * @param pos position
+	 * @return True or Flase depending on whether the position is free or not
 	 */
 	protected boolean testPosition(Vector2DInt pos) {
 		if (pos.x < 0) {
@@ -231,3 +239,25 @@ public class GridMazeProblem extends Problem {
 		return true;
 	}
 }
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

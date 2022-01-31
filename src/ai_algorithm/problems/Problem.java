@@ -3,8 +3,9 @@ package ai_algorithm.problems;
 import java.util.List;
 
 import ecs.GameObject;
+
 /**
- * Die das Problem Räpresentiert
+ * Class template for problems
  * 
  * @author Severin
  *
@@ -13,55 +14,77 @@ import ecs.GameObject;
 public abstract class Problem extends GameObject {
 
 	/**
-	 * Gibt startzustand zurück
+	 * Returns initial state
 	 * 
-	 * @return Startzustand
+	 * @return initial state
 	 */
 	public abstract State getInitialState();
 
 	/**
-	 * Gibt zielzustand sofern dieser bekannt ist ansonsten null
+	 * Returns goal state if known otherwise it returns null
 	 * 
-	 * @return zielzustand oder null
+	 * @return goal state or null
 	 */
 	public State getGoalState() {
 		return null;
 	}
 
 	/**
-	 * Überprüfe ob zustand zielzustand ist
+	 * Check if state is goal state
 	 * 
 	 * @param state
-	 * @return wahr wenn state zielzustand ist, sonst false
+	 * @return true if state is goal state, otherwise false
 	 */
 	public abstract boolean isGoalState(State state);
 
 	/**
-	 * Gibt alle aktionen die in einem zustand möglich sind an
+	 * Indicates all actions that are possible in a state
 	 * 
 	 * @param state
-	 * @return liste der aktionen
+	 * @return list of possible actions
 	 */
 	public abstract List<String> getActions(State state);
 
 	/**
-	 * gibt für einen Zustand und seine Aktion den Folgezustand an
+	 * Calculates the successor state for a state and its action
 	 * 
 	 * @param state
 	 * @param action
-	 * @return folgezustand
+	 * @return successor state
 	 */
 	public abstract State getSuccessor(State state, String action);
 
 	/**
-	 * gibt für einen Zustand und eine Aktion und den Folgezustand an wie hoch die
-	 * kosten sind
+	 * specifies for a state and an action and the successor state how high the
+	 * costs are
 	 * 
 	 * @param state
 	 * @param action
-	 * @param succ
-	 * @return kosten der aktion aus zustand
+	 * @param succ successor state
+	 * @return cost of the action from state
 	 */
 	public abstract double getCost(State state, String action, State succ);
 
 }
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

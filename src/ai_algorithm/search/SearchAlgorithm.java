@@ -1,5 +1,6 @@
 package ai_algorithm.search;
 
+import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
 
@@ -11,19 +12,19 @@ import ai_algorithm.problems.Problem;
  */
 public abstract class SearchAlgorithm {
 	/**
-	 * Problem für Sichalgorithmus wird Injekziert
+	 * Problem for the security algorithm is solved by dependency injection
 	 */
 	Problem problem;
 
 	/**
-	 * Default
+	 * Default Constructor
 	 */
 	public SearchAlgorithm() {
 
 	}
 
 	/**
-	 * Suchalgorithmus mit Problem erzeugen
+	 * Create search algorithm with problem
 	 * 
 	 * @param problem
 	 */
@@ -32,7 +33,7 @@ public abstract class SearchAlgorithm {
 	}
 
 	/**
-	 * Problem des Algorithmus setzen
+	 * Set algorithm problem
 	 * 
 	 * @param problem
 	 */
@@ -41,9 +42,9 @@ public abstract class SearchAlgorithm {
 	}
 
 	/**
-	 * Startet die suche
-	 * @return ergebnis der suche
+	 * Starts the search
+	 * @return Zielpfad
 	 */
-	public abstract SearchNode search();
+	public abstract Path search();
 
 }

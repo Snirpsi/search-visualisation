@@ -9,10 +9,7 @@ import java.util.List;
 
 import ai_algorithm.SearchAndProblemRegister;
 import ai_algorithm.problems.Problem;
-import ai_algorithm.problems.cityState.GermanyRouteProblem;
-import ai_algorithm.problems.raster_path.GridMazeProblem;
-import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
-import ai_algorithm.search.*;
+import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import settings.Settings;
 
@@ -23,6 +20,9 @@ public class SearchThreadRegistryAndFactory {
 
 	private static List<SearchThread> searchThreads = Collections.synchronizedList(new ArrayList<SearchThread>());
 
+	/**
+	 * creates new thread when both problem and search algorithm are selected 
+	 */
 	public static void startSearchIfReady() {
 		if (GuiLayout.problemSelect.getValue() == null) {
 			return;
@@ -31,8 +31,8 @@ public class SearchThreadRegistryAndFactory {
 			return;
 		}
 
-		Problem problem = getProblemWithName(GuiLayout.problemSelect.getValue());
-		SearchAlgorithm algo = getSearchAlgoritmWithName(GuiLayout.algoSelect.getValue(), problem);
+		Problem problem = getProblemByName(GuiLayout.problemSelect.getValue());
+		SearchAlgorithm algo = getSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), problem);
 
 		SearchThread s = new SearchThread(algo);
 		searchThreads.add(s);
@@ -40,7 +40,11 @@ public class SearchThreadRegistryAndFactory {
 		s.start();
 
 	}
-
+	
+	/**
+	 * 
+	 * @return all registered {@link Problem}
+	 */
 	public static List<String> getProblemNames() {
 		var ret = new LinkedList<String>();
 
@@ -50,7 +54,10 @@ public class SearchThreadRegistryAndFactory {
 
 		return ret;
 	}
-
+	/**
+	 * 
+	 * @return all registered {@link SearchAlgorithm}
+	 */
 	public static List<String> getSearchAlgoritmNames() {
 		var ret = new LinkedList<String>();
 
@@ -60,7 +67,7 @@ public class SearchThreadRegistryAndFactory {
 		return ret;
 	}
 
-	public static Problem getProblemWithName(String problemName) {
+	public static Problem getProblemByName(String problemName) {
 		Problem problem = null;
 
 		try {
@@ -75,7 +82,14 @@ public class SearchThreadRegistryAndFactory {
 		return problem;
 	}
 
-	public static SearchAlgorithm getSearchAlgoritmWithName(String searchAlgorithmName, Problem problem) {
+	/**
+	 * 
+	 * 
+	 * @param searchAlgorithmName
+	 * @param problem
+	 * @return
+	 */
+	public static SearchAlgorithm getSearchAlgoritmByName(String searchAlgorithmName, Problem problem) {
 		if (Settings.DEBUGMODE)
 			System.out.println("search algoritm: " + searchAlgorithmName);
 		SearchAlgorithm algo = null;
@@ -101,6 +115,10 @@ public class SearchThreadRegistryAndFactory {
 		return algo;
 	}
 
+	
+	/**
+	 * method to stop all running threads 
+	 */
 	public static void stopAllThreads() {
 		for (SearchThread thread : searchThreads) {
 			thread.interrupt();
@@ -119,3 +137,26 @@ public class SearchThreadRegistryAndFactory {
 	}
 
 }
+
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

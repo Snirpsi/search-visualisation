@@ -1,3 +1,8 @@
+//Created by Daniel Hári  (Jun 1 '17)
+//Copied from https://stackoverflow.com/questions/39827911/javafx-8-scaling-zooming-scrollpane-relative-to-mouse-position
+// CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/deed.de
+// IT IS EXCLUDED FROM THE LICENCE OF THE OTHER SOFTWARE PARTS OF THE SEARCH_VISUALIZATION
+
 package application.gui;
 
 import javafx.geometry.Bounds;
@@ -7,8 +12,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-//Createt by Daniel Hári
-//Coppied from https://stackoverflow.com/questions/39827911/javafx-8-scaling-zooming-scrollpane-relative-to-mouse-position
 
 public class ZoomableScrollPane extends ScrollPane {
 

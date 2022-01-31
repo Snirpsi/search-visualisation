@@ -12,55 +12,54 @@ import ecs.GameObjectRegistry;
 import javafx.scene.Node;
 
 /**
- * Suchknoten sind die zentrale datenstruktur der KI-Algorithmen
+ * Search nodes are the central data structure of the AI algorithms, they make
+ * up the tree
  * 
  * @author Severin
  */
 public class SearchNode extends GameObject {
 
-
 	/**
-	 * elternknoten
+	 * parent node
 	 */
 	private final SearchNode parent;
 	/**
-	 * kindknoten
+	 * child node
 	 */
 	private LinkedList<SearchNode> children = null;
 	/**
-	 * zustand
+	 * state
 	 */
 	private final State state;
 	/**
-	 * pfadkosten
+	 * path costs
 	 */
 	private final double pathCost;
 	/**
-	 * aktion
+	 * action
 	 */
 	private final String action;
 	/**
-	 * verweis auf den zurückgelegten pfad
+	 * reference to the path traveled
 	 */
 	private Path path;
 
 	/**
-	 * objekt hauptsächlich für visualisierung
+	 * object mainly for visualization and Thread communication
 	 */
 	public SearchNodeMetadataObject metadata;
 
 	/**
-	 * Konstruktor
+	 * Constructor
 	 * 
-	 * @param parent   null wenn wurzelknoten
-	 * @param state    wenn wurzel startzustand
-	 * @param pathCost pfadkosten
-	 * @param action   aktion die in zustand geführt hat
+	 * @param parent   null if root node
+	 * @param state    when root start condition
+	 * @param pathCost path costs
+	 * @param action   action that led to condition
 	 */
 	public SearchNode(SearchNode parent, State state, double pathCost, String action) {
 		super();
 		this.metadata = new SearchNodeMetadataObject();
-		
 
 		this.parent = parent;
 		this.state = state;
@@ -79,16 +78,16 @@ public class SearchNode extends GameObject {
 	}
 
 	/**
-	 * gibt elternknoten zurück
+	 * returns parent node
 	 * 
-	 * @return elternknoten
+	 * @return returns parent node
 	 */
 	public SearchNode getParent() {
 		return parent;
 	}
 
 	/**
-	 * testet ob knoten wurzel ist
+	 * tests if node is root
 	 * 
 	 * @return true, false
 	 */
@@ -100,43 +99,43 @@ public class SearchNode extends GameObject {
 	}
 
 	/**
-	 * gibt zugehörigen zustand
+	 * gives associated state
 	 * 
-	 * @return
+	 * @return state
 	 */
 	public State getState() {
 		return state;
 	}
 
 	/**
-	 * gibt die Pfadkosten an
+	 * returns
 	 * 
-	 * @return pfadkosten
+	 * @return the path cost
 	 */
 	public double getPathCost() {
 		return pathCost;
 	}
 
 	/**
-	 * aktion die in zustand geführt hat
+	 * action that led to condition
 	 * 
-	 * @return aktion
+	 * @return action
 	 */
 	public String getAction() {
 		return action;
 	}
 
 	/**
-	 * gibt alle kindknoten als liste an
+	 * specifies all child nodes as a list
 	 * 
-	 * @return liste aller kindknoten
+	 * @return list of all child nodes
 	 */
 	public LinkedList<SearchNode> getChildren() {
 		return children;
 	}
 
 	/**
-	 * setzt die kindknoten
+	 * sets the child nodes
 	 * 
 	 * @param children
 	 */
@@ -146,28 +145,27 @@ public class SearchNode extends GameObject {
 	}
 
 	/**
-	 * @return gibt pfad-objekt zurück
+	 * @return path object
 	 */
 	public Path getPath() {
 		return path;
 	}
 
 	/**
-	 * expandiert automatisch wendet alle in zustand des knotens möglichen aktionen
-	 * an und fügt diese in neue knoten ein. alle knoten werden anschließend dem
-	 * expandierten knoten als kinder hinzugefügt
+	 * automatically applies all actions possible in the state of the node and
+	 * inserts them into new nodes. all nodes are then added to the expanded node as
+	 * children.
 	 * 
-	 * es wird empfolen diese Methode zu verwenden und mindestens einmahl pro
-	 * iteration aufzurufen
+	 * it is recommended to use this method and call it at least once per iteration
 	 * 
-	 * @return
+	 * @return List of expanded child nodes
 	 */
 	public List<SearchNode> expand() {
-		//visualisierung
+		// visualisierung
 		SearchNodeMetadataObject.setExpandingSearchnode(this);
 		Debugger.pause("Expanding: " + this);
-		//ende vis
-		
+		// ende vis
+
 		List<SearchNode> futureCildren = new ArrayList<>();
 
 		if (this.getChildren() != null && this.getChildren().size() != 0) {
@@ -178,25 +176,44 @@ public class SearchNode extends GameObject {
 		Problem prob = state.getProblem();
 		for (String action : prob.getActions(state)) {
 			State succState = prob.getSuccessor(state, action);
-			//neue knoten erzeugen
+			// neue knoten erzeugen
 			SearchNode succ = new SearchNode(this, succState,
 					this.getPathCost() + prob.getCost(state, action, succState), action);
 			futureCildren.add(succ);
 			Debugger.pause("EXPANSION: " + action);
 		}
 		this.children.addAll(futureCildren);
-		//visualsiieren
+		// visualsiieren
 		GameObjectRegistry.registerForStateChange(this);
-		//ende vis
+		// ende vis
 		return this.children;
 	}
-	/**
-	 * Stringrepräsentation
-	 * @return Searchnode
-	 */
+
 	@Override
 	public String toString() {
 		return "SearchNode [state=" + state + ", pathCost=" + pathCost + ", action=" + action + "]";
 	}
 
 }
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

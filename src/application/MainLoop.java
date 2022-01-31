@@ -1,7 +1,6 @@
 package application;
 
 import application.debugger.Debugger;
-import application.debugger.DebuggerUI;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import javafx.animation.AnimationTimer;
@@ -16,6 +15,7 @@ public class MainLoop {
 	public MainLoop() {
 		animationTimer = new AnimationTimer() {
 
+			@SuppressWarnings("unused")
 			long framecounter = 0;
 			long frameTimeLast = System.currentTimeMillis();
 			long frameTimeThis = System.currentTimeMillis();
@@ -33,10 +33,11 @@ public class MainLoop {
 
 				Globals.fps = (int) (1 / deltaT);
 
+				// Initialize
 				GameObjectRegistry.initializePendingGameObjects();
-
+				// Change
 				GameObjectRegistry.changePendingGameobjects();
-
+// update
 				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
 					rootGameObjects.update(deltaT);
 				}
@@ -52,3 +53,25 @@ public class MainLoop {
 		this.animationTimer.start();
 	}
 }
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

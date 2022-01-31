@@ -23,12 +23,26 @@ public class Graphics extends Component {
 	// TODO: Refactor! sollte sich grafische objekte selbstständig holen (Lines,
 	// Sprites, Tilemaps ...)
 
-	// public ArrayList<Shape> shapes = null;
+	/**
+	 * The grapical context the entity is displayed on
+	 */
 	Pane graphicsContext = null;
 
+	/**
+	 * the pane where all Drawables are drawn on
+	 */
 	private Pane pane = null;
+
+	/**
+	 * a list of all drawables the component has the drawables are registered in the
+	 * notifyNewDrawable method The Grapics Component is one of few components that
+	 * has a reference on other components of the game object.
+	 */
 	public List<Node> drawables = null;
 
+	/**
+	 * creates a new Grapics component on the default pane
+	 */
 	public Graphics() { // abstrakt
 		this.graphicsContext = Globals.treeRepresentationGraphicsContext;
 		this.drawables = new LinkedList<Node>();
@@ -36,6 +50,11 @@ public class Graphics extends Component {
 		this.pane.setPickOnBounds(false);
 	}
 
+	/**
+	 * allows the pane to be specified
+	 * 
+	 * @param graphicsContext
+	 */
 	public Graphics(Pane graphicsContext) { // abstrakt
 		this.graphicsContext = graphicsContext;
 		this.drawables = new LinkedList<Node>();
@@ -44,6 +63,9 @@ public class Graphics extends Component {
 		this.pane.setPickOnBounds(false);
 	}
 
+	/**
+	 * updates the position of the drawn object
+	 */
 	@Override
 	public void update(float deltaT) {
 		Vector2D pos = new Vector2D();
@@ -55,6 +77,9 @@ public class Graphics extends Component {
 		pane.setTranslateY(pos.y);
 	}
 
+	/**
+	 * displays the object to the screen
+	 */
 	public void show() {
 		this.hide();// necessery because in javafx you cant insert duplications of nodes
 		graphicsContext.getChildren().add(pane);
@@ -69,15 +94,24 @@ public class Graphics extends Component {
 		}
 	}
 
+	/**
+	 * removes the objects representation
+	 */
 	public void hide() {
 		graphicsContext.getChildren().remove(pane);
 	}
 
+	/**
+	 * hides all drawings on a grapcal contect
+	 */
 	public void clearPane() {
 		graphicsContext.getChildren().clear();
 		pane.getChildren().clear();
 	}
 
+	/**
+	 * registers for a new drawable 
+	 */
 	public void notifyNewDrawable() {
 		if (this.entity == null) {
 			return;
@@ -109,3 +143,25 @@ public class Graphics extends Component {
 		// this.update(0);// instant update of graphics to remove flikering
 	}
 }
+
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

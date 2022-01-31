@@ -1,28 +1,39 @@
 package settings;
 
-import application.debugger.Debugger;
+import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 
 public class Settings {
-	
+
 	/**
 	 * Enables or disables the debugg mode.
 	 */
 	public final static boolean DEBUGMODE = false;
-	
+
 	static public class TREE_LAYOUT {
 		public static final int LEAF_DISTANCE = 20;
 		public static final double PARENT_DISTANCE = 40;
 		public static final double SIBLING_DISTANCE = 1;
+
 	}
-	
+
+	/**
+	 * settings regarding the {@link TileMap2D}
+	 * 
+	 * @author Severin
+	 *
+	 */
+	static public class TILEMAP {
+		public static final int TILE_SIZE = 20;
+		public static final int BORDER_WITH = 1;
+	}
 
 	/**
 	 * INITIALISATION_PER_FRAME_MAX_COUNT detemens the maximum of how many
 	 * gameObjects will be initialized in one frame.
 	 * 
-	 * a value of 0 disables the visualisation but the console and the
-	 * searchalgoritm will be executed.
+	 * a value of 0 disables the visualisation but the console and the search
+	 * algoritm will be executed.
 	 */
 	public final static int INITIALISATION_PER_FRAME_MAX_COUNT = 1;
 
@@ -33,13 +44,13 @@ public class Settings {
 
 	/**
 	 * The maximum delay the debugger can have. Has to be greater then
-	 * {@link DEBUGGER_MINIMUM_TIME_DELAY}
+	 * DEBUGGER_NINIMUM_TIME_DELAY
 	 */
 	public static final double DEBUGGER_MAXIMUM_TIME_DELAY = 2.0;
 
-	// Colortheme TREEVis
-	// QUAD
-
+	/**
+	 * Structure contains different colors for use in the framework
+	 */
 	static public class DEFAULTCOLORS {
 
 		// General ColorTheme
@@ -65,3 +76,24 @@ public class Settings {
 	}
 
 }
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

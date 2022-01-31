@@ -4,9 +4,9 @@ import java.util.List;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
+import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
-import ai_algorithm.Path;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
@@ -28,7 +28,6 @@ import ecs.components.graphics.drawables.ConnectionLine;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -135,7 +134,7 @@ public class InitialisationVisitor extends Visitor {
 
 		TreeLayouter treeLayouter = new TreeLayouter();
 		// für zweiten baum nach ben wachsen
-		if (searchNode.isRoot() && searchNode.metadata.number == 2) {
+		if (searchNode.isRoot() && searchNode.metadata.id == 2) {
 			treeLayouter.setGrowUp(true);
 		}
 		searchNode.addComponent(treeLayouter);
@@ -169,7 +168,7 @@ public class InitialisationVisitor extends Visitor {
 		text.setText("Frontier: " + frontier.size());
 		text.setFontSize(30);
 		frontier.getComponent(Position.class).setPosition(new Vector2D(-100, 0));
-		g.show();
+		//g.show();
 	}
 
 	// PathProblem
@@ -330,3 +329,24 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 }
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

@@ -10,19 +10,19 @@ import ecs.GameObject;
 import ecs.GameObjectRegistry;
 
 /**
- * Struktur zur verwaltung der Knoten die noch zu expandieren sind
+ * Structure for managing the nodes that are still to be expanded
  * 
  * @author Severin
  * 
  */
 public class Frontier extends GameObject { // maby it is althou collection ??? {
 	/**
-	 * verwaltungsstruktur
+	 * administrative structure
 	 */
 	private List<SearchNode> frontier;
 
 	/**
-	 * erzeuge neue Frontier
+	 * create new frontier
 	 */
 	public Frontier() {
 		super();
@@ -30,7 +30,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * füge suchknoten hinzu
+	 * add {@link SearchNode}
 	 * 
 	 * @param node
 	 */
@@ -45,9 +45,9 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * füge suchknoten hinzu
+	 * add search nodes
 	 * 
-	 * @param node
+	 * @param list of nodes
 	 */
 	public void addAll(List<SearchNode> nodes) {
 		frontier.addAll(nodes);
@@ -60,9 +60,9 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * sortiert die suchknoten nach einem übergebenen kriterium
+	 * sorts the search nodes according to a given criterion
 	 * 
-	 * @param evaluationFunction
+	 * @param evaluation {@link Function}
 	 */
 	public void sort(Function<SearchNode, Double> evaluationFunction) {
 		frontier.sort(new Comparator<SearchNode>() {
@@ -80,7 +80,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * prüfe ob sie lehr ist
+	 * check if it is empty
 	 * 
 	 * @return
 	 */
@@ -89,7 +89,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * gibt füllstand an
+	 * indicates fill level
 	 * 
 	 * @return size
 	 */
@@ -98,7 +98,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * gibt ersten Suchknoten aus der Frontier
+	 * gives first search node from the Frontier
 	 * 
 	 * @return
 	 */
@@ -114,7 +114,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * gbt den letzten Suchknoten der frontier
+	 * gives the last search node of the frontier
 	 * 
 	 * @return
 	 */
@@ -130,8 +130,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * prüft ob ein suchknoten enthalten ist oder nicht
-	 * 
+checks if a search node is included or not
 	 * @param searchnode
 	 * @return true, false
 	 */
@@ -144,7 +143,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 	/**
-	 * prüft ob ein suchknoten mit entsprechendem zustand vorhanden ist
+	 * checks if a search node with corresponding state exists
 	 * 
 	 * @param state
 	 * @return true, false
@@ -159,3 +158,24 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	}
 
 }
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

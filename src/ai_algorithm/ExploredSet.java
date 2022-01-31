@@ -17,12 +17,12 @@ import ecs.GameObjectRegistry;
 public class ExploredSet extends GameObject {
 
 	/**
-	 * verwaltung in hash-Map
+	 * management in hash map
 	 */
 	HashMap<State, SearchNode> explored;
 
 	/**
-	 * Erzeugt neues Explored-Set
+	 * Creates new explored set
 	 */
 	public ExploredSet() {
 		super();
@@ -31,8 +31,7 @@ public class ExploredSet extends GameObject {
 	}
 
 	/**
-	 * Füge einen knoten zum Explored-Set hinzu der zustand wird automatisch
-	 * herausgeholt
+	 * Add a node to the explored set the state is automatically extracted
 	 * 
 	 * @param node
 	 */
@@ -41,15 +40,14 @@ public class ExploredSet extends GameObject {
 		this.explored.put(state, node);
 		node.metadata.isInExploredSet = true;
 		node.metadata.isInMemory = true;
-		// visualisierung über änderung informieren
+		// inform visualization about change
 		GameObjectRegistry.registerForStateChange(node);
 		GameObjectRegistry.registerForStateChange(state);
 		GameObjectRegistry.registerForStateChange(this);
 	}
 
 	/**
-	 * Füge mehrere knoten zum Explored-Set hinzu der zustand wird automatisch
-	 * herausgeholt
+	 * Add multiple nodes to the explored set the state is automatically extracted
 	 * 
 	 * @param node
 	 */
@@ -58,25 +56,25 @@ public class ExploredSet extends GameObject {
 			explored.put(node.getState(), node);
 			node.metadata.isInExploredSet = true;
 			node.metadata.isInMemory = true;
-			// visualisierung über änderung informieren
+			// inform visualization about change
 			GameObjectRegistry.registerForStateChange(node.getState());
 			GameObjectRegistry.registerForStateChange(node);
 		}
-		// visualisierung über änderung informieren
+		// inform visualization about change
 		GameObjectRegistry.registerForStateChange(this);
 	}
 
 	/**
-	 * Prüfe ob werte vorhanden
+	 * Check if values are present
 	 * 
-	 * @return war oder falsch
+	 * @return true oder false
 	 */
 	public boolean isEmpty() {
 		return explored.isEmpty();
 	}
 
 	/**
-	 * gibt an ob ein zustand im Explored-Set enthalten ist
+	 * indicates if a state is contained in the explored set
 	 * 
 	 * @param state
 	 * @return ture, false
@@ -89,20 +87,41 @@ public class ExploredSet extends GameObject {
 	}
 
 	/**
-	 * Gibt den zuletzt eingefügten knoten mit dem entsprechenden zustand zurück
+	 * Returns the last inserted node wich corresponds to the state
 	 * 
 	 * @param state
-	 * @return Knoten der über state identifiziert wird
+	 * @return Node identified via state
 	 */
 	public SearchNode get(State state) {
 		return explored.get(state);
 	}
 
 	/**
-	 * löscht den gesammten inhalt des Explored-Set
+	 * deletes the entire content of the {@link ExploredSet} set
 	 */
 	public void clear() {
 		explored.clear();
 	}
 
 }
+/*
+ * Copyright (c) 2022 Severin Dippold
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
