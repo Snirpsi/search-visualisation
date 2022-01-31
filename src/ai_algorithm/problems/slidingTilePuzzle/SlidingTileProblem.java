@@ -52,11 +52,11 @@ public class SlidingTileProblem extends Problem {
 	private SlidingTileProblem(int with, int height) {
 
 		this.size = new Vector2DInt(with, height);
-		
+
 		SlidingTileTile[][] goalField = new SlidingTileTile[height][with];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < with; x++) {
-				goalField[y][x] = new SlidingTileTile(x, y, x*with+x);
+				goalField[y][x] = new SlidingTileTile(x, y, y * with + x);
 
 			}
 		}

@@ -351,7 +351,7 @@ public class InitialisationVisitor extends Visitor {
 			for (int y = 0; y < slidingTileState.getSize().y; y++) {
 				if (slidingTileState.getField()[y][x].getNum() == 0) {
 					continue;
-				}
+				}  
 				Rectangle r = new Rectangle();
 				double colval = slidingTileState.getField()[y][x].getNum() / (double) maxval;
 				colval = Math.min(1.0, Math.max(0.0, colval));
