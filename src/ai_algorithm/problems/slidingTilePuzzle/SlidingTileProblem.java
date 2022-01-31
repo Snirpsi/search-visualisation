@@ -1,5 +1,6 @@
 package ai_algorithm.problems.slidingTilePuzzle;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,11 +8,12 @@ import java.util.Random;
 
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
-import ai_algorithm.search.DepthFirstSearch;
 import settings.Settings;
 import tools.Vector2DInt;
 
 public class SlidingTileProblem extends Problem {
+
+	List<SlidingTileTile> tiles = null;
 
 	/**
 	 * Random with seed
@@ -50,19 +52,21 @@ public class SlidingTileProblem extends Problem {
 	private SlidingTileProblem(int with, int height) {
 
 		this.size = new Vector2DInt(with, height);
-		int[][] goalField = new int[height][with];
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < with; j++) {
-				goalField[i][j] = (i * (with)) + j;
+		
+		SlidingTileTile[][] goalField = new SlidingTileTile[height][with];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < with; x++) {
+				goalField[y][x] = new SlidingTileTile(x, y, x*with+x);
+
 			}
 		}
-		System.out.println(goalField[1][2]);
 
 		goalState = new SlidingTileState(this, goalField);
 		startState = shuffle(goalState);
 
 		System.out.println(Arrays.deepToString(SlidingTileState.arrayDeepCoppy(goalState.getField())));
 		System.out.println(Arrays.deepToString(SlidingTileState.arrayDeepCoppy(startState.getField())));
+
 	}
 
 	/**
@@ -93,13 +97,13 @@ public class SlidingTileProblem extends Problem {
 	}
 
 	/**
-	 * returns the problem size 
+	 * returns the problem size
+	 * 
 	 * @return
 	 */
 	public Vector2DInt getSize() {
 		return size;
 	}
-
 
 	@Override
 	public State getInitialState() {
@@ -129,20 +133,23 @@ public class SlidingTileProblem extends Problem {
 	public State getSuccessor(State state, String action) {
 		SlidingTileState stateT = (SlidingTileState) state;
 		SlidingTileState succ = new SlidingTileState(this, null);
-		int[][] field = stateT.getField();
+		// SlidingTileTile[][] field = stateT.getField();
+		SlidingTileTile[][] field = stateT.getField();
+
 		switch (action) {
 		case "UP": {
-			// suche null
+			// find 0
 			for (int i = 0; i < size.y; i++) {
 				for (int j = 0; j < size.x; j++) {
-					// 0 gefunden
-					if (field[i][j] == 0) {
-						// tausche 0 mit obendrüber
-						try {
+					// 0 found
+					if (field[i][j].getNum() == 0) {
+						// switch 0 with tile
+						try {//
 							if (Settings.DEBUGMODE)
 								System.out.println("UP");
+							SlidingTileTile tmp = field[i][j];
 							field[i][j] = field[i][j - 1];
-							field[i][j - 1] = 0;
+							field[i][j - 1] = tmp;
 							succ.setField(field);
 							return succ;
 
@@ -159,17 +166,15 @@ public class SlidingTileProblem extends Problem {
 		}
 		case "DOWN": {
 
-			// suche null
 			for (int i = 0; i < size.y; i++) {
 				for (int j = 0; j < size.x; j++) {
-					// 0 gefunden
-					if (field[i][j] == 0) {
-						// tausche 0 mit obendrüber
+					if (field[i][j].getNum() == 0) {
 						try {
 							if (Settings.DEBUGMODE)
 								System.out.println("DOWN");
+							SlidingTileTile tmp = field[i][j];
 							field[i][j] = field[i][j + 1];
-							field[i][j + 1] = 0;
+							field[i][j + 1] = tmp;
 							succ.setField(field);
 							return succ;
 
@@ -187,17 +192,15 @@ public class SlidingTileProblem extends Problem {
 		}
 		case "LEFT": {
 
-			// suche null
 			for (int i = 0; i < size.y; i++) {
 				for (int j = 0; j < size.x; j++) {
-					// 0 gefunden
-					if (field[i][j] == 0) {
-						// tausche 0 mit obendrüber
+					if (field[i][j].getNum() == 0) {
 						try {
 							if (Settings.DEBUGMODE)
 								System.out.println("LEFT");
+							SlidingTileTile tmp = field[i][j];
 							field[i][j] = field[i - 1][j];
-							field[i - 1][j] = 0;
+							field[i - 1][j] = tmp;
 							succ.setField(field);
 							return succ;
 
@@ -215,17 +218,15 @@ public class SlidingTileProblem extends Problem {
 		}
 		case "RIGHT": {
 
-			// suche null
 			for (int i = 0; i < size.y; i++) {
 				for (int j = 0; j < size.x; j++) {
-					// 0 gefunden
-					if (field[i][j] == 0) {
-						// tausche 0 mit obendrüber
+					if (field[i][j].getNum() == 0) {
 						try {
 							if (Settings.DEBUGMODE)
 								System.out.println("RIGHT");
+							SlidingTileTile tmp = field[i][j];
 							field[i][j] = field[i + 1][j];
-							field[i + 1][j] = 0;
+							field[i + 1][j] = tmp;
 							succ.setField(field);
 							return succ;
 

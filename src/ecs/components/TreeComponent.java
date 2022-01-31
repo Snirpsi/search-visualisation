@@ -11,8 +11,8 @@ import javafx.scene.Parent;
 // auf einer Baumstruktur unabhängig von der "echten Baumstruktur" zu navigieren
 
 /**
- * This class allows to represent a tree datastructure between Gameobjects
- * independent of the datastructure the search algorithm is creating.
+ * This class allows to represent a tree data structure between GameObjects
+ * independent of the data structure the search algorithm is creating.
  * 
  * @author Severin
  *
@@ -34,7 +34,7 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * Initializes the Treecomponent the parameter as its parrent
+	 * Initializes the tree component the parameter as its parent.
 	 * 
 	 * @param parent
 	 */
@@ -45,7 +45,7 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * adds a child to the {@link TreeComponent}
+	 * adds a child to the {@link TreeComponent}.
 	 * 
 	 * @param node
 	 */
@@ -57,7 +57,7 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * Adds multiple children to the {@link TreeComponent}
+	 * Adds multiple children to the {@link TreeComponent}.
 	 * 
 	 * @param nodes
 	 */
@@ -72,7 +72,6 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * 
 	 * @returns the depth of the {@link TreeComponent}
 	 */
 	public int getDepth() {
@@ -80,7 +79,7 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * recalculates the depth of the component
+	 * Recalculates the depth of the tree.
 	 * 
 	 * @return returns the fresh calculated depth
 	 */
@@ -108,7 +107,7 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * @return the children
+	 * @returns the children
 	 */
 	public List<TreeComponent> getChildren() {
 		return children;
@@ -122,9 +121,9 @@ public class TreeComponent extends Component {
 	}
 
 	/**
-	 * the ordinal of an sibling 
-	 * the siblings are ordered in the order of insertion
-	 * @return index of the own node under its siblings 
+	 * the ordinal of an sibling the siblings are ordered in the order of insertion
+	 * 
+	 * @return index of the own node under its siblings
 	 */
 	public int getSiblingNumber() {
 		if (this.getParent() == null) {
@@ -145,6 +144,7 @@ public class TreeComponent extends Component {
 		}
 		return this.getParent().getChildren();
 	}
+
 	/**
 	 * 
 	 * @return true if its a leaf

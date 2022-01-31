@@ -14,16 +14,25 @@ import settings.Settings;
 /**
  * This class allows the Framework to manage all GameObjects whether they need
  * to be initialized or changed. This is achieved using {@link Visitor}s that
- * are applied to the {@link GameObject}s.
+ * are applied to the {@link GameObject}s. Threrefore the
+ * {@link GameObjectRegistry} uses three queues.
  * 
  * @author Severin
- *
  */
 public class GameObjectRegistry {
 
-	public static List<GameObject> gameObjectRegistry = Collections.synchronizedList(new LinkedList<>());
-	public static List<GameObject> largeSingleUpdate = Collections.synchronizedList(new LinkedList<GameObject>());
-	public static List<GameObject> needsGameObjectInitialisation = Collections
+	/**
+	 * All initialized GameObjects are in this structure.
+	 */
+	private static List<GameObject> gameObjectRegistry = Collections.synchronizedList(new LinkedList<>());
+	/**
+	 * Queue for pending changes.
+	 */
+	private static List<GameObject> changeUpdate = Collections.synchronizedList(new LinkedList<GameObject>());
+	/**
+	 * Queue for GameObject that need Initialization.
+	 */
+	private static List<GameObject> needsGameObjectInitialisation = Collections
 			.synchronizedList(new ArrayList<GameObject>());
 
 	public static InitialisationVisitor initialisationVisitor = new InitialisationVisitor();
@@ -53,7 +62,8 @@ public class GameObjectRegistry {
 				&& initialisationCount < Settings.INITIALISATION_PER_FRAME_MAX_COUNT) {
 			GameObject gameObject = needsGameObjectInitialisation.remove(0);
 			gameObject.accept(initialisationVisitor);// initialisieren
-			gameObjectRegistry.add(gameObject);
+
+			getGameObjectRegistry().add(gameObject);
 			gameObject.start();
 			initialisationCount++;
 		}
@@ -66,7 +76,7 @@ public class GameObjectRegistry {
 	 * 
 	 */
 	public static void registerForStateChange(GameObject gameObject) {
-		largeSingleUpdate.add(gameObject);
+		changeUpdate.add(gameObject);
 	}
 
 	/**
@@ -76,8 +86,8 @@ public class GameObjectRegistry {
 	public static void changePendingGameobjects() {
 		int updateCount = 0;
 		final int UPDATE_MAX_PER_FRAME = 30; // this should never be reached
-		while (!largeSingleUpdate.isEmpty() && updateCount < UPDATE_MAX_PER_FRAME) {
-			GameObject gameObject = largeSingleUpdate.remove(0);
+		while (!changeUpdate.isEmpty() && updateCount < UPDATE_MAX_PER_FRAME) {
+			GameObject gameObject = changeUpdate.remove(0);
 			gameObject.accept(componentUpdateVisitor);
 			updateCount++;
 		}
@@ -94,7 +104,7 @@ public class GameObjectRegistry {
 	public static <T extends GameObject> List<T> getAllGameObjectsOfType(Class<T> type) {
 		List<T> ret = new LinkedList<T>();
 
-		for (GameObject gameObject : gameObjectRegistry) {
+		for (GameObject gameObject : getGameObjectRegistry()) {
 			if (gameObject.getClass().isAssignableFrom(type)) {
 				ret.add(type.cast(gameObject));
 			}
@@ -105,12 +115,16 @@ public class GameObjectRegistry {
 	public static void removeAllGameObjects() {
 
 		needsGameObjectInitialisation.clear();
-		largeSingleUpdate.clear();
-		gameObjectRegistry.clear();
+		changeUpdate.clear();
+		getGameObjectRegistry().clear();
 
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 		Globals.treeRepresentationGraphicsContext.getChildren().clear();
 
+	}
+
+	public static List<GameObject> getGameObjectRegistry() {
+		return gameObjectRegistry;
 	}
 
 }

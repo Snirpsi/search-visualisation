@@ -7,14 +7,31 @@ import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import tools.Vector2DInt;
 
+/**
+ * The grid-maze problem is a maze which is based on a two-dimensional grid.
+ * grid. The boxes of the grid can be be either free or occupied by a wall.The
+ * agent has to find his way from a starting position to a target position
+ * within the maze. To do this, he can perform four actions. These are walking
+ * "UP", "DOWN", "RIGHT" or "LEFT", as long as there is no wall on the box.
+ * Otherwise, the action in question is blocked. There are three classes for
+ * making the problem available. These are: {@link GridMazeProblem},
+ * {@link GridMazeState} and {@link GridMazePath}. In these only the functions
+ * relevant for the AI were implemented. For each of the classes also own
+ * Visitor functions exist, which equip these it the components for the
+ * visualization.
+ * 
+ * 
+ * @author Severin
+ *
+ */
 public class GridMazeProblem extends Problem {
 	/**
-	 * field size
+	 * grid size
 	 */
 	public final int GAMESIZE = 7;
 
 	/**
-	 * field
+	 * grid
 	 */
 	public char[][] labyrinth;
 
@@ -113,7 +130,7 @@ public class GridMazeProblem extends Problem {
 	/**
 	 * Specifies all possible actions for a state in the form of a list
 	 * 
-	 * @param state State to be tested 
+	 * @param state State to be tested
 	 * @return a list of possible actions
 	 */
 	@Override
@@ -145,7 +162,7 @@ public class GridMazeProblem extends Problem {
 	/**
 	 * Specifies the subsequent state for a state and an action
 	 * 
-	 * @param state   Initial state
+	 * @param state  Initial state
 	 * @param action Action to be applied
 	 * 
 	 * @return Sequent state
@@ -200,8 +217,7 @@ public class GridMazeProblem extends Problem {
 
 	/**
 	 * Specifies the action cost to move from one state to the next
-
-	 * 
+	 *  
 	 * @param state  Initial state
 	 * @param action Action to be applied
 	 * @param succ   Successor state

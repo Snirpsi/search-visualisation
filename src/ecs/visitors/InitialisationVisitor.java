@@ -10,7 +10,9 @@ import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileTile;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -32,9 +34,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import settings.Settings;
+import settings.Settings.TILEMAP;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
+/**
+ * Initializes all game objects that shall be displayed
+ */
 public class InitialisationVisitor extends Visitor {
 	// default
 	public void visit(GameObject gameObject) {
@@ -45,18 +52,27 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(p);
 			return;
 		}
-		if (gameObject.getClass().isAssignableFrom(GridMazeState.class)) {
-			this.visit((GridMazeState) gameObject);
-			return;
-		}
+		//
 		if (gameObject.getClass().isAssignableFrom(GridMazeProblem.class)) {
 			this.visit((GridMazeProblem) gameObject);
+			return;
+		}
+		if (gameObject instanceof GridMazeState girdMazeState) {
+			this.visit(girdMazeState);
 			return;
 		}
 
 		if (gameObject instanceof SlidingTileState slider) {
 			this.visit(slider);
 			return;
+		}
+
+		if (gameObject instanceof SlidingTileTile tile) {
+			this.visit(tile);
+		}
+
+		if (gameObject instanceof SlidingTileProblem stp) {
+			this.visit(stp);
 		}
 
 		if (gameObject instanceof Frontier frontier) {
@@ -159,7 +175,11 @@ public class InitialisationVisitor extends Visitor {
 
 	}
 
-	// Frontier Inicialization
+	/**
+	 * Initializes Frontier GameObjects
+	 * 
+	 * @param frontier
+	 */
 	public void visit(Frontier frontier) {
 		super.visit(frontier);
 		Graphics g = new Graphics(Globals.treeRepresentationGraphicsContext);
@@ -168,10 +188,16 @@ public class InitialisationVisitor extends Visitor {
 		text.setText("Frontier: " + frontier.size());
 		text.setFontSize(30);
 		frontier.getComponent(Position.class).setPosition(new Vector2D(-100, 0));
-		//g.show();
+		// g.show();
 	}
 
-	// PathProblem
+	// #################### GRID_MAZE #######################//
+
+	/**
+	 * Initializes GridMazeProblem GameObjects
+	 * 
+	 * @param frontier
+	 */
 	public void visit(GridMazeProblem gridMazeProblem) {
 		super.visit(gridMazeProblem);
 
@@ -226,6 +252,11 @@ public class InitialisationVisitor extends Visitor {
 		gridMazeProblem.getComponent(Graphics.class).show();
 	}
 
+	/**
+	 * Initializes GridMazeState GameObjects
+	 * 
+	 * @param gridMazeState
+	 */
 	public void visit(GridMazeState gridMazeState) {
 		super.visit(gridMazeState);
 
@@ -254,37 +285,6 @@ public class InitialisationVisitor extends Visitor {
 
 		g.show();
 
-	}
-
-	public void visit(SlidingTileState slidingTileState) {
-		if (slidingTileState.getField() == null) {
-			Globals.stateRepresentationGraphicsContext.getChildren().clear();
-			return;
-		}
-
-		Globals.stateRepresentationGraphicsContext.getChildren().clear();
-		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-
-		slidingTileState.addComponent(g);
-
-		slidingTileState.getComponent(Position.class);
-		TileMap2D tilemap = new TileMap2D();
-		slidingTileState.addComponent(tilemap);
-
-		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
-		for (int x = 0; x < slidingTileState.getSize().x; x++) {
-			for (int y = 0; y < slidingTileState.getSize().y; y++) {
-				if (slidingTileState.getField()[y][x] == 0) {
-					continue;
-				}
-				Rectangle r = new Rectangle();
-				double colval = slidingTileState.getField()[y][x] / (double) maxval;
-				colval = Math.min(1.0, Math.max(0.0, colval));
-				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
-			}
-		}
-
-		g.show();
 	}
 
 	private void visit(Path path, GridMazeProblem prob) {
@@ -328,7 +328,62 @@ public class InitialisationVisitor extends Visitor {
 
 	}
 
+//###################################### SLIDING TILE ##################################################//
+
+	public void visit(SlidingTileState slidingTileState) {
+		if (slidingTileState.getField() == null) {
+			// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+			return;
+		}
+
+		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+
+		slidingTileState.addComponent(g);
+
+//		slidingTileState.getComponent(Position.class);
+//		TileMap2D tilemap = new TileMap2D();
+//		slidingTileState.addComponent(tilemap);
+
+		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
+		for (int y = 0; y < slidingTileState.getSize().y; y++) {
+			for (int x = 0; x < slidingTileState.getSize().x; x++) {
+//				if (slidingTileState.getField()[y][x].getNum() == 0) {
+//					continue;
+//				}
+				slidingTileState.getField()[y][x].setPos(x, y);
+
+				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
+//				Rectangle r = new Rectangle();
+//				double colval = slidingTileState.getField()[y][x].getNum() / (double) maxval;
+//				colval = Math.min(1.0, Math.max(0.0, colval));
+//				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
+			}
+		}
+	}
+
+	public void visit(SlidingTileTile stt) {
+		super.visit(stt);
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+		stt.addComponent(g);
+		Text text = stt.getComponent(Text.class);
+		text.setText("" + stt.getNum());
+		text.setFontSize(20);
+		stt.getComponent(Position.class).setPosition(stt.getPos().toVector2D().mul(Settings.TILEMAP.TILE_SIZE));
+
+		Circle c = new Circle(0, 0, TILEMAP.TILE_SIZE);
+		stt.getComponent(Sprite.class).addShape(new Circle(0, 0, TILEMAP.TILE_SIZE,Color.ALICEBLUE));
+		
+		
+		g.show();
+	}
+
+	public void visit(SlidingTileProblem stp) {
+		super.visit(stp);
+
+	}
 }
+
 /*
  * Copyright (c) 2022 Severin Dippold
  * 

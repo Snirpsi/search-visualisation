@@ -38,7 +38,7 @@ public class MainLoop {
 				// Change
 				GameObjectRegistry.changePendingGameobjects();
 // update
-				for (GameObject rootGameObjects : GameObjectRegistry.gameObjectRegistry) {
+				for (GameObject rootGameObjects : GameObjectRegistry.getGameObjectRegistry()) {
 					rootGameObjects.update(deltaT);
 				}
 

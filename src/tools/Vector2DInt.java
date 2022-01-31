@@ -219,6 +219,13 @@ public class Vector2DInt {
 	}
 
 	/**
+	 * casts the {@link Vector2DInt} to an {@link Vector2D}
+	 */
+	public Vector2D toVector2D() {
+		return new Vector2D(this.x, this.y);
+	}
+
+	/**
 	 * Creates a string representation of the transposed vector.
 	 * 
 	 * @return The string representation.

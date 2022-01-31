@@ -19,20 +19,11 @@ public class ManualSearch extends SearchAlgorithm {
 	@Override
 	public Path search() {
 		SearchNode node = new SearchNode(null, this.problem.getInitialState(), 0, null);
-
 		if (problem.isGoalState(node.getState())) {
 			return node.getPath();
 		}
-
 		SearchNodeMetadataObject.select(node);
-
 		while (SearchNodeMetadataObject.selected != null) {
-
-			var var = "var";
-			var = var + var;
-
-			System.out.println(var);
-
 			Debugger.pause("Select a node to expand:");
 			List<SearchNode> children = SearchNodeMetadataObject.selected.expand();
 			for (SearchNode c : children) {
@@ -41,11 +32,8 @@ public class ManualSearch extends SearchAlgorithm {
 				}
 			}
 		}
-
 		return null;
-
 	}
-
 }
 /*
  * Copyright (c) 2022 Severin Dippold

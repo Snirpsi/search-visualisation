@@ -130,7 +130,7 @@ public class Vector2D {
 	 * @param v The vector which is divided on this vector.
 	 * @return A new Vector which is the division of this and the other vector v.
 	 */
-	public Vector2D div(Vector2D v) { // changes this.vector
+	public Vector2D div(Vector2D v) { 
 		return new Vector2D(this.x / v.x, this.y / v.y);
 	};
 

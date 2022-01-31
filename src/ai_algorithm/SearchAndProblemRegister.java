@@ -18,6 +18,7 @@ public class SearchAndProblemRegister {
 	public static String[] problems = { //
 			GridMazeProblem.class.getName(), //
 			SlidingTileProblem.class.getName(), //
+			"ai_algorithm.problems.cityState.GermanyRouteProblem",
 			// GermanyRouteProblem.class.getName()//
 	};
 

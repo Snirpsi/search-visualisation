@@ -1,6 +1,5 @@
 package ai_algorithm.problems.slidingTilePuzzle;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import ai_algorithm.problems.Problem;
@@ -8,7 +7,7 @@ import ai_algorithm.problems.State;
 import tools.Vector2DInt;
 
 public class SlidingTileState extends State {
-	volatile private int[][] field;
+	volatile private SlidingTileTile[][] field;
 	private SlidingTileProblem problem;
 
 	/**
@@ -17,7 +16,7 @@ public class SlidingTileState extends State {
 	 * @param problem
 	 * @param field
 	 */
-	public SlidingTileState(SlidingTileProblem problem, int[][] field) {
+	public SlidingTileState(SlidingTileProblem problem, SlidingTileTile[][] field) {
 		this.problem = problem;
 		this.field = field;
 
@@ -34,40 +33,44 @@ public class SlidingTileState extends State {
 
 	/**
 	 * sets the field
+	 * 
 	 * @param field
 	 */
-	public void setField(int[][] field) {
+	public void setField(SlidingTileTile[][] field) {
 		if (field == null) {
 			return;
 		}
 
 		this.field = field;
 	}
+
 	/**
-	 * Function to acquire a deepCoppy of its own field 
+	 * Function to acquire a deepCoppy of its own field
+	 * 
 	 * @return field
 	 */
-	public int[][] getField() {
+	public SlidingTileTile[][] getField() {
 		return arrayDeepCoppy(field);
 	}
-	
+
 	/**
-	 * Method to create ad deepCoppy of a field 
+	 * Method to create ad deepCoppy of a field
+	 * 
 	 * @param from
 	 * @return deepCoppy of field.
 	 */
-	protected static int[][] arrayDeepCoppy(int[][] from) {
+	protected static SlidingTileTile [][] arrayDeepCoppy(SlidingTileTile[][] from) {
 		if (from == null) {
 			return null;
 
 		}
 		if (from.length == 0) {
-			return new int[0][];
+			return new SlidingTileTile[0][];
 		}
-		int[][] to = new int[from.length][];
+		SlidingTileTile[][] to = new SlidingTileTile[from.length][];
 
 		for (int i = 0; i < from.length; i++) {
-			to[i] = new int[from[i].length];
+			to[i] = new SlidingTileTile[from[i].length];
 			for (int j = 0; j < from[i].length; j++) {
 				to[i][j] = from[i][j];
 			}
@@ -97,12 +100,11 @@ public class SlidingTileState extends State {
 
 	@Override
 	public Problem getProblem() {
-		return this.problem;
+     		return this.problem;
 	}
 
 	@Override
 	public String toString() {
-
 		return Arrays.deepToString(getField());
 	}
 }

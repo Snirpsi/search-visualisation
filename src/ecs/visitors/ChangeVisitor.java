@@ -1,15 +1,22 @@
 package ecs.visitors;
 
 import java.util.List;
+
+import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
+import ai_algorithm.problems.State;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
+import ai_algorithm.problems.slidingTilePuzzle.SlidingTileTile;
 import application.Globals;
+import ecs.Component;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
 import ecs.components.InputHandler;
+import ecs.components.Position;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
 import ecs.components.graphics.TreeLayouter;
@@ -18,10 +25,15 @@ import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.shape.Shape;
 import settings.Settings;
+import tools.Vector2D;
 import tools.Vector2DInt;
 
 /**
- * This class handles the change of every possible {@link GameObject}.
+ * This class handles the change of every possible {@link GameObject}. The
+ * ChangeVisitor takes the information largely from the {@link GameObject}s and
+ * then tries to apply it to the {@link Component}s. For each GeameObject-Type
+ * an fuction must bee implemented that is specific to the type. Thus the
+ * visualization is adapted to the changes of the game object.
  * 
  * @author Severin
  *
@@ -51,11 +63,20 @@ public class ChangeVisitor extends Visitor {
 		// System.out.println("No Maching component");
 	}
 
-	// Frontier ändern
+	/**
+	 * changes text on {@link Frontier}
+	 * 
+	 * @param frontier
+	 */
 	public void visit(Frontier frontier) {
 		frontier.getComponent(Text.class).setText("Frontier: " + frontier.size());
 	}
 
+	/**
+	 * Changes color of {@link SearchNode}
+	 * 
+	 * @param searchNode
+	 */
 	public void visit(SearchNode searchNode) {
 		super.visit(searchNode);
 		numUpdates++;
@@ -113,7 +134,9 @@ public class ChangeVisitor extends Visitor {
 		}
 
 		// aktiven zustand zeichnen
-		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		//Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		GameObjectRegistry.registerForStateChange(searchNode.getState());
+
 		searchNode.getState().getProblem().getComponent(Graphics.class).show();
 		searchNode.getState().getComponent(Graphics.class).show();
 		searchNode.getPath().getComponent(Graphics.class).show();
@@ -141,6 +164,12 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
+	/**
+	 * Visualizes The grid maze problem and applies colors to it if corresponding
+	 * {@link State} are in {@link Frontier} and {@link ExploredSet}
+	 * 
+	 * @param rasterPathProblem
+	 */
 	public void visit(GridMazeProblem rasterPathProblem) {
 		// Makieren von Frontier und Explored set in dem spezifischen Problem,
 		// ist Problemabhängig ob es geht oder nicht.
@@ -171,6 +200,28 @@ public class ChangeVisitor extends Visitor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param slidingTileState
+	 */
+	public void visit(SlidingTileState slidingTileState) {
+		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
+		for (int y = 0; y < slidingTileState.getSize().y; y++) {
+			for (int x = 0; x < slidingTileState.getSize().x; x++) {
+				if (slidingTileState.getField()[y][x].getNum() == 0) {
+					continue;
+				}
+				slidingTileState.getField()[y][x].setPos(x, y);
+				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
+
+			}
+		}
+	}
+
+	public void visit(SlidingTileTile slider) {
+		slider.getComponent(Graphics.class).show();
 	}
 
 }

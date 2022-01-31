@@ -1,17 +1,57 @@
 package ai_algorithm.problems.slidingTilePuzzle;
 
 import ecs.GameObject;
+import tools.Vector2DInt;
+
 /**
- * Tile to represen one tile 
+ * Tile to represen one tile
+ * 
  * @author Severin
  *
  */
 
-public class SlidingTileTile extends GameObject{
-	int num;
-	int x, y;
-	
-	
+//TODO: DEBUGG
+
+public class SlidingTileTile extends GameObject {
+	protected int num;
+	Vector2DInt pos;
+
+	public SlidingTileTile() {
+		pos = Vector2DInt.ZERO;
+		num = 0;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public void setPos(Vector2DInt pos) {
+		this.pos = pos;
+	}
+
+	public SlidingTileTile(int x, int y, int num) {
+		pos = new Vector2DInt(x, y);
+		this.num = num;
+	}
+
+	public Vector2DInt getPos() {
+		return pos;
+	}
+
+	public void setPos(int x, int y) {
+		pos = new Vector2DInt(x, y);
+	}
+
+	@Override
+	public String toString() {
+		return "" + num;
+
+	}
+
 }
 
 /*
