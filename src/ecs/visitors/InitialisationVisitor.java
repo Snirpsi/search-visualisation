@@ -330,58 +330,101 @@ public class InitialisationVisitor extends Visitor {
 
 //###################################### SLIDING TILE ##################################################//
 
+	// aeltere version ohne animation
 	public void visit(SlidingTileState slidingTileState) {
 		if (slidingTileState.getField() == null) {
-			// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+			Globals.stateRepresentationGraphicsContext.getChildren().clear();
 			return;
 		}
-
-		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
 
 		slidingTileState.addComponent(g);
 
-//		slidingTileState.getComponent(Position.class);
-//		TileMap2D tilemap = new TileMap2D();
-//		slidingTileState.addComponent(tilemap);
+		slidingTileState.getComponent(Position.class);
+		TileMap2D tilemap = new TileMap2D();
+		slidingTileState.addComponent(tilemap);
 
 		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
-		for (int y = 0; y < slidingTileState.getSize().y; y++) {
-			for (int x = 0; x < slidingTileState.getSize().x; x++) {
-//				if (slidingTileState.getField()[y][x].getNum() == 0) {
-//					continue;
-//				}
-				slidingTileState.getField()[y][x].setPos(x, y);
-
-				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
-//				Rectangle r = new Rectangle();
-//				double colval = slidingTileState.getField()[y][x].getNum() / (double) maxval;
-//				colval = Math.min(1.0, Math.max(0.0, colval));
-//				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
+		for (int x = 0; x < slidingTileState.getSize().x; x++) {
+			for (int y = 0; y < slidingTileState.getSize().y; y++) {
+				if (slidingTileState.getField()[y][x].getNum() == 0) {
+					continue;
+				}
+				Rectangle r = new Rectangle();
+				double colval = slidingTileState.getField()[y][x].getNum() / (double) maxval;
+				colval = Math.min(1.0, Math.max(0.0, colval));
+				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
 			}
 		}
-	}
 
-	public void visit(SlidingTileTile stt) {
-		super.visit(stt);
-		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-		stt.addComponent(g);
-		Text text = stt.getComponent(Text.class);
-		text.setText("" + stt.getNum());
-		text.setFontSize(20);
-		stt.getComponent(Position.class).setPosition(stt.getPos().toVector2D().mul(Settings.TILEMAP.TILE_SIZE));
-
-		Circle c = new Circle(0, 0, TILEMAP.TILE_SIZE);
-		stt.getComponent(Sprite.class).addShape(new Circle(0, 0, TILEMAP.TILE_SIZE,Color.ALICEBLUE));
-		
-		
 		g.show();
 	}
 
-	public void visit(SlidingTileProblem stp) {
-		super.visit(stp);
+	public void visit(SlidingTileTile stt) {
 
 	}
+
+	public void visit(SlidingTileProblem stt) {
+
+	}
+
+//+++++++++++++++++++++++++++++++++Hatte funktioneirt wieder freigeben nach abgabe+++++++++++++++++++++//
+//	public void visit(SlidingTileState slidingTileState) {
+//		if (slidingTileState.getField() == null) {
+//			// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+//			return;
+//		}
+//
+//		// Globals.stateRepresentationGraphicsContext.getChildren().clear();
+//		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+//
+//		slidingTileState.addComponent(g);
+//
+////		slidingTileState.getComponent(Position.class);
+////		TileMap2D tilemap = new TileMap2D();
+////		slidingTileState.addComponent(tilemap);
+//
+//		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
+//		for (int y = 0; y < slidingTileState.getSize().y; y++) {
+//			for (int x = 0; x < slidingTileState.getSize().x; x++) {
+////				if (slidingTileState.getField()[y][x].getNum() == 0) {
+////					continue;
+////				}
+//				slidingTileState.getField()[y][x].setPos(x, y);
+//
+//				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
+////				Rectangle r = new Rectangle();
+////				double colval = slidingTileState.getField()[y][x].getNum() / (double) maxval;
+////				colval = Math.min(1.0, Math.max(0.0, colval));
+////				tilemap.insertTile(new Vector2DInt(x, y), r, Color.gray(colval));
+//			}
+//		}
+//	}
+//
+//	public void visit(SlidingTileTile stt) {
+//		super.visit(stt);
+//		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+//		stt.addComponent(g);
+//		Text text = stt.getComponent(Text.class);
+//		text.setText("" + stt.getNum());
+//		text.setFontSize(20);
+//		stt.getComponent(Position.class).setPosition(stt.getPos().toVector2D().mul(Settings.TILEMAP.TILE_SIZE));
+//		stt.getComponent(Animation.class).setDuration(0.1);;
+//		
+//		Circle c = new Circle(0, 0, TILEMAP.TILE_SIZE);
+//		stt.getComponent(Sprite.class).addShape(new Circle(0, 0, TILEMAP.TILE_SIZE,Color.ALICEBLUE));
+//		
+//		
+//		g.show();
+//	}
+//
+//	public void visit(SlidingTileProblem stp) {
+//		super.visit(stp);
+//
+//	}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 }
 
 /*

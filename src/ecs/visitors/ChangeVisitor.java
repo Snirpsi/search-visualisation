@@ -134,7 +134,7 @@ public class ChangeVisitor extends Visitor {
 		}
 
 		// aktiven zustand zeichnen
-		//Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 		GameObjectRegistry.registerForStateChange(searchNode.getState());
 
 		searchNode.getState().getProblem().getComponent(Graphics.class).show();
@@ -206,25 +206,40 @@ public class ChangeVisitor extends Visitor {
 	 * 
 	 * @param slidingTileState
 	 */
-	public void visit(SlidingTileState slidingTileState) {
-		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
-		for (int y = 0; y < slidingTileState.getSize().y; y++) {
-			for (int x = 0; x < slidingTileState.getSize().x; x++) {
-				if (slidingTileState.getField()[y][x].getNum() == 0) {
-					continue;
-				}
-				slidingTileState.getField()[y][x].setPos(x, y);
-				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
 
-			}
-		}
-	}
+	
+	
+	
+//++++++++++++++++++++++Hatte schon funktioniert+++++++++++++++++++++
+//	
+//	
+//	public void visit(SlidingTileState slidingTileState) {
+//		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
+//		for (int y = 0; y < slidingTileState.getSize().y; y++) {
+//			for (int x = 0; x < slidingTileState.getSize().x; x++) {
+//				if (slidingTileState.getField()[y][x].getNum() == 0) {
+//					continue;
+//				}
+//				slidingTileState.getField()[y][x].setPos(x, y);
+//				slidingTileState.getField()[y][x].getComponent(Graphics.class).show();
+//
+//			}
+//		}
+//	}
+//
+//	public void visit(SlidingTileTile slider) {
+//		slider.getComponent(Graphics.class).show();
+//	}
+//
+//
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	public void visit(SlidingTileTile slider) {
-		slider.getComponent(Graphics.class).show();
-	}
 
 }
+
+
+
+
 /*
  * Copyright (c) 2022 Severin Dippold
  * 
