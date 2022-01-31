@@ -336,6 +336,7 @@ public class InitialisationVisitor extends Visitor {
 			Globals.stateRepresentationGraphicsContext.getChildren().clear();
 			return;
 		}
+
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
 
@@ -360,6 +361,7 @@ public class InitialisationVisitor extends Visitor {
 
 		g.show();
 	}
+
 
 	public void visit(SlidingTileTile stt) {
 
