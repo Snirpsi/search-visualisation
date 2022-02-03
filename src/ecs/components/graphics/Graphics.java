@@ -82,7 +82,7 @@ public class Graphics extends Component {
 	public void show() {
 		this.hide();// necessery because in javafx you cant insert duplications of nodes
 		graphicsContext.getChildren().add(pane);
-		// quickfix
+		// quickfix 
 		if (this.graphicsContext == Globals.treeRepresentationGraphicsContext) {
 			this.pane.toBack();
 			// this.pane.setViewOrder(-2000000);
@@ -101,7 +101,7 @@ public class Graphics extends Component {
 	}
 
 	/**
-	 * hides all drawings on a grapcal contect
+	 * hides all drawings on a graphical context
 	 */
 	public void clearPane() {
 		graphicsContext.getChildren().clear();

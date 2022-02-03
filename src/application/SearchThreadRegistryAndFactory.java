@@ -14,7 +14,7 @@ import application.gui.GuiLayout;
 import settings.Settings;
 
 /**
- * This class provides the functionality
+ * This class provides the functionality of creating and managing - even possible multiple - threads
  */
 public class SearchThreadRegistryAndFactory {
 

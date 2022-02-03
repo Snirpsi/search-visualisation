@@ -3,7 +3,11 @@ package application;
 import ai_algorithm.search.SearchAlgorithm;
 import application.debugger.Debugger;
 import settings.Settings;
-
+/**
+ * template for searchthread
+ * @author Severin
+ *
+ */
 public class SearchThread extends Thread {
 
 	SearchAlgorithm search = null;
@@ -33,7 +37,7 @@ public class SearchThread extends Thread {
 		super.interrupt(); // <-- awake from sleep
 		if (Settings.DEBUGMODE)
 			System.out.println("interrupted");
-		this.toBeStoped = true; // <-- bei nächstem debugger aufruf thread an sicherer stelle beenden
+		this.toBeStoped = true; // <-- end thread at safe place next time debugger is called
 		// continues thread to next pause then cleans it up
 		Debugger.resume();
 

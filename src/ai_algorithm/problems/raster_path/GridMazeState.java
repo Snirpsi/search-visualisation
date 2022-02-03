@@ -8,7 +8,7 @@ import tools.Vector2DInt;
 /**
  * @author Severin
  *
- *         Represents state (psoition) in which an agent is located.
+ *         Represents state (position) in which an agent is located.
  *
  */
 public class GridMazeState extends State {

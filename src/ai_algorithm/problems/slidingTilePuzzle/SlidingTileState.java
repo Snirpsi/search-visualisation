@@ -5,7 +5,11 @@ import java.util.Arrays;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import tools.Vector2DInt;
-
+/**
+ * Represents a state in which the puzzle is in
+ * @author Severin
+ *
+ */
 public class SlidingTileState extends State {
 	volatile private SlidingTileTile[][] field;
 	private SlidingTileProblem problem;

@@ -2,16 +2,12 @@ package ecs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 import ecs.components.Animation;
 import ecs.visitors.Visitor;
-import javafx.print.Collation;
 import settings.Settings;
-import tools.Vector2DInt;
 
 /**
  * The {@link GameObject} class is used to represent all Objects assigned to the

@@ -2,8 +2,6 @@ package tools;
 
 import java.util.List;
 
-import tools.Vector2D;
-
 /**
  * The {@link Vector2D} class is used to describe a 2D vector with floating
  * point precision. The class offers many functions for 2D Vector arithmetics.

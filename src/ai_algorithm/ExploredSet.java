@@ -9,7 +9,7 @@ import ecs.GameObject;
 import ecs.GameObjectRegistry;
 
 /**
- * Datenstruktur zum "Markieren" der bereits besuchten Zustände
+ * Data structure for "marking" the already visited states
  * 
  * @author Severin
  *
@@ -87,7 +87,7 @@ public class ExploredSet extends GameObject {
 	}
 
 	/**
-	 * Returns the last inserted node wich corresponds to the state
+	 * Returns the last inserted node which corresponds to the state
 	 * 
 	 * @param state
 	 * @return Node identified via state

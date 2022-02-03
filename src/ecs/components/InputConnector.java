@@ -4,6 +4,13 @@ import ecs.GameObject;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
+/**
+ * makes it easy to connect an {@link InputHandler} component to a javafx
+ * specific object
+ * 
+ * @author Severin
+ *
+ */
 public class InputConnector {
 
 	public static EventHandler<Event> getInputConnector(GameObject o) {

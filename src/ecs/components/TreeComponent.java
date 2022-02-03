@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ecs.Component;
-import javafx.scene.Parent;
 
 // Diese Klasse ist etwas redundant, sie ermöglicht es aber den Komponenten 
 // auf einer Baumstruktur unabhängig von der "echten Baumstruktur" zu navigieren

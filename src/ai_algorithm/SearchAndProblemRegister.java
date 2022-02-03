@@ -8,7 +8,11 @@ import ai_algorithm.search.DepthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.ManualSearch;
 import ai_algorithm.search.RecursiveDepthSearch;
-
+/**
+ * Class to register new problems and Searches
+ * @author Severin
+ *
+ */
 public class SearchAndProblemRegister {
 
 	/**

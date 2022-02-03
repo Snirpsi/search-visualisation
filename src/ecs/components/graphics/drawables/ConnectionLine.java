@@ -11,6 +11,12 @@ import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import tools.Vector2D;
 
+/**
+ * a class that can draw lines between two game objects
+ * 
+ * @author Severin
+ *
+ */
 public class ConnectionLine extends Drawable {
 
 	Line connection;
@@ -39,17 +45,14 @@ public class ConnectionLine extends Drawable {
 		connection.setStartY(0);
 		connection.setEndX(relativVector.x);
 		connection.setEndY(relativVector.y);
-	
+
 	}
-	
-	
 
 	public List<Node> getShapes() {
 		var ret = new LinkedList<Node>();
 		ret.add(connection);
 		return ret;
 	}
-
 
 }
 /*

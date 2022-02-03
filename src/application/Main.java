@@ -5,7 +5,11 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/**
+ * entranc epoint to the search-visualization framework
+ * @author Severin
+ *
+ */
 public class Main extends Application {
 
 	@Override

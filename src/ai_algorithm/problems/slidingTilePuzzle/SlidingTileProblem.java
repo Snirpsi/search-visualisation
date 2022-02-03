@@ -35,7 +35,7 @@ public class SlidingTileProblem extends Problem {
 	 */
 	SlidingTileState startState;
 	/**
-	 * Shuffeled
+	 * shuffled
 	 */
 	SlidingTileState goalState;
 

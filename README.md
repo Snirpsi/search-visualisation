@@ -1,4 +1,161 @@
-# search-visualisation
-The search visualisation framework allows its usern to visualize therir own implementation of search algorithms on different kinds of toy problems.
+# Search-Visualization
 
-Therfore id uses javax, combined with a entity component system to display the datastructures used by the Algorithm.
+Search-Visualization is a framework that can be used to visualize and display AI algorithms form an other thread. 
+AI algorithms and search threads are indipendent of each other. The visualization is done via an entity component system.
+
+## Features!
+
+* Provides Classes for AI and search algorithms
+* Representation and implementation of two games for AI to work with
+* Construction and representation of search trees according to the algorithm data structure
+* GUI with control elements for visualization control 
+* Administrators can view all pictures on one page with the user inserted data
+* Pausing and resuming algorithms
+
+## Dependencies
+
+* Java16
+* JavaFX 17.0.0.1
+
+## Installation
+
+* Install Java16
+	* https://www.java.com/de/download/manual.jsp
+* Install JDK 
+	* https://www.oracle.com/java/technologies/javase/jdk16-archive-downloads.html
+* Install an IDE (e.g. eclipse)
+	* https://www.eclipse.org/downloads/packages/installer
+* Install JavaFX libary into IDE
+	* https://www.eclipse.org/efxclipse/install.html
+	* https://openjfx.io/openjfx-docs/
+* Inport src folder into your IDE
+* Run the `Main.java` class in the `application` package
+
+You should see the following:
+
+![empty search-visualization winow](https://snirps.ddns.net/public/search-visualization/empty.PNG)
+*pichture 2:  empty window*
+
+
+Select a problem and a search-algorithm and press the START-Button. Press the STEP-Button to proceed the visualization.
+![proceeding search-visualization winow](https://snirps.ddns.net/public/search-visualization/proceed.PNG)
+*pichture 2: depth first search*
+
+
+## Implement your own AI-Algorithm
+
+Navigate to the `ai_algorithm` package inside go to `search` create a new class with your own algorithm name e.g. `DepthFirstSearchExplored `. 
+
+![ai algorithm package](https://snirps.ddns.net/public/search-visualization/ai_algorithm-package.png)
+*pchture 3: package organisation*
+
+
+```java
+package ai_algorithm.search;
+
+import ai_algorithm.ExploredSet;
+import ai_algorithm.Frontier;
+import ai_algorithm.Path;
+import ai_algorithm.SearchNode;
+import ai_algorithm.problems.State;
+import application.debugger.Debugger;
+
+public class DepthFirstSearchExplored extends SearchAlgorithm {
+	@Override
+	public Path search() {
+		SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
+		Frontier frontier = new Frontier();
+		ExploredSet explored = new ExploredSet();
+		explored.add(start);
+		Debugger.pause();
+		if (this.problem.isGoalState(start.getState())) {
+			return start.getPath();
+		}
+		frontier.add(start);
+		Debugger.pause();
+		while (!frontier.isEmpty()) {
+			SearchNode node = frontier.removeLast();
+			Debugger.pause();
+			System.out.println(node);
+			for (SearchNode child : node.expand()) {
+				State state = child.getState();
+				if (problem.isGoalState(state)) {
+					Debugger.pause("Finished");
+					return child.getPath();
+				}
+				if (!explored.contains(state)) {
+					Debugger.pause();
+					explored.add(child);
+					frontier.add(child);
+				}
+			}
+		}
+		return null;
+	}
+}
+```
+As a last Step you have to announce your algorithm to the freamework by adding the algorithms name to the Algorithm `SearchAndProblemRegister`.
+```java
+public class SearchAndProblemRegister {
+...
+	public static String[] searchAlgorithms = { //
+			DepthFirstSearch.class.getName(), //
+			DepthFirstSearchExplored.class.getName(), //
+			RecursiveDepthSearch.class.getName(), //
+			BreadthFirstSearch.class.getName(), // <<<your new algorithm
+			BidirectionalBreadthFirstSearch.class.getName(), //
+			ManualSearch.class.getName()//
+	};
+...
+}
+```
+Start the framework and select your new algorithm.
+The result of the algortihm is shown in picture 2.
+
+
+## How does it work
+Like many gameengines the search-visualization framework is based on an **Entity-Component-Sytem**. Threrefore it uses **Game-Objects** to represent all Objects that are part of a search algorithm. The components can be give to a Game-Object to add functionality.
+![EntityComponentSystem](https://snirps.ddns.net/public/search-visualization/EntityComponentSystem.svg)
+*picture 3: components are assigned to Game-Objects*
+
+
+The visualization is seperated into two threads the **Search-Thread** and the **Visualization-Thread**.  The connecting element between them are **visitors** that are managed by the **Game-Object-Registry** to be applyed on the Game-Objects.
+![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/GameObjekt-Lebenszyklus_klein.svg)
+*picture 4: broad architecture of the framework*
+
+For more information on this topic read the full documentation: [full java doc](https://snirps.ddns.net/public/search-visualization/JavaDoc/)
+
+
+## Results
+Here are some pictures generated by the Search-Visualization:
+
+### DepthFirstSearch
+![DepthFirstSearch](https://snirps.ddns.net/public/search-visualization/Algorithmen/Tiefensuche.PNG)
+
+### DepthFirstSearchExploredSet
+![DepthFirstSearchExploredSet](https://snirps.ddns.net/public/search-visualization/Algorithmen/Tiefensuche%20mit%20ExploredSet.PNG)
+
+### RecursiveDepthSearch
+![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Rekursive%20Tiefensuche.PNG)
+
+### BreadthFirstSearch
+![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Breitensuche.PNG)
+
+### BidirectionalBreadthFirstSearch
+![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Bidirektional.PNG)
+
+### ManualSearch
+![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Manuelle-suche.PNG)
+
+
+
+
+## Todos
+
+* [ ] FIX: Sliding Tile Problem Visitors
+* [ ] FIX: overlaping search nodes in some trees 
+* [ ] CHANGE: CSS Theme
+* [ ] CHANGE: Userinterface
+* [ ] ADD: more problems/games
+* [ ] ADD: more search algorithms 
+

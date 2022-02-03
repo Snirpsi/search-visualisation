@@ -233,7 +233,7 @@ public class GridMazeProblem extends Problem {
 	 * Checks if a position is valid/wall or not
 	 * 
 	 * @param pos position
-	 * @return True or Flase depending on whether the position is free or not
+	 * @return true or false depending on whether the position is free or not
 	 */
 	protected boolean testPosition(Vector2DInt pos) {
 		if (pos.x < 0) {

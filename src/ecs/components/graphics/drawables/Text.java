@@ -8,7 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
+/**
+ * superclass all drawing classes shall inherrit 
+ * @author Severin
+ *
+ */
 public class Text extends Drawable {
 
 	private Label text = null;

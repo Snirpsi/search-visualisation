@@ -4,7 +4,7 @@ import ecs.GameObject;
 import tools.Vector2DInt;
 
 /**
- * Tile to represen one tile
+ * Tile to represent one tile in the sliding puzzle
  * 
  * @author Severin
  *
@@ -14,10 +14,8 @@ import tools.Vector2DInt;
 
 public class SlidingTileTile extends GameObject {
 	protected int num;
-	Vector2DInt pos;
 
 	public SlidingTileTile() {
-		pos = Vector2DInt.ZERO;
 		num = 0;
 	}
 
@@ -29,22 +27,11 @@ public class SlidingTileTile extends GameObject {
 		this.num = num;
 	}
 
-	public void setPos(Vector2DInt pos) {
-		this.pos = pos;
-	}
 
 	public SlidingTileTile(int x, int y, int num) {
-		pos = new Vector2DInt(x, y);
 		this.num = num;
 	}
 
-	public Vector2DInt getPos() {
-		return pos;
-	}
-
-	public void setPos(int x, int y) {
-		pos = new Vector2DInt(x, y);
-	}
 
 	@Override
 	public String toString() {

@@ -1,7 +1,6 @@
 package ai_algorithm.search;
 
 import ai_algorithm.Path;
-import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
 
 /**

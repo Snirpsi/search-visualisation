@@ -13,7 +13,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-
+/**
+ * creates the javaFX specific userinterface
+ * @author Severin
+ *
+ */
 public class GuiLayout {
 
 	public static ComboBox<String> problemSelect = new ComboBox<>();

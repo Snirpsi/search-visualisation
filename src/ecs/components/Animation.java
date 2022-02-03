@@ -1,7 +1,6 @@
 package ecs.components;
 
 import ecs.Component;
-
 import tools.Vector2D;
 
 /**

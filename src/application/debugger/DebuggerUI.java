@@ -9,7 +9,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import settings.Settings;
-
+/**
+ * javafx specific ui connector 
+ * @author Severin
+ *
+ */
 public class DebuggerUI {
 	private HBox controlElements;
 	private TextArea console;

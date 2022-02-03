@@ -6,11 +6,14 @@ import javafx.scene.paint.Color;
 public class Settings {
 
 	/**
-	 * Enables or disables the debugg mode.
+	 * Enables or disables the debug mode.
 	 */
 	public final static boolean DEBUGMODE = false;
 
 	static public class TREE_LAYOUT {
+		/**
+		 * minimum distance between leavenodes
+		 */
 		public static final int LEAF_DISTANCE = 20;
 		public static final double PARENT_DISTANCE = 40;
 		public static final double SIBLING_DISTANCE = 1;
@@ -29,11 +32,11 @@ public class Settings {
 	}
 
 	/**
-	 * INITIALISATION_PER_FRAME_MAX_COUNT detemens the maximum of how many
+	 * INITIALISATION_PER_FRAME_MAX_COUNT determents the maximum of how many
 	 * gameObjects will be initialized in one frame.
 	 * 
-	 * a value of 0 disables the visualisation but the console and the search
-	 * algoritm will be executed.
+	 * a value of 0 disables the visualization but the console and the search
+	 * algorithm will be executed.
 	 */
 	public final static int INITIALISATION_PER_FRAME_MAX_COUNT = 1;
 
