@@ -1,6 +1,6 @@
 # Search-Visualization
 
-Search-Visualization is a framework that can be used to visualize and display AI algorithms form an other thread. 
+Search-Visualization is a framework that can be used to visualize and display AI algorithms. The Search-Visualization uses two perspectives to represent the algoritmic behavior. On the left hand side a search tree is drawn that shows wich search node was expanded by the algorithm. On the right hand side the problem with a representation of the state is shown.
 AI algorithms and search threads are indipendent of each other. The visualization is done via an entity component system.
 
 ## Features!
