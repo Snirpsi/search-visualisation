@@ -1,9 +1,10 @@
 # Search-Visualization
 
-Search-Visualization is a framework that can be used to implement and visualize AI algorithms. The Search-Visualization uses two perspectives to represent the algoritmic behavior. On the left hand side a search tree is drawn that shows wich search node was expanded by the algorithm. On the right hand side the problem with a representation of the state is shown.
-AI algorithms and search threads are indipendent of each other. The visualization is done via an entity component system.
+Search-Visualization is a framework that can be used to implement and visualize AI algorithms. The Search-Visualization uses two perspectives to represent the algorithmic behavior. On the left hand side a search tree is drawn that shows which search node was expanded by the algorithm. On the right hand side the problem with a representation of the state is shown.
+AI algorithms and search threads are independent of each other. The visualization is done via an entity component system.
 
-## Features!
+
+## Features:
 
 * Provides Classes for AI and search algorithms
 * Representation and implementation of two games for AI to work with
@@ -12,12 +13,14 @@ AI algorithms and search threads are indipendent of each other. The visualizatio
 * Administrators can view all pictures on one page with the user inserted data
 * Pausing and resuming algorithms
 
-## Dependencies
+
+## Dependencies:
 
 * Java16
 * JavaFX 17.0.0.1
 
-## Installation
+
+## Installation:
 
 * Install Java16
 	* https://www.java.com/de/download/manual.jsp
@@ -28,27 +31,25 @@ AI algorithms and search threads are indipendent of each other. The visualizatio
 * Install JavaFX libary into IDE
 	* https://www.eclipse.org/efxclipse/install.html
 	* https://openjfx.io/openjfx-docs/
-* Inport src folder into your IDE
+* Import src folder into your IDE
 * Run the `Main.java` class in the `application` package
 
 You should see the following:
 
 ![empty search-visualization winow](https://snirps.ddns.net/public/search-visualization/empty.PNG)
-*pichture 2:  empty window*
-
+*Picture 1:  Empty window*
 
 Select a problem and a search-algorithm and press the START-Button. Press the STEP-Button to proceed the visualization.
 ![proceeding search-visualization winow](https://snirps.ddns.net/public/search-visualization/proceed.PNG)
-*pichture 2: depth first search*
+*Picture 2: Depth first search*
 
 
-## Implement your own AI-Algorithm
+## Implement your own AI-Algorithm:
 
 Navigate to the `ai_algorithm` package inside go to `search` create a new class with your own algorithm name e.g. `DepthFirstSearchExplored `. 
 
 ![ai algorithm package](https://snirps.ddns.net/public/search-visualization/ai_algorithm-package.png)
-*pchture 3: package organisation*
-
+*Picture 3: Package organization*
 
 ```java
 package ai_algorithm.search;
@@ -94,7 +95,7 @@ public class DepthFirstSearchExplored extends SearchAlgorithm {
 	}
 }
 ```
-As a last Step you have to announce your algorithm to the freamework by adding the algorithms name to the Algorithm `SearchAndProblemRegister`.
+As a last step you have to announce your algorithm to the framework by adding the algorithms name to the algorithm `SearchAndProblemRegister`.
 ```java
 public class SearchAndProblemRegister {
 ...
@@ -110,52 +111,51 @@ public class SearchAndProblemRegister {
 }
 ```
 Start the framework and select your new algorithm.
-The result of the algortihm is shown in picture 2.
+The result of the algorithm is shown in picture 2.
 
 
-## How does it work
-Like many gameengines the search-visualization framework is based on an **Entity-Component-Sytem**. Threrefore it uses **Game-Objects** to represent all Objects that are part of a search algorithm. The components can be give to a Game-Object to add functionality.
+## How does it work:
+
+Like many Game Engines the Search-Visualization framework is based on an **Entity-Component-Sytem**. Therefore it uses **Game-Objects** to represent all Objects that are part of a search algorithm. The components can be give to a Game-Object to add functionality.
 ![EntityComponentSystem](https://snirps.ddns.net/public/search-visualization/EntityComponentSystem.svg)
-*picture 3: components are assigned to Game-Objects*
+*Picture 3: Components are assigned to Game-Objects*
 
-
-The visualization is seperated into two threads the **Search-Thread** and the **Visualization-Thread**.  The connecting element between them are **visitors** that are managed by the **Game-Object-Registry** to be applyed on the Game-Objects.
+The visualization is seperated into two threads the **Search-Thread** and the **Visualization-Thread**.  The connecting element between them are **visitors** that are managed by the **Game-Object-Registry** to be applied on the Game-Objects.
 ![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/GameObjekt-Lebenszyklus_klein.svg)
-*picture 4: broad architecture of the framework*
+*Picture 4: Broad architecture of the framework*
 
-For more information on this topic read the full documentation: [full java doc](https://snirps.ddns.net/public/search-visualization/JavaDoc/)
+For more information on this topic read the full documentation: [full java doc](https://snirps.ddns.net/public/search-visualization/JavaDoc/).
 
 
 ## Results
+
 Here are some pictures generated by the Search-Visualization:
 
-### DepthFirstSearch
+### Depth First Search
 ![DepthFirstSearch](https://snirps.ddns.net/public/search-visualization/Algorithmen/Tiefensuche.PNG)
 
-### DepthFirstSearchExploredSet
+### Depth First Search with Explored Set
 ![DepthFirstSearchExploredSet](https://snirps.ddns.net/public/search-visualization/Algorithmen/Tiefensuche%20mit%20ExploredSet.PNG)
 
-### RecursiveDepthSearch
+### Recursive Depth Search
 ![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Rekursive%20Tiefensuche.PNG)
 
-### BreadthFirstSearch
+### Breadth First Search
 ![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Breitensuche.PNG)
 
-### BidirectionalBreadthFirstSearch
+### Bidirectional Breadth First Search
 ![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Bidirektional.PNG)
 
-### ManualSearch
+### Manual Search
 ![FrameworkeArchitecture](https://snirps.ddns.net/public/search-visualization/Algorithmen/Manuelle-suche.PNG)
 
 
-
-
-## Todos
+## To-Do's
 
 * [ ] FIX: Sliding Tile Problem Visitors
-* [ ] FIX: overlaping search nodes in some trees 
+* [ ] FIX: Overlapping search nodes in some trees 
 * [ ] CHANGE: CSS Theme
 * [ ] CHANGE: Userinterface
-* [ ] ADD: more problems/games
-* [ ] ADD: more search algorithms 
+* [ ] ADD: More problems/games
+* [ ] ADD: More search algorithms 
 
