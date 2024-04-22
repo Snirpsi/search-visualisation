@@ -3,12 +3,29 @@ package settings;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 
+/**
+ * Settings class contains all the settings for the framework.
+ * The settings are divided into different categories.
+ * The {@link TREE_LAYOUT} contains settings for the layout of the tree.
+ * The {@link TILEMAP} contains settings for the {@link TileMap2D}.
+ * The {@link DEFAULTCOLORS} contains different colors for the visualization.
+ * The {@link DEBUGMODE} enables or disables the debug mode.
+ * The {@link INITIALISATION_PER_FRAME_MAX_COUNT} determents the maximum of how
+ * many gameObjects will be initialized in one frame.
+ * The {@link DEBUGGER_MINIMUM_TIME_DELAY} and
+ * {@link DEBUGGER_MAXIMUM_TIME_DELAY} determents the minimum and maximum delay
+ * the debugger is causing
+ *
+ * @author Severin
+ * @author Alexander (Comments adjusted)
+ */
+
 public class Settings {
 
 	/**
 	 * Enables or disables the debug mode.
 	 */
-	public final static boolean DEBUGMODE = false;
+	public final static boolean DEBUGMODE = true;
 
 	static public class TREE_LAYOUT {
 		/**

@@ -7,6 +7,7 @@ import tools.Vector2D;
  * This class represents the position of a GameObject.
  * 
  * @author Severin
+ * @author Alexander (Comments adjusted)
  *
  */
 public class Position extends Component {
@@ -22,6 +23,11 @@ public class Position extends Component {
 		this.position = new Vector2D();
 	}
 
+	/**
+	 * constructor
+	 *
+	 * @param position
+	 */
 	public Position(Vector2D position) {
 		this.position = position;
 	}
@@ -30,6 +36,11 @@ public class Position extends Component {
 	public void update(float deltaT) {
 	}
 
+	/**
+	 * sets the position of the object
+	 *
+	 * @param position
+	 */
 	public void setPosition(Vector2D position) {
 		if (!this.entity.hasComponent(Animation.class)) {
 			this.position = position;
@@ -49,12 +60,22 @@ public class Position extends Component {
 		animator.startPos = position;
 	}
 
+	/**
+	 * returns the position of the object
+	 *
+	 * @return position
+	 */
 	public Vector2D getPosition() {
 
 		return position;
 
 	}
 
+	/**
+	 * returns the future position of the object
+	 *
+	 * @return position
+	 */
 	public Vector2D getFuturePosition() {
 		if (super.entity.hasComponent(Animation.class)) {
 			return super.entity.getComponent(Animation.class).endPos;
