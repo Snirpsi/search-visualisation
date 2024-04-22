@@ -8,6 +8,8 @@ import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.MapColoringProblem;
+import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
@@ -88,7 +90,7 @@ public class InitialisationVisitor extends Visitor {
 			}
 		}
 
-		// Platzhalter zum prüfen
+		// Platzhalter zum prï¿½fen
 		Component position = new Position(Vector2D.ZERO);
 		gameObject.addComponent(position);
 
@@ -149,7 +151,7 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		TreeLayouter treeLayouter = new TreeLayouter();
-		// für zweiten baum nach ben wachsen
+		// fï¿½r zweiten baum nach ben wachsen
 		if (searchNode.isRoot() && searchNode.metadata.id == 2) {
 			treeLayouter.setGrowUp(true);
 		}
@@ -260,8 +262,8 @@ public class InitialisationVisitor extends Visitor {
 	public void visit(GridMazeState gridMazeState) {
 		super.visit(gridMazeState);
 
-		/// KOMMT NICHT AN PARENT STATES RAN UM LÖSUNG ANZUZEIGEN MUSS ÜBER EXTERNE
-		/// LÖSUNG PASIEREN
+		/// KOMMT NICHT AN PARENT STATES RAN UM Lï¿½SUNG ANZUZEIGEN MUSS ï¿½BER EXTERNE
+		/// Lï¿½SUNG PASIEREN
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
 		Graphics problem = gridMazeState.getProblem().getComponent(Graphics.class);
@@ -362,7 +364,6 @@ public class InitialisationVisitor extends Visitor {
 		g.show();
 	}
 
-
 	public void visit(SlidingTileTile stt) {
 
 	}
@@ -426,6 +427,32 @@ public class InitialisationVisitor extends Visitor {
 //
 //	}
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+//###################################### MAP COLORING ##################################################//
+
+	// TODO: Implement the MapColoringProblem
+
+	/**
+	 * Initializes MapColoringProblem GameObjects
+	 *
+	 * @param mapColoringProlbem
+	 */
+	public void visit(MapColoringProblem mapColoringProlbem) {
+
+	}
+
+	// TODO: Implement the MapColoringState
+
+	/**
+	 * Initializes MapColoringState GameObjects
+	 *
+	 * @param mapColoringState
+	 */
+	public void visit(MapColoringState mapColoringState) {
+
+	}
 
 }
 
