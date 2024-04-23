@@ -46,6 +46,11 @@ import tools.Vector2DInt;
  */
 public class InitialisationVisitor extends Visitor {
 	// default
+	/**
+	 * Initializes all GameObjects
+	 *
+	 * @param gameObject
+	 */
 	public void visit(GameObject gameObject) {
 		super.visit(gameObject);
 		// switch expression mit Pattern matching
@@ -77,6 +82,18 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(stp);
 		}
 
+		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
+			// TODO: Implement the MapColoringProblem
+			this.visit((MapColoringProblem) gameObject);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringState mapColoringState) {
+			// TODO: Implement the MapColoringState
+			this.visit(mapColoringState);
+			return;
+		}
+
 		if (gameObject instanceof Frontier frontier) {
 			this.visit(frontier);
 			return;
@@ -105,6 +122,11 @@ public class InitialisationVisitor extends Visitor {
 	}
 
 	// SearchNode
+	/**
+	 * Initializes SearchNode GameObjects
+	 *
+	 * @param searchNode
+	 */
 	public void visit(SearchNode searchNode) {
 		super.visit(searchNode);
 		searchNode.addComponent(new Position());
@@ -429,29 +451,26 @@ public class InitialisationVisitor extends Visitor {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
 //###################################### MAP COLORING ##################################################//
-
-	// TODO: Implement the MapColoringProblem
 
 	/**
 	 * Initializes MapColoringProblem GameObjects
 	 *
-	 * @param mapColoringProlbem
+	 * @param mapColoringProblem
+	 * @autor Alexander
 	 */
-	public void visit(MapColoringProblem mapColoringProlbem) {
-
+	public void visit(MapColoringProblem mapColoringProblem) {
+		// TODO: Implement the MapColoringProblem
 	}
-
-	// TODO: Implement the MapColoringState
 
 	/**
 	 * Initializes MapColoringState GameObjects
 	 *
 	 * @param mapColoringState
+	 * @autor Alexander
 	 */
 	public void visit(MapColoringState mapColoringState) {
-
+		// TODO: Implement the MapColoringState
 	}
 
 }
