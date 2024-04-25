@@ -4,7 +4,6 @@ import ai_algorithm.specific_algorithm_logic.csp.Constraints;
 import ai_algorithm.specific_algorithm_logic.csp.Domains;
 import ai_algorithm.specific_algorithm_logic.csp.Variables;
 import ai_algorithm.specific_algorithm_logic.csp.csp_content.CSP;
-import ai_algorithm.specific_algorithm_logic.csp.csp_content.Constraint;
 import ai_algorithm.specific_algorithm_logic.csp.csp_content.Domain;
 import ai_algorithm.specific_algorithm_logic.csp.csp_content.Variable;
 
