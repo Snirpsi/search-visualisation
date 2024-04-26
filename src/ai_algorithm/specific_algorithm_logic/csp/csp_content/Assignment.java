@@ -6,6 +6,7 @@ import java.util.*;
  * An assignment assigns values to some or all variables of a CSP.
  *
  * @author Ruediger Lunde
+ * @author Alexander (Comments adjusted)
  */
 public class Assignment<VAR extends Variable, VAL> implements Cloneable {
     /**
@@ -13,37 +14,51 @@ public class Assignment<VAR extends Variable, VAL> implements Cloneable {
      */
     private LinkedHashMap<VAR, VAL> variableToValueMap = new LinkedHashMap<>();
 
+    /**
+     * Creates an empty assignment.
+     */
     public List<VAR> getVariables() {
-        return new ArrayList<>(variableToValueMap.keySet());
-    }
-
-    public VAL getValue(VAR var) {
-        return variableToValueMap.get(var);
-    }
-
-    public VAL add(VAR var, VAL value) {
-        assert value != null;
-        return variableToValueMap.put(var, value);
-    }
-
-    public VAL remove(VAR var) {
-        return variableToValueMap.remove(var);
-    }
-
-    public boolean contains(VAR var) {
-        return variableToValueMap.containsKey(var);
+        return new ArrayList<>(variableToValueMap.keySet()); // get the variables of the assignment
     }
 
     /**
-     * Returns true if this assignment does not violate any constraints of
-     * <code>constraints</code>.
+     * Returns the value assigned to the specified variable.
+     */
+    public VAL getValue(VAR var) {
+        return variableToValueMap.get(var); // get the value of the variable
+    }
+
+    /**
+     * Adds a variable-value pair to this assignment.
+     */
+    public VAL add(VAR var, VAL value) {
+        assert value != null; // null values are not allowed
+        return variableToValueMap.put(var, value); // put the variable and value in the map
+    }
+
+    /**
+     * Removes a variable from this assignment.
+     */
+    public VAL remove(VAR var) {
+        return variableToValueMap.remove(var); // remove the variable from the map
+    }
+
+    /**
+     * Returns true if this assignment contains a value for the specified variable.
+     */
+    public boolean contains(VAR var) {
+        return variableToValueMap.containsKey(var); // return true if the map contains the variable
+    }
+
+    /**
+     * Returns true if this assignment does not violate any constraints of the CSP.
      */
     public boolean isConsistent(List<Constraint<VAR, VAL>> constraints) {
-        return constraints.stream().allMatch(cons -> cons.isSatisfiedWith(this));
+        return constraints.stream().allMatch(cons -> cons.isSatisfiedWith(this)); // return true if all constraints are satisfied
     }
 
     /**
-     * Returns true if this assignment assigns values to every variable of
+     * Returns true if this assignment assigns values to every variable of the CSP.
      * <code>vars</code>.
      */
     public boolean isComplete(List<VAR> vars) {
@@ -51,13 +66,15 @@ public class Assignment<VAR extends Variable, VAL> implements Cloneable {
     }
 
     /**
-     * Returns true if this assignment is consistent as well as complete with
-     * respect to the given CSP.
+     * Returns true if this assignment is consistent as well as complete with respect to the given CSP.
      */
     public boolean isSolution(CSP<VAR, VAL> csp) {
-        return isConsistent(csp.getConstraints()) && isComplete(csp.getVariables());
+        return isConsistent(csp.getConstraints()) && isComplete(csp.getVariables()); // return true if the assignment is consistent and complete
     }
 
+    /**
+     * Returns a deep copy of this object.
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Assignment<VAR, VAL> clone() {
@@ -71,6 +88,9 @@ public class Assignment<VAR extends Variable, VAL> implements Cloneable {
         return result;
     }
 
+    /**
+     * Returns a string representation of this assignment.
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("{");

@@ -33,8 +33,6 @@ public class AllDiffConstraint<VAR extends Variable, VAL> implements Constraint<
     }
 
     /**
-     * Returns the variables of the constraint.
-     *
      * @return The variables of the constraint.
      */
     @Override
