@@ -10,7 +10,7 @@ import ai_algorithm.specific_algorithm_logic.csp.csp_content.Variable;
  * Represents a constraint that requires all variables to have different values.
  *
  * @author notebook.community "https://notebook.community/aimacode/aima-java/notebooks/ConstraintSatisfactionProblems"
- * @author Alexander
+ * @author Alexander (Comments adjusted)
  */
 
 public class AllDiffConstraint_test {
