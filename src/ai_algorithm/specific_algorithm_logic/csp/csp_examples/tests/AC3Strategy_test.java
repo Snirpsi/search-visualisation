@@ -1,4 +1,4 @@
-package ai_algorithm.specific_algorithm_logic.csp.csp_content;
+package ai_algorithm.specific_algorithm_logic.csp.csp_examples.tests;
 
 import ai_algorithm.specific_algorithm_logic.csp.csp_content.*;
 import ai_algorithm.specific_algorithm_logic.csp.csp_content.solver.inference.AC3Strategy;
