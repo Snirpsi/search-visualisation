@@ -36,8 +36,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import settings.Settings;
-import settings.Settings.TILEMAP;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
@@ -82,11 +80,17 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(stp);
 		}
 
-		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
+		if (gameObject instanceof MapColoringProblem mapColoringProblem) {
 			// TODO: Implement the MapColoringProblem
-			this.visit((MapColoringProblem) gameObject);
+			this.visit(mapColoringProblem);
 			return;
 		}
+
+//		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
+//			// TODO: Implement the MapColoringProblem
+//			this.visit((MapColoringProblem) gameObject);
+//			return;
+//		}
 
 		if (gameObject instanceof MapColoringState mapColoringState) {
 			// TODO: Implement the MapColoringState
@@ -460,7 +464,51 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
+		super.visit(mapColoringProblem);
+		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
+
+		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
+
+		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
+
+		TileMap2D tilemap = new TileMap2D();
+		mapColoringProblem.addComponent(tilemap);
+
 		// TODO: Implement the MapColoringProblem
+
+		mapColoringProblem.getComponent(Graphics.class).show();
+
+
+
+		/**
+		// Create an instance of your CSP class
+		CSP csp = new CSP();
+
+		// Add the variables and domains to the CSP
+		for (String var : mapColoringProblem.getVariables()) {
+			Variable variable = new Variable(var);
+			System.out.println(variable);
+			Domain domain = new Domain(mapColoringProblem.getValues());
+//			csp.addVariable(variable); // TODO: fails because wrong type
+//			csp.setDomain(variable, domain);
+		}
+
+		// Add the constraints to the CSP
+		for (Constraint constraint : mapColoringProblem.getConstraints()) {
+			csp.addConstraint(constraint);
+		}
+
+		// Solve the CSP with the AC3 strategy
+//		AC3Strategy ac3 = new AC3Strategy();
+//		boolean isSolvable = ac3.solve(csp); // TODO: wrong implementation
+
+		// Check whether the problem can be solved
+//		if (isSolvable) {
+//			Map<Variable, Values> solution = csp.getSolutions(); // TODO: wrong implementation
+//		} else {
+//			System.out.println("The problem cannot be solved.");
+//		}
+		 */
 	}
 
 	/**
@@ -470,7 +518,28 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringState mapColoringState) {
+		super.visit(mapColoringState);
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+
+		Graphics problem = mapColoringState.getProblem().getComponent(Graphics.class);
+
+		problem.show();
+
+
 		// TODO: Implement the MapColoringState
+
+
+
+		/**
+		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+
+		mapColoringState.addComponent(g);
+
+		mapColoringState.getComponent(Position.class);
+
+		g.show();
+		*/
 	}
 
 }

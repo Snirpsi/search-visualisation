@@ -41,8 +41,11 @@ public class SearchAndProblemRegister {
 			ManualSearch.class.getName()//
 	};
 
+	// TODO: Implementation of CSP-AC3 algorithm alternatives
+
 }
 /*
+ * Copyright (c) 2024 Alexander Ultsch
  * Copyright (c) 2022 Severin Dippold
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy

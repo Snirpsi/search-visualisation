@@ -7,16 +7,13 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
-import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
-import ai_algorithm.problems.slidingTilePuzzle.SlidingTileTile;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
-import ecs.components.InputHandler;
-import ecs.components.Position;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
 import ecs.components.graphics.TreeLayouter;
@@ -25,7 +22,6 @@ import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.shape.Shape;
 import settings.Settings;
-import tools.Vector2D;
 import tools.Vector2DInt;
 
 /**
@@ -52,6 +48,12 @@ public class ChangeVisitor extends Visitor {
 		}
 		if (gameObject instanceof GridMazeProblem p) {
 			this.visit(p);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringProblem m) {
+			// TODO: Schauen ob notwendig
+			this.visit(m);
 			return;
 		}
 
@@ -172,10 +174,10 @@ public class ChangeVisitor extends Visitor {
 	 */
 	public void visit(GridMazeProblem rasterPathProblem) {
 		// Makieren von Frontier und Explored set in dem spezifischen Problem,
-		// ist Problemabhängig ob es geht oder nicht.
+		// ist Problemabhï¿½ngig ob es geht oder nicht.
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
-		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser währe alle frontiers und exploredsets zu
+		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser wï¿½hre alle frontiers und exploredsets zu
 										// bekommen
 			GridMazeState state;
 			try {
@@ -207,9 +209,6 @@ public class ChangeVisitor extends Visitor {
 	 * @param slidingTileState
 	 */
 
-	
-	
-	
 //++++++++++++++++++++++Hatte schon funktioniert+++++++++++++++++++++
 //	
 //	
@@ -233,6 +232,7 @@ public class ChangeVisitor extends Visitor {
 //
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 
 }
