@@ -44,6 +44,7 @@ public class AC3AlgorithmShortImplementation_test {
     // AC3 algorithm implementation
     public static void AC3() {
         fillQueue(); // Fill the queue with the initial arcs
+        System.out.println("\nVariable sequence: " + variables + "\n");
         System.out.println("Initial arcs: " + arcs);
         while (!arcs.isEmpty()) { // While the queue is not empty
             List<String> arcVars = arcs.remove(0); // Remove the first arc from the queue
@@ -62,6 +63,7 @@ public class AC3AlgorithmShortImplementation_test {
                 }
                 System.out.println("Updated arcs: " + arcs);
             }
+            System.out.println("\nBetween assignments: " + assignments + "\n");
         }
         System.out.println("Final assignments: " + assignments);
     }
@@ -70,10 +72,10 @@ public class AC3AlgorithmShortImplementation_test {
      * Fill the queue with the initial arcs
      */
     public static void fillQueue() {
-        for (String var : variables) {
-            int varIndex = variables.indexOf(var);
-            for (String arc : constraints.get(varIndex)) {
-                arcs.add(Arrays.asList(var, arc));
+        for (String var : variables) { // For each variable
+            int varIndex = variables.indexOf(var); // Get the index of the variable
+            for (String arc : constraints.get(varIndex)) { // For each constraint of the variable
+                arcs.add(Arrays.asList(var, arc)); // Add the variable and the arc to the queue
             }
         }
     }
