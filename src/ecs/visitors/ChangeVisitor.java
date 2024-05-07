@@ -52,7 +52,6 @@ public class ChangeVisitor extends Visitor {
 		}
 
 		if (gameObject instanceof MapColoringProblem m) {
-			// TODO: Schauen ob notwendig
 			this.visit(m);
 			return;
 		}
@@ -204,6 +203,7 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
+
 	/**
 	 * 
 	 * @param slidingTileState
@@ -233,6 +233,26 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	public void visit(MapColoringProblem mapColoringProblem) {
+		// TODO: Implement this for the visualisation of the MapColoringProblem
+
+
+
+//		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
+//		TileMap2D t2d = mapColoringProblem.getComponent(TileMap2D.class);
+//		for (SearchNode node : nodes) {
+//			State state = node.getState();
+//			if (t2d.getTile(state) != null) {
+//				if (node == node.metadata.expanding) {
+//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDING);
+//				} else if (node.metadata.isInFrontier) {
+//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.IN_FRONTIER);
+//				} else if (node.metadata.isInExploredSet) {
+//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDED);
+//				}
+//			}
+//		}
+	}
 
 
 }

@@ -1,6 +1,6 @@
 package ecs.visitors;
 
-import java.util.List;
+import java.util.*;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
@@ -80,17 +80,17 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(stp);
 		}
 
-		if (gameObject instanceof MapColoringProblem mapColoringProblem) {
-			// TODO: Implement the MapColoringProblem
-			this.visit(mapColoringProblem);
-			return;
-		}
-
-//		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
+//		if (gameObject instanceof MapColoringProblem mapColoringProblem) {
 //			// TODO: Implement the MapColoringProblem
-//			this.visit((MapColoringProblem) gameObject);
+//			this.visit(mapColoringProblem);
 //			return;
 //		}
+
+		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
+			// TODO: Implement the MapColoringProblem
+			this.visit((MapColoringProblem) gameObject);
+			return;
+		}
 
 		if (gameObject instanceof MapColoringState mapColoringState) {
 			// TODO: Implement the MapColoringState
@@ -471,44 +471,118 @@ public class InitialisationVisitor extends Visitor {
 
 		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
-		TileMap2D tilemap = new TileMap2D();
-		mapColoringProblem.addComponent(tilemap);
+//		int variableCount = mapColoringProblem.getVariables().size();
 
-		// TODO: Implement the MapColoringProblem
+		Sprite sprites = new Sprite();
+		mapColoringProblem.addComponent(sprites);
+
+		List<String> variables = mapColoringProblem.getVariables();
+		List<Circle> circles = new ArrayList<>();
+		Map<String, Circle> variableToCircleMap = new HashMap<>();
+
+		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
+			Circle c = new Circle();
+			c.setRadius(50);
+			c.setCenterX(i * 150 + 150);
+			c.setCenterY(i * 150 + 200);
+			c.setFill(Color.WHITE);
+			c.setStrokeWidth(3);
+			c.setStroke(Color.BLACK);
+			sprites.addShape(c);
+			circles.add(c);
+
+			// Add the circle to the map
+			String variable = variables.get(i);
+			variableToCircleMap.put(variable, c);
+		}
+
+		// Tests
+		System.out.println("variableToCircleMap: " + variableToCircleMap);
+		String variableProblem = "Q";
+		Circle correspondingCircle = variableToCircleMap.get(variableProblem);
+		System.out.println("correspondingCircle: " + correspondingCircle + "Variable: " + variableProblem);
+
+		// Test of the correct position of the circles
+//		for (int i = 0; i < circles.size(); i++) {
+//			System.out.println(circles.get(i).getCenterX() + " " + circles.get(i).getCenterY());
+//		}
+
+
+		// TODO: Implement the position of the circles in the GUI
+		// TODO: Implement the position of the text in the GUI
+		// TODO: Implement the position of the lines in the GUI
+		// TODO: Implement the corresponding colors of the circles from the Domains
+		// TODO: Access the constraints and then implement the edges
+
+
+//			// TODO: Only necessary if I know the position of the circles with the conditions
+//			if(i < (mapColoringProblem.GAMESIZE - 1)) {
+//				Circle c1 = new Circle();
+//				c1.setRadius(50);
+//				c1.setCenterX((i+1) * 150 + 150);
+//				c1.setCenterY((i+1) * 150 + 200);
+//				c1.setFill(Color.WHITE);
+//				c1.setStrokeWidth(3);
+//				c1.setStroke(Color.BLACK);
+//				sprites.addShape(c1);
+//
+//				double angle = Math.atan2(c1.getCenterY() - c.getCenterY(), c1.getCenterX() - c.getCenterX());
+//
+//				Line l = new Line();
+//				l.setStartX(c.getCenterX() + c.getRadius() * Math.cos(angle));
+//				l.setStartY(c.getCenterY() + c.getRadius() * Math.sin(angle));
+//				l.setEndX(c1.getCenterX() - c1.getRadius() * Math.cos(angle));
+//				l.setEndY(c1.getCenterY() - c1.getRadius() * Math.sin(angle));
+////				l.setStartX(c.getCenterX());
+////				l.setStartY(c.getCenterY());
+////				l.setEndX(c.getCenterX() + 100);
+////				l.setEndY(c.getCenterY() + 100);
+//				l.setStrokeWidth(3);
+//				l.setStroke(Color.BLACK);
+//				sprites.addShape(l);
+//			}
+
+//			// TODO: Text Positionierung dosn't work - why? (Only necessary after allocation of the circles)
+//			Text t = new Text();
+//			t.setText("Test");
+////			t.setX(c.getCenterX());
+////			t.setY(c.getCenterY());
+//			t.setX(c.getCenterX() - t.getLayoutBoundsgetWidth() / 2);
+//			t.setY(c.getCenterY() - t.getLayoutBoundsgetHeight() / 4);
+//			t.setFill(Color.BLACK);
+//			sprites.addText(t);
+
+//			Rectangle r = new Rectangle();
+//			r.setWidth(100);
+//			r.setHeight(100);
+//			r.setX(i * 50); // 50 = 100 / 2
+////			r.setY(i * 50); // 50 = 100 / 2
+//			r.setFill(Color.WHITE);
+//			sprites.addShape(r);
+//		}
+
+//		for (String variable : mapColoringProblem.getVariables()) {
+//			Circle circle = new Circle();
+//
+//			List<String> value = mapColoringProblem.getDomainOfVariable(variable);
+//
+//			if(value.size() == 1) {
+//				if (value.equals("red")) {
+//					circle.setFill(Color.RED);
+//				} else if (value.equals("green")) {
+//					circle.setFill(Color.GREEN);
+//				} else if (value.equals("blue")) {
+//					circle.setFill(Color.BLUE);
+//				}
+//				sprites.addShape(circle);
+//			}
+//
+//		}
 
 		mapColoringProblem.getComponent(Graphics.class).show();
 
+		// TODO: Implement this for the visualisation of the MapColoringProblem
 
-
-		/**
-		// Create an instance of your CSP class
-		CSP csp = new CSP();
-
-		// Add the variables and domains to the CSP
-		for (String var : mapColoringProblem.getVariables()) {
-			Variable variable = new Variable(var);
-			System.out.println(variable);
-			Domain domain = new Domain(mapColoringProblem.getValues());
-//			csp.addVariable(variable); // TODO: fails because wrong type
-//			csp.setDomain(variable, domain);
-		}
-
-		// Add the constraints to the CSP
-		for (Constraint constraint : mapColoringProblem.getConstraints()) {
-			csp.addConstraint(constraint);
-		}
-
-		// Solve the CSP with the AC3 strategy
-//		AC3Strategy ac3 = new AC3Strategy();
-//		boolean isSolvable = ac3.solve(csp); // TODO: wrong implementation
-
-		// Check whether the problem can be solved
-//		if (isSolvable) {
-//			Map<Variable, Values> solution = csp.getSolutions(); // TODO: wrong implementation
-//		} else {
-//			System.out.println("The problem cannot be solved.");
-//		}
-		 */
 	}
 
 	/**
@@ -523,10 +597,12 @@ public class InitialisationVisitor extends Visitor {
 
 		Graphics problem = mapColoringState.getProblem().getComponent(Graphics.class);
 
+		// TODO: Implement this for the visualisation of the MapColoringState
+
 		problem.show();
 
 
-		// TODO: Implement the MapColoringState
+
 
 
 

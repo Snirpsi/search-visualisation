@@ -43,6 +43,38 @@ public class Text extends Drawable {
 		}
 	}
 
+	public void setX(double x) {
+		this.text.setTranslateX(x);
+	}
+
+	public void setY(double y) {
+		this.text.setTranslateY(y);
+	}
+
+	public void getLayoutBounds() {
+		this.text.getLayoutBounds();
+	}
+
+	public double getLayoutBoundsgetWidth() {
+		return this.text.getLayoutBounds().getWidth();
+	}
+
+	public double getLayoutBoundsgetHeight() {
+		return this.text.getLayoutBounds().getHeight();
+	}
+
+	public double getWidth() {
+		return this.text.getWidth();
+	}
+
+	public double getHeight() {
+		return this.text.getHeight();
+	}
+
+	public void setFill(Color color) {
+		this.text.setTextFill(color);
+	}
+
 	@Override
 	public List<Node> getShapes() {
 		LinkedList<Node> retList = new LinkedList<>();
