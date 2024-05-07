@@ -13,6 +13,8 @@ import java.util.*;
 
 public class MapColoringProblem extends Problem {
 
+    public final int GAMESIZE; // Number of all variables
+
     static List<String> variables;
     static List<List<String>> constraints;
     static List<List<String>> domain;
@@ -25,6 +27,7 @@ public class MapColoringProblem extends Problem {
 //        this.variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
 //        this.variables = Arrays.asList("NT", "SA", "Q", "NSW", "V", "T", "WA");
         this.variables = Arrays.asList("SA", "Q", "NSW", "V", "T", "WA", "NT");
+        this.GAMESIZE = variables.size();
         this.constraints = Arrays.asList(
                 Arrays.asList("NT", "SA"),
                 Arrays.asList("WA", "SA", "Q"),
@@ -108,6 +111,16 @@ public class MapColoringProblem extends Problem {
     public List<List<String>> getDomain() {
         return domain;
     }
+
+    public List<String> getDomainOfVariable(String variable) {
+        if(!variables.contains(variable)) {
+            return null;
+        }else {
+            int index = variables.indexOf(variable);
+            return domain.get(index);
+        }
+    }
+
 
     public Map<String, String> getAssignments() {
         return assignments;
