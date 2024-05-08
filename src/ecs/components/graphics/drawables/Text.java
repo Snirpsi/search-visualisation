@@ -88,6 +88,9 @@ public class Text extends Drawable {
 		this.text.setTranslateY(-this.text.getHeight() / 2);
 	}
 
+	public String getText() {
+		return this.text.getText();
+	}
 }
 
 /*

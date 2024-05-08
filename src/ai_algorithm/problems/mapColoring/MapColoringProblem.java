@@ -24,9 +24,7 @@ public class MapColoringProblem extends Problem {
     public MapColoringProblem() {
         super();
         // TODO: Add Randomization for the different variables of australia
-//        this.variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
-//        this.variables = Arrays.asList("NT", "SA", "Q", "NSW", "V", "T", "WA");
-        this.variables = Arrays.asList("SA", "Q", "NSW", "V", "T", "WA", "NT");
+        this.variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         this.GAMESIZE = variables.size();
         this.constraints = Arrays.asList(
                 Arrays.asList("NT", "SA"),
@@ -35,8 +33,8 @@ public class MapColoringProblem extends Problem {
                 Arrays.asList("SA", "NT", "NSW"),
                 Arrays.asList("SA", "Q", "V"),
                 Arrays.asList("NSW", "SA"),
-                Arrays.asList("T"),
-                Collections.emptyList()
+                Arrays.asList("T")
+//                Collections.emptyList()
         );
         this.domain = Arrays.asList(
                 new ArrayList<>(Arrays.asList("red", "green", "blue")),
@@ -68,6 +66,7 @@ public class MapColoringProblem extends Problem {
                 }
             }
         }
+        setAssignments(assignments);
     }
 
     private boolean revise(String Xi, String Xj) {
@@ -121,6 +120,9 @@ public class MapColoringProblem extends Problem {
         }
     }
 
+    public static void setAssignments(Map<String, String> assignments) {
+        MapColoringProblem.assignments = assignments;
+    }
 
     public Map<String, String> getAssignments() {
         return assignments;

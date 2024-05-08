@@ -12,6 +12,7 @@ public class AC3AlgorithmShortImplementation_test {
 
     // Declare the variables, constraints, domains, assignments and arcs
     static List<String> variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
+
     static List<List<String>> constraints = Arrays.asList(
             Arrays.asList("NT", "SA"),
             Arrays.asList("WA", "SA", "Q"),
