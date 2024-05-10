@@ -471,8 +471,6 @@ public class InitialisationVisitor extends Visitor {
 
 		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
-//		int variableCount = mapColoringProblem.getVariables().size();
-
 		Sprite sprites = new Sprite();
 		mapColoringProblem.addComponent(sprites);
 
@@ -493,16 +491,15 @@ public class InitialisationVisitor extends Visitor {
 			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
 
 			Circle c = new Circle();
-			c.setRadius(50);
+			c.setRadius(30);
 			c.setCenterX(circleX);
 			c.setCenterY(circleY);
 			c.setFill(Color.WHITE);
-			c.setStrokeWidth(3);
+			c.setStrokeWidth(2);
 			c.setStroke(Color.BLACK);
 			sprites.addShape(c);
 			circles.add(c);
 
-			// TODO: Implement the position of the circles in the GUI
 			// TODO: Implement the position of the text in the GUI
 //			Text t = new Text();
 //			System.out.println(variables.get(i));
@@ -523,11 +520,16 @@ public class InitialisationVisitor extends Visitor {
 		// Get the assignments after AC3 Algorithm has been run
 		Map<String, String> assignments = mapColoringProblem.getAssignments();
 		// Set the colors of the circles according to the assignments
-		for(int i = 0; i < assignments.size(); i++) {
+		for(int i = 0; i < variables.size(); i++) {
 			String variable = variables.get(i);
 			String value = assignments.get(variable);
 			Circle c = variableToCircleMap.get(variable);
-			if(value.equals("red")) {
+			if (value == null) {
+				List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
+				Random random = new Random();
+				Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
+				c.setFill(randomColor);
+			}else if(value.equals("red")) {
 				c.setFill(Color.RED);
 			} else if(value.equals("green")) {
 				c.setFill(Color.GREEN);
@@ -537,89 +539,27 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		List<List<String>> constraints = mapColoringProblem.getConstraints();
-		System.out.println(constraints);
-		// TODO: Abhängig der Constraints mit den jeweiligen Punkten eine Verbindungslinie zeichnen (Wenn 3 Kanten dann 3 Linien) Wenn eine Constraint dann keine Linie
-		for(List<String> constraint : constraints) {
-			System.out.println(constraint);
-			if (constraint.size() == 2) {
-				// TODO: Schreiben von Logik für die Verbindungslinien von 2 Variablen
-				System.out.println("2 Constraint: " + constraint.get(0) + " " + constraint.get(1));
+		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
 
-				String var1 = constraint.get(0);
-				String var2 = constraint.get(1);
+		for(List<String> vcm : variableConstraintsMap) {
+//			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
 
-				Circle circle1 = variableToCircleMap.get(var1);
-				Circle circle2 = variableToCircleMap.get(var2);
+			String var1 = vcm.get(0);
+			String var2 = vcm.get(1);
 
-				Line line = new Line();
-				line.setStartX(circle1.getCenterX());
-				line.setStartY(circle1.getCenterY());
-				line.setEndX(circle2.getCenterX());
-				line.setEndY(circle2.getCenterY());
-				line.setStrokeWidth(3);
-				line.setStroke(Color.BLACK);
+			Circle c1 = variableToCircleMap.get(var1);
+			Circle c2 = variableToCircleMap.get(var2);
 
-				sprites.addShape(line);
-			} else if (constraint.size() == 3) {
-				// TODO: Schreiben von Logik für die Verbindungslinien von 3 Variablen
-				System.out.println("3 Constraint: " + constraint.get(0) + " " + constraint.get(1) + " " + constraint.get(2));
+			Line l = new Line();
+			l.setStartX(c1.getCenterX());
+			l.setStartY(c1.getCenterY());
+			l.setEndX(c2.getCenterX());
+			l.setEndY(c2.getCenterY());
+			l.setStrokeWidth(2);
+			l.setStroke(Color.BLACK);
 
-				String var1 = constraint.get(0);
-				String var2 = constraint.get(1);
-				String var3 = constraint.get(2);
-
-				Circle circle1 = variableToCircleMap.get(var1);
-				Circle circle2 = variableToCircleMap.get(var2);
-				Circle circle3 = variableToCircleMap.get(var3);
-
-				Line line1 = new Line();
-				line1.setStartX(circle1.getCenterX());
-				line1.setStartY(circle1.getCenterY());
-				line1.setEndX(circle2.getCenterX());
-				line1.setEndY(circle2.getCenterY());
-				line1.setStrokeWidth(3);
-				line1.setStroke(Color.BLACK);
-
-				Line line2 = new Line();
-				line2.setStartX(circle2.getCenterX());
-				line2.setStartY(circle2.getCenterY());
-				line2.setEndX(circle3.getCenterX());
-				line2.setEndY(circle3.getCenterY());
-				line2.setStrokeWidth(3);
-				line2.setStroke(Color.BLACK);
-
-				sprites.addShape(line1);
-				sprites.addShape(line2);
-			}
-
+			sprites.addShape(l);
 		}
-
-			// TODO: Only necessary if I know the position of the circles with the conditions
-//			if(i < (mapColoringProblem.GAMESIZE - 1)) {  // Works so far
-//				Circle c1 = new Circle();
-//				c1.setRadius(50);
-//				c1.setCenterX((i+1) * 150 + 150);
-//				c1.setCenterY((i+1) * 150 + 200);
-//				c1.setFill(Color.WHITE);
-//				c1.setStrokeWidth(3);
-//				c1.setStroke(Color.BLACK);
-//				sprites.addShape(c1);
-//
-//				double angle = Math.atan2(c1.getCenterY() - c.getCenterY(), c1.getCenterX() - c.getCenterX());
-//
-//				Line l = new Line();
-//				l.setStartX(c.getCenterX() + c.getRadius() * Math.cos(angle));
-//				l.setStartY(c.getCenterY() + c.getRadius() * Math.sin(angle));
-//				l.setEndX(c1.getCenterX() - c1.getRadius() * Math.cos(angle));
-//				l.setEndY(c1.getCenterY() - c1.getRadius() * Math.sin(angle));
-////				l.setStartX(c.getCenterX());
-////				l.setStartY(c.getCenterY());
-////				l.setEndX(c.getCenterX() + 100);
-////				l.setEndY(c.getCenterY() + 100);
-//				l.setStrokeWidth(3);
-//				l.setStroke(Color.BLACK);
-//				sprites.addShape(l);
-//			}
 
 //			// TODO: Text Positionierung dosn't work - why? (Only necessary after allocation of the circles)
 //			Text t = new Text();
@@ -661,8 +601,6 @@ public class InitialisationVisitor extends Visitor {
 		// TODO: Implement this for the visualisation of the MapColoringState
 
 		problem.show();
-
-
 
 
 
