@@ -18,7 +18,7 @@ public class MapColoringTest {
         System.out.println("Domain: " + problem.getDomain());
         System.out.println("Domain of Variable: " + problem.getDomainOfVariable("V"));
         System.out.println("Assignments: " + problem.getAssignments());
-        System.out.println("Arcs: " + problem.getArcs());
+        System.out.println("Arcs: " + problem.getVariableConstraintsMap());
 
         // MapColoringState Tests
         System.out.println("\n\n");
@@ -33,7 +33,7 @@ public class MapColoringTest {
         problem.runAC3();
         System.out.println("Initial state: " + problem.getInitialState());
         System.out.println("Assignments: " + problem.getAssignments());
-        System.out.println("Arcs: " + problem.getArcs());
+        System.out.println("Arcs GetArcs after runAC3: " + problem.getVariableConstraintsMap());
         System.out.println("\nFinal assignments: " + problem.getAssignments());
 
     }

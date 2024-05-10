@@ -19,6 +19,7 @@ public class MapColoringProblem extends Problem {
     static List<List<String>> constraints;
     static List<List<String>> domain;
     static Map<String, String> assignments;
+    static List<List<String>> variableConstraintsMap = new ArrayList<>();
     static List<List<String>> arcs;
 
     public MapColoringProblem() {
@@ -27,14 +28,13 @@ public class MapColoringProblem extends Problem {
         this.variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         this.GAMESIZE = variables.size();
         this.constraints = Arrays.asList(
-                Arrays.asList("NT", "SA"),
-                Arrays.asList("WA", "SA", "Q"),
-                Arrays.asList("WA", "NT", "Q"),
-                Arrays.asList("SA", "NT", "NSW"),
-                Arrays.asList("SA", "Q", "V"),
-                Arrays.asList("NSW", "SA"),
-                Arrays.asList("T")
-//                Collections.emptyList()
+                Arrays.asList("NT", "SA"), // Constraint from WA
+                Arrays.asList("WA", "SA", "Q"), // Constraint from NT
+                Arrays.asList("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
+                Arrays.asList("SA", "NT", "NSW"), // Constraint from Q
+                Arrays.asList("SA", "Q", "V"), // Constraint from NSW
+                Arrays.asList("NSW", "SA"), // Constraint from V
+                Collections.emptyList() // Constraint from T
         );
         this.domain = Arrays.asList(
                 new ArrayList<>(Arrays.asList("red", "green", "blue")),
@@ -61,6 +61,7 @@ public class MapColoringProblem extends Problem {
                 }
                 List<String> neighbors = new ArrayList<>(constraints.get(dIIndex)); // Get the neighbors of the variable
                 neighbors.remove(arcVars.get(1)); // Remove the second variable from the neighbors
+                // TODO: Quellcode überarbeiten
                 for (String xk : neighbors) { // For each neighbor
                     arcs.add(Arrays.asList(xk, arcVars.get(0))); // Add the neighbor and the first variable to the queue
                 }
@@ -91,12 +92,18 @@ public class MapColoringProblem extends Problem {
     }
 
     private void fillQueue() {
-        for (String var : variables) { // For each variable
-            int varIndex = variables.indexOf(var); // Get the index of the variable
-            for (String arc : constraints.get(varIndex)) { // For each constraint of the variable
-                arcs.add(Arrays.asList(var, arc)); // Add the variable and the arc to the queue
+        for (int i = 0; i < constraints.size(); i++) {
+            List<String> constraint = constraints.get(i);
+            String var = variables.get(i);
+            if (constraint.isEmpty()) {
+                continue; // Skip empty constraints
+            }
+            for (String arc : constraint) {
+                variableConstraintsMap.add(Arrays.asList(var, arc));
+                arcs.add(Arrays.asList(var, arc));
             }
         }
+        setVariableConstraintsMap(variableConstraintsMap);
     }
 
     public List<String> getVariables() {
@@ -128,8 +135,12 @@ public class MapColoringProblem extends Problem {
         return assignments;
     }
 
-    public List<List<String>> getArcs() {
-        return arcs;
+    public void setVariableConstraintsMap(List<List<String>> variableConstraintsMap) {
+        this.variableConstraintsMap = variableConstraintsMap;
+    }
+
+    public List<List<String>> getVariableConstraintsMap() {
+        return variableConstraintsMap;
     }
 
     @Override

@@ -14,14 +14,13 @@ public class AC3AlgorithmShortImplementation_test {
     static List<String> variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
 
     static List<List<String>> constraints = Arrays.asList(
-            Arrays.asList("NT", "SA"),
-            Arrays.asList("WA", "SA", "Q"),
-            Arrays.asList("WA", "NT", "Q"),
-            Arrays.asList("SA", "NT", "NSW"),
-            Arrays.asList("SA", "Q", "V"),
-            Arrays.asList("NSW", "SA"),
-            Arrays.asList("T"),
-            Collections.emptyList()
+            Arrays.asList("NT", "SA"), // Constraint from WA
+            Arrays.asList("WA", "SA", "Q"), // Constraint from NT
+            Arrays.asList("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
+            Arrays.asList("SA", "NT", "NSW"), // Constraint from Q
+            Arrays.asList("SA", "Q", "V"), // Constraint from NSW
+            Arrays.asList("NSW", "SA"), // Constraint from V
+            Collections.emptyList() // Constraint from T
     );
 
     static List<List<String>> d = Arrays.asList(
@@ -36,6 +35,8 @@ public class AC3AlgorithmShortImplementation_test {
 
     static Map<String, String> assignments = new HashMap<>();
     static List<List<String>> arcs = new ArrayList<>();
+
+    static List<List<String>> variableConstraintsMap = new ArrayList<>();
 
     // Main method to run the AC3 algorithm
     public static void main(String[] args) {
@@ -73,12 +74,56 @@ public class AC3AlgorithmShortImplementation_test {
      * Fill the queue with the initial arcs
      */
     public static void fillQueue() {
-        for (String var : variables) { // For each variable
-            int varIndex = variables.indexOf(var); // Get the index of the variable
-            for (String arc : constraints.get(varIndex)) { // For each constraint of the variable
-                arcs.add(Arrays.asList(var, arc)); // Add the variable and the arc to the queue
+        for (int i = 0; i < constraints.size(); i++) {
+//            System.out.println("Filling queue for " + variables.get(i));
+            List<String> constraint = constraints.get(i);
+//            System.out.println("Constraint:" + constraint);
+            String var = variables.get(i);
+//            System.out.println("Var: " + var);
+            if (constraint.isEmpty()) {
+                continue; // Skip empty constraints
+            }
+            for (String arc : constraint) {
+                variableConstraintsMap.add(Arrays.asList(var, arc));
+                arcs.add(Arrays.asList(var, arc));
+//                System.out.println("Arcs: " + arcs);
             }
         }
+//        System.out.println("Arcs: " + arcs);
+
+//        for (int i = 0; i < constraints.size(); i++) {
+//            List<String> constraint = constraints.get(i);
+//            String var = variables.get(i);
+//            if (!variableConstraintsMap.containsKey(var)) {
+//                variableConstraintsMap.put(var, new ArrayList<>());
+//            }
+//            variableConstraintsMap.get(var).addAll(constraint);
+//        }
+//
+//        System.out.println("Variable Constraints Map: " + variableConstraintsMap);
+//        for (String var : variables) { // For each variable
+//            System.out.println("Filling queue for " + var);
+//            List<String> varConstraints = variableConstraintsMap.get(var);
+//            System.out.println("Variable index: " + varConstraints);
+//            if (varConstraints != null) {
+//                for (String arc : varConstraints) { // For each constraint of the variable
+//                    System.out.println("Adding arc: " + Arrays.asList(var, arc));
+//                    arcs.add(Arrays.asList(var, arc)); // Add the variable and the arc to the queue
+//                    System.out.println("Arcs: " + arcs);
+//                }
+//            }
+//        }
+
+//        for (String var : variables) { // For each variable
+//            System.out.println("Filling queue for " + var);
+//            int varIndex = variables.indexOf(var); // Get the index of the variable
+//            System.out.println("Variable index: " + varIndex);
+//            for (String arc : constraints.get(varIndex)) { // For each constraint of the variable
+//                System.out.println("Adding arc: " + Arrays.asList(var, arc));
+//                arcs.add(Arrays.asList(var, arc)); // Add the variable and the arc to the queue
+//                System.out.println("Arcs: " + arcs);
+//            }
+//        }
     }
 
     /**
