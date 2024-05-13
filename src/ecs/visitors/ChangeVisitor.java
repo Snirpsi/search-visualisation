@@ -20,6 +20,7 @@ import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
+import ecs.components.graphics.drawables.MapCSP2D;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
@@ -234,6 +235,8 @@ public class ChangeVisitor extends Visitor {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public void visit(MapColoringProblem mapColoringProblem) {
+
+		System.out.println("MapColoringProblem - ChangeVisitor");
 		// TODO: Implement this for the visualisation of the MapColoringProblem
 
 

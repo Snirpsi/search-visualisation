@@ -28,10 +28,7 @@ import ecs.components.TreeComponent;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
 import ecs.components.graphics.TreeLayouter;
-import ecs.components.graphics.drawables.ConnectionLine;
-import ecs.components.graphics.drawables.Sprite;
-import ecs.components.graphics.drawables.Text;
-import ecs.components.graphics.drawables.TileMap2D;
+import ecs.components.graphics.drawables.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -464,6 +461,7 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
+		System.out.println("MapColoringProblem - InitialisationVisitor");
 		super.visit(mapColoringProblem);
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
@@ -476,12 +474,18 @@ public class InitialisationVisitor extends Visitor {
 
 		List<String> variables = mapColoringProblem.getVariables();
 		List<Circle> circles = new ArrayList<>();
-		Map<String, Circle> variableToCircleMap = new HashMap<>();
 
 		double angleStep = 360.0 / mapColoringProblem.GAMESIZE;
-		double bigCircleRadius = 300; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
-		double bigCircleCenterX = 400; // x-Koordinate des Mittelpunkts des großen Kreises
-		double bigCircleCenterY = 400; // y-Koordinate des Mittelpunkts des großen Kreises
+		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
+		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
+		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
+
+		// Run the AC3 Algorithm
+		// Run must be executed before lines are drawn
+		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
+		MapCSP2D mapCSP2D = new MapCSP2D(mapColoringProblem.GAMESIZE, variableConstraintsMap);
+
 
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
 			double angle = i * angleStep;
@@ -490,100 +494,133 @@ public class InitialisationVisitor extends Visitor {
 			double circleX = bigCircleCenterX + bigCircleRadius * Math.cos(angleRad);
 			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
 
-			Circle c = new Circle();
-			c.setRadius(30);
-			c.setCenterX(circleX);
-			c.setCenterY(circleY);
-			c.setFill(Color.WHITE);
-			c.setStrokeWidth(2);
-			c.setStroke(Color.BLACK);
-			sprites.addShape(c);
-			circles.add(c);
-
-			// TODO: Implement the position of the text in the GUI
-//			Text t = new Text();
-//			System.out.println(variables.get(i));
-////			t.setText(variables.get(i));
-//			t.setText("Test");
-//			System.out.println(t.getText());
-//			t.setX(100);
-//			t.setY(50);
-//			sprites.addText(t);
-
-			// Add the circle to the map
-			String variable = variables.get(i);
-			variableToCircleMap.put(variable, c);
+			mapCSP2D.insertCircle(sprites, circles, variables, i, circleX, circleY);
 		}
 
-		// Run the AC3 Algorithm
-		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
-		// Get the assignments after AC3 Algorithm has been run
+		for(List<String> vcm : mapCSP2D.getVariableConstraintsMap()) {
+			mapCSP2D.fitToMap(vcm, sprites);
+		}
+
+		//Get the assignments after AC3 Algorithm has been run
 		Map<String, String> assignments = mapColoringProblem.getAssignments();
 		// Set the colors of the circles according to the assignments
 		for(int i = 0; i < variables.size(); i++) {
 			String variable = variables.get(i);
 			String value = assignments.get(variable);
-			Circle c = variableToCircleMap.get(variable);
-			if (value == null) {
-				List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
-				Random random = new Random();
-				Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
-				c.setFill(randomColor);
-			}else if(value.equals("red")) {
-				c.setFill(Color.RED);
-			} else if(value.equals("green")) {
-				c.setFill(Color.GREEN);
-			} else if(value.equals("blue")) {
-				c.setFill(Color.BLUE);
-			}
+			mapCSP2D.setCircleColor(variable, value);
 		}
 
-		List<List<String>> constraints = mapColoringProblem.getConstraints();
-		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
-
-		for(List<String> vcm : variableConstraintsMap) {
-//			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
-
-			String var1 = vcm.get(0);
-			String var2 = vcm.get(1);
-
-			Circle c1 = variableToCircleMap.get(var1);
-			Circle c2 = variableToCircleMap.get(var2);
-
-			Line l = new Line();
-			l.setStartX(c1.getCenterX());
-			l.setStartY(c1.getCenterY());
-			l.setEndX(c2.getCenterX());
-			l.setEndY(c2.getCenterY());
-			l.setStrokeWidth(2);
-			l.setStroke(Color.BLACK);
-
-			sprites.addShape(l);
-		}
-
-//			// TODO: Text Positionierung dosn't work - why? (Only necessary after allocation of the circles)
-//			Text t = new Text();
-//			t.setText("Test");
-////			t.setX(c.getCenterX());
-////			t.setY(c.getCenterY());
-//			t.setX(c.getCenterX() - t.getLayoutBoundsgetWidth() / 2);
-//			t.setY(c.getCenterY() - t.getLayoutBoundsgetHeight() / 4);
-//			t.setFill(Color.BLACK);
-//			sprites.addText(t);
-
-//			Rectangle r = new Rectangle();
-//			r.setWidth(100);
-//			r.setHeight(100);
-//			r.setX(i * 50); // 50 = 100 / 2
-////			r.setY(i * 50); // 50 = 100 / 2
-//			r.setFill(Color.WHITE);
-//			sprites.addShape(r);
+// ####################################### 		\/ IT WORKS        #######################################
+//		Sprite sprites = new Sprite();
+//		mapColoringProblem.addComponent(sprites);
+//
+//		List<String> variables = mapColoringProblem.getVariables();
+//		List<Circle> circles = new ArrayList<>();
+//		Map<String, Circle> variableToCircleMap = new HashMap<>();
+//
+//		double angleStep = 360.0 / mapColoringProblem.GAMESIZE;
+//		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
+//		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
+//		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
+//
+//		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
+//			double angle = i * angleStep;
+//			double angleRad = Math.toRadians(angle);
+//
+//			double circleX = bigCircleCenterX + bigCircleRadius * Math.cos(angleRad);
+//			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
+//
+//			Circle c = new Circle();
+//			c.setRadius(30);
+//			c.setCenterX(circleX);
+//			c.setCenterY(circleY);
+//			c.setFill(Color.WHITE);
+//			c.setStrokeWidth(2);
+//			c.setStroke(Color.BLACK);
+//			sprites.addShape(c);
+//			circles.add(c);
+//
+//			// TODO: Implement the position of the text in the GUI
+////			Text t = new Text();
+////			System.out.println(variables.get(i));
+//////			t.setText(variables.get(i));
+////			t.setText("Test");
+////			System.out.println(t.getText());
+////			t.setX(100);
+////			t.setY(50);
+////			sprites.addText(t);
+//
+//			// Add the circle to the map
+//			String variable = variables.get(i);
+//			variableToCircleMap.put(variable, c);
 //		}
+//
+//		// Run the AC3 Algorithm
+//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+//		// Get the assignments after AC3 Algorithm has been run
+//		Map<String, String> assignments = mapColoringProblem.getAssignments();
+//		// Set the colors of the circles according to the assignments
+//		for(int i = 0; i < variables.size(); i++) {
+//			String variable = variables.get(i);
+//			String value = assignments.get(variable);
+//			Circle c = variableToCircleMap.get(variable);
+//			if (value == null) {
+//				List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
+//				Random random = new Random();
+//				Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
+//				c.setFill(randomColor);
+//			}else if(value.equals("red")) {
+//				c.setFill(Color.RED);
+//			} else if(value.equals("green")) {
+//				c.setFill(Color.GREEN);
+//			} else if(value.equals("blue")) {
+//				c.setFill(Color.BLUE);
+//			}
+//		}
+//
+//		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
+//
+//		for(List<String> vcm : variableConstraintsMap) {
+////			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
+//
+//			String var1 = vcm.get(0);
+//			String var2 = vcm.get(1);
+//
+//			Circle c1 = variableToCircleMap.get(var1);
+//			Circle c2 = variableToCircleMap.get(var2);
+//
+//			Line l = new Line();
+//			l.setStartX(c1.getCenterX());
+//			l.setStartY(c1.getCenterY());
+//			l.setEndX(c2.getCenterX());
+//			l.setEndY(c2.getCenterY());
+//			l.setStrokeWidth(2);
+//			l.setStroke(Color.BLACK);
+//
+//			sprites.addShape(l);
+//		}
+//
+////			// TODO: Text Positionierung dosn't work - why? (Only necessary after allocation of the circles)
+////			Text t = new Text();
+////			t.setText("Test");
+//////			t.setX(c.getCenterX());
+//////			t.setY(c.getCenterY());
+////			t.setX(c.getCenterX() - t.getLayoutBoundsgetWidth() / 2);
+////			t.setY(c.getCenterY() - t.getLayoutBoundsgetHeight() / 4);
+////			t.setFill(Color.BLACK);
+////			sprites.addText(t);
+//
+////			Rectangle r = new Rectangle();
+////			r.setWidth(100);
+////			r.setHeight(100);
+////			r.setX(i * 50); // 50 = 100 / 2
+//////			r.setY(i * 50); // 50 = 100 / 2
+////			r.setFill(Color.WHITE);
+////			sprites.addShape(r);
+////		}
+// ####################################### 		/\ Until here        #######################################
 
 		mapColoringProblem.getComponent(Graphics.class).show();
-
-		// TODO: Implement this for the visualisation of the MapColoringProblem
-
 	}
 
 	/**
@@ -597,6 +634,8 @@ public class InitialisationVisitor extends Visitor {
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
 		Graphics problem = mapColoringState.getProblem().getComponent(Graphics.class);
+
+		System.out.println("MapColoringState - InitialisationVisitor");
 
 		// TODO: Implement this for the visualisation of the MapColoringState
 

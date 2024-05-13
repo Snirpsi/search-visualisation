@@ -41,7 +41,7 @@ public class TreeLayouter extends Component {
 	public void layout2() {
 		// Source -->
 		// https://stackoverflow.com/questions/33328245/radial-tree-layout-algorithm
-		// Benötigte Komponenten holen
+		// Benï¿½tigte Komponenten holen
 		// System.out.println("BAUM UPDATE LAYOUT");
 		TreeComponent nodeComp = super.entity.getComponent(TreeComponent.class);
 		Position pos = super.entity.getComponent(Position.class);
@@ -69,7 +69,7 @@ public class TreeLayouter extends Component {
 					0);
 			Vector2D neuRotPos = neuPos.rotate(childTreeLayouter.angle);
 			childTreeLayouter.setPosition(neuRotPos.add(OFFSET));
-			// BENÖTIGT WENN Baum zu einem späteren zeitpunkt Struktur grundlegend ändert
+			// BENï¿½TIGT WENN Baum zu einem spï¿½teren zeitpunkt Struktur grundlegend ï¿½ndert
 			childTreeLayouter.layout();
 
 		}
