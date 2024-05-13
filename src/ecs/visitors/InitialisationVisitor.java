@@ -463,6 +463,7 @@ public class InitialisationVisitor extends Visitor {
 	public void visit(MapColoringProblem mapColoringProblem) {
 		System.out.println("MapColoringProblem - InitialisationVisitor");
 		super.visit(mapColoringProblem);
+		mapColoringProblem.fillQueue();
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
 		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
@@ -482,10 +483,9 @@ public class InitialisationVisitor extends Visitor {
 
 		// Run the AC3 Algorithm
 		// Run must be executed before lines are drawn
-		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
 		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
 		MapCSP2D mapCSP2D = new MapCSP2D(mapColoringProblem.GAMESIZE, variableConstraintsMap);
-
 
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
 			double angle = i * angleStep;
@@ -505,9 +505,11 @@ public class InitialisationVisitor extends Visitor {
 		Map<String, String> assignments = mapColoringProblem.getAssignments();
 		// Set the colors of the circles according to the assignments
 		for(int i = 0; i < variables.size(); i++) {
-			String variable = variables.get(i);
-			String value = assignments.get(variable);
-			mapCSP2D.setCircleColor(variable, value);
+			if (!assignments.isEmpty()){
+				String variable = variables.get(i);
+				String value = assignments.get(variable);
+				mapCSP2D.setCircleColor(variable, value);
+			}
 		}
 
 // ####################################### 		\/ IT WORKS        #######################################

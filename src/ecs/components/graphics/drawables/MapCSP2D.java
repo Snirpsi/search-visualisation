@@ -83,9 +83,6 @@ public class MapCSP2D extends Drawable {
         // Add the circle to the map
         String v = variable.get(index);
         this.variableToCircleMap.put(v, c);
-
-        System.out.println(variableConstraintsMap);
-        System.out.println(getVariableConstraintsMap());
     }
 
     /**

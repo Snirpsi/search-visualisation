@@ -50,7 +50,7 @@ public class MapColoringProblem extends Problem {
     }
 
     public void runAC3() {
-        fillQueue(); // Fill the queue with the initial arcs
+//        fillQueue(); // Fill the queue with the initial arcs
         while (!arcs.isEmpty()) { // While the queue is not empty
             List<String> arcVars = arcs.remove(0); // Remove the first arc from the queue
             if (revise(arcVars.get(0), arcVars.get(1))) { // Revise the domain of the arc
@@ -91,7 +91,7 @@ public class MapColoringProblem extends Problem {
         return revised;
     }
 
-    private void fillQueue() {
+    public void fillQueue() {
         for (int i = 0; i < constraints.size(); i++) {
             List<String> constraint = constraints.get(i);
             String var = variables.get(i);
