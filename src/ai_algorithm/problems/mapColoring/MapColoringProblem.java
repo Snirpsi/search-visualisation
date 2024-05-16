@@ -3,6 +3,7 @@ package ai_algorithm.problems.mapColoring;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 
+import javax.net.ssl.SSLContext;
 import java.util.*;
 
 /**
@@ -15,19 +16,26 @@ public class MapColoringProblem extends Problem {
 
     public final int GAMESIZE; // Number of all variables
 
-    static List<String> variables;
-    static List<List<String>> constraints;
-    static List<List<String>> domain;
-    static Map<String, String> assignments;
-    static List<List<String>> variableConstraintsMap = new ArrayList<>();
-    static List<List<String>> arcs;
+    List<String> variables;
+    List<List<String>> constraints;
+    List<List<String>> domain;
+    Map<String, String> assignments;
+    List<List<String>> variableConstraintsEdges = new ArrayList<>();
+
+    List<List<String>> variableConstraintsDomain = new ArrayList<>();
+    List<List<String>> arcs;
+
+    String start;
+
+    String goal;
 
     public MapColoringProblem() {
         super();
+
         // TODO: Add Randomization for the different variables of australia
-        this.variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
-        this.GAMESIZE = variables.size();
-        this.constraints = Arrays.asList(
+        variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
+        GAMESIZE = variables.size();
+        constraints = Arrays.asList(
                 Arrays.asList("NT", "SA"), // Constraint from WA
                 Arrays.asList("WA", "SA", "Q"), // Constraint from NT
                 Arrays.asList("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
@@ -36,17 +44,18 @@ public class MapColoringProblem extends Problem {
                 Arrays.asList("NSW", "SA"), // Constraint from V
                 Collections.emptyList() // Constraint from T
         );
-        this.domain = Arrays.asList(
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue")),
-                new ArrayList<>(Arrays.asList("red", "green", "blue"))
-        );
-        this.assignments = new HashMap<>();
-        this.arcs = new ArrayList<>();
+
+        assignments = new HashMap<>();
+        arcs = new ArrayList<>();
+
+        domain = new ArrayList<>();
+        for (int i = 0; i < GAMESIZE; i++) {
+            domain.add(Arrays.asList("Red", "Green", "Blue"));
+        }
+
+        fillQueue();
+
+        start = variables.get(0);
     }
 
     public void runAC3() {
@@ -99,11 +108,15 @@ public class MapColoringProblem extends Problem {
                 continue; // Skip empty constraints
             }
             for (String arc : constraint) {
-                variableConstraintsMap.add(Arrays.asList(var, arc));
+                variableConstraintsEdges.add(Arrays.asList(var, arc));
                 arcs.add(Arrays.asList(var, arc));
             }
         }
-        setVariableConstraintsMap(variableConstraintsMap);
+
+        for (int i = 0; i < domain.size(); i++) {
+            variableConstraintsDomain.add(Arrays.asList(variables.get(i), domain.get(i).toString()));
+        }
+
     }
 
     public List<String> getVariables() {
@@ -127,45 +140,78 @@ public class MapColoringProblem extends Problem {
         }
     }
 
-    public static void setAssignments(Map<String, String> assignments) {
-        MapColoringProblem.assignments = assignments;
+    public void setAssignments(Map<String, String> assignment) {
+        this.assignments = assignment;
     }
 
     public Map<String, String> getAssignments() {
         return assignments;
     }
 
-    public void setVariableConstraintsMap(List<List<String>> variableConstraintsMap) {
-        this.variableConstraintsMap = variableConstraintsMap;
+    public void setVariableConstraintsEdges(List<List<String>> variableConstraintsEdges) {
+        this.variableConstraintsEdges = variableConstraintsEdges;
     }
 
-    public List<List<String>> getVariableConstraintsMap() {
-        return variableConstraintsMap;
+    public List<List<String>> getVariableConstraintsEdges() {
+        System.out.println(variableConstraintsEdges);
+        return this.variableConstraintsEdges;
     }
 
     @Override
     public State getInitialState() {
-        return new MapColoringState(this, assignments);
+        return new MapColoringState(this, start);
+    }
+
+    @Override
+    public State getGoalState() {
+        return new MapColoringState(this, goal);
     }
 
     @Override
     public boolean isGoalState(State state) {
+        MapColoringState stateM = (MapColoringState) state;
+        // TODO: Nacharbeiten. Für jede Domäne darf es nur eine Variable geben außer für Variablen ohne Constraints wie bei T
+        if(stateM.getPosition().equals(goal)){
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<String> getActions(State state) {
-        return null;
+        LinkedList<String> l = new LinkedList<String>();
+
+        //rpstate.getPosition -> hoffentlich Schritt 1 WA
+
+        if (state instanceof MapColoringState rpState){
+            for (List<String> vce : arcs){
+                if (vce.get(0).equals(rpState.getPosition())){
+                    l.add(vce.get(1));
+                }
+            }
+        }
+        return l;
     }
 
     @Override
     public State getSuccessor(State state, String action) {
-        return null;
+        MapColoringState stateM = (MapColoringState) state;
+        String oldPos = stateM.getPosition();
+        String neuPos = oldPos;
+        MapColoringState result = new MapColoringState(this, neuPos);
+
+        //        String neuPos = stateM.get
+
+//        Möglicherweise action = NT
+        neuPos = action;
+        result.setPosition(neuPos);
+
+        return result;
     }
 
     @Override
     public double getCost(State state, String action, State succ) {
-        return 0;
+        return 1;
     }
 }
 

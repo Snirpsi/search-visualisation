@@ -20,22 +20,26 @@ public class MapColoringState extends State {
     /**
      *  reference to the problem
      */
-    private MapColoringProblem problem; // reference to the problem
+    private MapColoringProblem problem;
 
     /**
      *  reference to the assignments
      */
-    private Map<String, String> assignments; // variable -> color
+    private String position;
 
     /**
      * initializes state with problem and assignments
      *
      * @param problem
-     * @param assignments
+     * @param position
      */
-    public MapColoringState(MapColoringProblem problem, Map<String, String> assignments) {
+    public MapColoringState(MapColoringProblem problem, String position) {
         this.problem = problem;
-        this.setAssignments(assignments);
+        this.setPosition(position);
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     /**
@@ -44,8 +48,12 @@ public class MapColoringState extends State {
      * @return problem
      */
     @Override
-    public Problem getProblem() {
+    public MapColoringProblem getProblem() {
         return this.problem;
+    }
+
+    public String getPosition() {
+        return position;
     }
 
     /**
@@ -53,18 +61,18 @@ public class MapColoringState extends State {
      *
      * @return string representation of the state
      */
-    public Map<String, String> getAssignments() {
-        return assignments;
-    }
+//    public Map<String, String> getAssignments() {
+//        return assignments;
+//    }
 
     /**
      * Set the assignments -> variable -> color // Vermutlich nicht notwendig
      *
      * @param assignments
      */
-    private void setAssignments(Map<String, String> assignments) {
-        this.assignments = assignments;
-    }
+//    private void setAssignments(Map<String, String> assignments) {
+//        this.assignments = assignments;
+//    }
 
     /**
      *  hash function
@@ -73,7 +81,8 @@ public class MapColoringState extends State {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(assignments);
+//        return Objects.hash(assignments);
+        return Objects.hash(position);
     }
 
     /**
@@ -91,7 +100,7 @@ public class MapColoringState extends State {
         if (getClass() != obj.getClass())
             return false;
         MapColoringState other = (MapColoringState) obj;
-        return Objects.equals(assignments, other.assignments);
+        return Objects.equals(position, other.position);
     }
 
     /**
@@ -101,7 +110,7 @@ public class MapColoringState extends State {
      */
     @Override
     public String toString() {
-        return assignments.toString();
+        return position.toString();
     }
 
 }

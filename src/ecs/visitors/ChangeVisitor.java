@@ -204,7 +204,6 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
-
 	/**
 	 * 
 	 * @param slidingTileState
@@ -242,16 +241,16 @@ public class ChangeVisitor extends Visitor {
 
 
 //		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
-//		TileMap2D t2d = mapColoringProblem.getComponent(TileMap2D.class);
+//		MapCSP2D mapCSP2D = mapColoringProblem.getComponent(MapCSP2D.class);
 //		for (SearchNode node : nodes) {
 //			State state = node.getState();
-//			if (t2d.getTile(state) != null) {
+//			if (mapCSP2D.getShapes(state) != null) {
 //				if (node == node.metadata.expanding) {
-//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDING);
+//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDING);
 //				} else if (node.metadata.isInFrontier) {
-//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.IN_FRONTIER);
+//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.IN_FRONTIER);
 //				} else if (node.metadata.isInExploredSet) {
-//					t2d.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDED);
+//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDED);
 //				}
 //			}
 //		}

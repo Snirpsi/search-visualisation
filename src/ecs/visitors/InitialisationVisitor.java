@@ -221,7 +221,7 @@ public class InitialisationVisitor extends Visitor {
 	/**
 	 * Initializes GridMazeProblem GameObjects
 	 * 
-	 * @param frontier
+	 * @param gridMazeProblem
 	 */
 	public void visit(GridMazeProblem gridMazeProblem) {
 		super.visit(gridMazeProblem);
@@ -462,8 +462,9 @@ public class InitialisationVisitor extends Visitor {
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
 		System.out.println("MapColoringProblem - InitialisationVisitor");
+		// TODO: Erstellung der Karte und der Kreise als Ausgangspunkt
 		super.visit(mapColoringProblem);
-		mapColoringProblem.fillQueue();
+//		mapColoringProblem.fillQueue(); // Wird aktuell doppelt befüllt
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
 		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
@@ -484,7 +485,7 @@ public class InitialisationVisitor extends Visitor {
 		// Run the AC3 Algorithm
 		// Run must be executed before lines are drawn
 //		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
-		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsMap();
+		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
 		MapCSP2D mapCSP2D = new MapCSP2D(mapColoringProblem.GAMESIZE, variableConstraintsMap);
 
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
@@ -632,30 +633,33 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringState mapColoringState) {
+		System.out.println("MapColoringState - InitialisationVisitor");
 		super.visit(mapColoringState);
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
 		Graphics problem = mapColoringState.getProblem().getComponent(Graphics.class);
 
-		System.out.println("MapColoringState - InitialisationVisitor");
-
-		// TODO: Implement this for the visualisation of the MapColoringState
-
 		problem.show();
 
+		Component position = new Position(Vector2D.ZERO);
+		mapColoringState.addComponent(position);
 
+		// TODO: Implement this for the visualisation of the MapColoringState
+		// TODO: hier fehlt noch etwas -> Beispiel ist das untere
+		// Circle stateC = new Circle();
+		// gridMazeState.getProblem().getComponent(TileMap2D.class).fitToTilemap(gridMazeState.getPosition(), stateC);
+		// stateC.setRadius(4);
+		// stateC.setFill(Color.CYAN);
 
-
-		/**
-		Globals.stateRepresentationGraphicsContext.getChildren().clear();
-		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-
-		mapColoringState.addComponent(g);
-
-		mapColoringState.getComponent(Position.class);
-
-		g.show();
-		*/
+		// TODO: Folgendes zeichnet komplett komische Kreise -> Warum?
+//		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
+//		mapColoringState.addComponent(g);
+//
+//		Sprite sprite = new Sprite();
+//		mapColoringState.addComponent(sprite);
+//		sprite.addShape(new Circle(100, 100, 100));
+//
+//		g.show();
 	}
 
 }
