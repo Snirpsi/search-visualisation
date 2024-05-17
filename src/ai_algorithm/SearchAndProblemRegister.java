@@ -3,12 +3,8 @@ package ai_algorithm;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
-import ai_algorithm.search.BidirectionalBreadthFirstSearch;
-import ai_algorithm.search.BreadthFirstSearch;
-import ai_algorithm.search.DepthFirstSearch;
-import ai_algorithm.search.DepthFirstSearchExplored;
-import ai_algorithm.search.ManualSearch;
-import ai_algorithm.search.RecursiveDepthSearch;
+import ai_algorithm.search.*;
+
 /**
  * Class to register new problems and Searches
  * @author Severin
@@ -38,7 +34,8 @@ public class SearchAndProblemRegister {
 			RecursiveDepthSearch.class.getName(), //
 			BreadthFirstSearch.class.getName(), //
 			BidirectionalBreadthFirstSearch.class.getName(), //
-			ManualSearch.class.getName()//
+			ManualSearch.class.getName(),//
+			ArcConsistancy3Search.class.getName()//
 	};
 
 	// TODO: Implementation of CSP-AC3 algorithm alternatives

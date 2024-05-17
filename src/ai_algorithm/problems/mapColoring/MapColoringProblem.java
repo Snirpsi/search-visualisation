@@ -129,6 +129,7 @@ public class MapColoringProblem extends Problem {
                 arcs.add(Arrays.asList(var, arc));
             }
         }
+//        System.out.println("Arcs: " + arcs);
 
         // Not necessary anymore
 //        for (int i = 0; i < domain.size(); i++) {
@@ -244,6 +245,7 @@ public class MapColoringProblem extends Problem {
         if (state instanceof MapColoringState rpState){
             for (List<String> vce : arcs){
                 if (vce.get(0).equals(rpState.getPosition())){
+
                     l.add(vce.get(1));
                 }
             }
@@ -260,11 +262,11 @@ public class MapColoringProblem extends Problem {
         MapColoringState stateM = (MapColoringState) state;
         String oldPos = stateM.getPosition();
         String neuPos = oldPos;
+
         MapColoringState result = new MapColoringState(this, neuPos);
-
         //        String neuPos = stateM.get
+        //        Möglicherweise action = NT
 
-//        Möglicherweise action = NT
         neuPos = action;
         result.setPosition(neuPos);
 

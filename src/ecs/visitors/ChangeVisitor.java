@@ -279,56 +279,6 @@ public class ChangeVisitor extends Visitor {
 					}
 				}
 			}
-
-
-//		Map<String, String> assignments = mapColoringProblem.getAssignments();
-//		// Set the colors of the circles according to the assignments
-//		for(int i = 0; i < variables.size(); i++) {
-//			if (!assignments.isEmpty()){
-//				String variable = variables.get(i);
-//				String value = assignments.get(variable);
-//				Circle c = variableToCircleMap.get(variable);
-//				if (value == null) {
-//					List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
-//					Random random = new Random();
-//					Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
-//					c.setFill(randomColor);
-//				}else if(value.equals("red")) {
-//					c.setFill(Color.RED);
-//				} else if(value.equals("green")) {
-//					c.setFill(Color.GREEN);
-//				} else if(value.equals("blue")) {
-//					c.setFill(Color.BLUE);
-//				}
-//			}
-//		}
-
-
-//			for (int i = 0; i < variableConstraintsDomain.size(); i++) {
-//				String vcd = variableConstraintsDomain.get(i).get(0);
-//				String n = nodes.get(i).getState().toString();
-//
-//				System.out.println("VariableConstraintsDomain: " + variableConstraintsDomain.get(i));
-//				System.out.println("VCD.get(i).get(0) : " + variableConstraintsDomain.get(i).get(0));
-//				System.out.println("Nodes.get(i).getState() : " + nodes.get(i).getState());
-//				if (vcd.equals(n)){
-//					System.out.println(variableConstraintsDomain.get(i).get(1));
-////					for (int j = 0; j < variableConstraintsDomain.get(i).get(0); j++) {
-////						mapCSP2D.setCircleColor(variableConstraintsDomain.get(i).get(0), variableConstraintsDomain.get(i).get(1));
-////					}
-//				}
-//			}
-			// Set the colors of the circles according to the assignments
-//			for(int i = 0; i < variables.size(); i++) {
-//				if (!assignments.isEmpty()){
-//					String variable = variables.get(i);
-//					String value = assignments.get(variable);
-//					mapCSP2D.setCircleColor(variable, value);
-//				}
-//			}
-
-//			mapCSP2D.setCircleColor();
-
 		}
 
 

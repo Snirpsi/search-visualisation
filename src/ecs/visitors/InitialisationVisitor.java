@@ -485,7 +485,7 @@ public class InitialisationVisitor extends Visitor {
 
 		// Run the AC3 Algorithm
 		// Run must be executed before lines are drawn
-		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
 		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
 
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {

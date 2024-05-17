@@ -11,7 +11,7 @@ public class MapColoringTest {
 
         System.out.println(problem.GAMESIZE);
         System.out.println(problem.arcs);
-        System.out.println(problem.variableConstraintsEdges);
+        System.out.println("variableConstraintsEdges: " + problem.variableConstraintsEdges);
         System.out.println(problem.start);
         System.out.println(problem.domain);
         List<Bundesstaaten> bsl = problem.getBundesstaatenListe();
