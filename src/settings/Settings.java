@@ -1,6 +1,6 @@
 package settings;
 
-import ecs.components.graphics.drawables.MapCSP2D;
+//import ecs.components.graphics.drawables.MapCSP2D;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 
@@ -49,15 +49,15 @@ public class Settings {
 		public static final int BORDER_WITH = 1;
 	}
 
-	/**
-	 * settings regarding the {@link MapCSP2D}
-	 *
-	 * @author Alexander
-	 */
-	static public class MAPCSP {
-		public static final int CIRCLE_NUMBER = 7;
-		// TODO: Brauche ich das in meinem Fall überhaupt ???
-	}
+//	/**
+//	 * settings regarding the {@link MapCSP2D}
+//	 *
+//	 * @author Alexander
+//	 */
+//	static public class MAPCSP {
+//		public static final int CIRCLE_NUMBER = 7;
+//		// TODO: Brauche ich das in meinem Fall überhaupt ???
+//	}
 
 
 	/**
@@ -101,7 +101,7 @@ public class Settings {
 		public static Color EXPANDED = LIGHT_PURPLE;
 		public static Color GOAL = LIGHT_RED;
 		public static Color EXPANDING = LIGHT_GREEN_YELLOW;
-		public static Color IN_FRONTIER = LIGHT_CYAN;
+			public static Color IN_FRONTIER = LIGHT_CYAN;
 		public static Color IN_MEMORY = Color.GRAY;
 		public static Color NOT_IN_MEMORY = Color.LIGHTGRAY;
 

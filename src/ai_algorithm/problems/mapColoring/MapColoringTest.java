@@ -1,5 +1,7 @@
 package ai_algorithm.problems.mapColoring;
 
+import java.util.List;
+
 public class MapColoringTest {
 
     public static void main(String[] args) {
@@ -12,6 +14,13 @@ public class MapColoringTest {
         System.out.println(problem.variableConstraintsEdges);
         System.out.println(problem.start);
         System.out.println(problem.domain);
+        List<Bundesstaaten> bsl = problem.getBundesstaatenListe();
+        for (Bundesstaaten bs : bsl) {
+            System.out.println(bs.getVariable());
+            System.out.println(bs.getDomain());
+            System.out.println(bs.getConstraints());
+        }
+
 
 
 //        System.out.println("Initial state: " + problem.getInitialState());

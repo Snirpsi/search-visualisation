@@ -1,13 +1,16 @@
 package ecs.visitors;
 
 import java.util.List;
+import java.util.Map;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.Bundesstaaten;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
+import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import application.Globals;
@@ -20,7 +23,8 @@ import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
-import ecs.components.graphics.drawables.MapCSP2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
@@ -234,10 +238,98 @@ public class ChangeVisitor extends Visitor {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public void visit(MapColoringProblem mapColoringProblem) {
-
 		System.out.println("MapColoringProblem - ChangeVisitor");
 		// TODO: Implement this for the visualisation of the MapColoringProblem
+		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
+		List<Bundesstaaten> bundesstaatenListe = mapColoringProblem.getBundesstaatenListe();
 
+		for (SearchNode node : nodes) {
+
+			MapColoringState state;
+			try {
+				state = (MapColoringState) node.getState();
+			} catch (Exception e) {
+				return;
+			}
+
+			String statePos = state.getPosition();
+
+			for (Bundesstaaten bs : bundesstaatenListe) {
+				if (bs.getVariable().equals(statePos)) {
+					Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable());
+					List<String> valueOfDomain = bs.getDomain();
+					if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Red")) {
+						c.setFill(Color.RED);
+					} else if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Green")) {
+						c.setFill(Color.GREEN);
+					} else if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Blue")) {
+						c.setFill(Color.BLUE);
+					} else if (valueOfDomain.size() == 2 && (valueOfDomain.get(0).equals("Red") || valueOfDomain.get(1).equals("Red"))) {
+						if (valueOfDomain.get(0).equals("Green") || valueOfDomain.get(1).equals("Green")) {
+							c.setFill(Color.YELLOW);
+						} else if (valueOfDomain.get(0).equals("Blue") || valueOfDomain.get(1).equals("Blue")) {
+							c.setFill(Color.PURPLE);
+						}
+					} else if (valueOfDomain.size() == 2 && (valueOfDomain.get(0).equals("Green") || valueOfDomain.get(1).equals("Green"))) {
+						if (valueOfDomain.get(0).equals("Blue") || valueOfDomain.get(1).equals("Blue")) {
+							c.setFill(Color.CYAN);
+						}
+					} else if (valueOfDomain.size() == 3) {
+						c.setFill(Color.GRAY);
+					}
+				}
+			}
+
+
+//		Map<String, String> assignments = mapColoringProblem.getAssignments();
+//		// Set the colors of the circles according to the assignments
+//		for(int i = 0; i < variables.size(); i++) {
+//			if (!assignments.isEmpty()){
+//				String variable = variables.get(i);
+//				String value = assignments.get(variable);
+//				Circle c = variableToCircleMap.get(variable);
+//				if (value == null) {
+//					List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
+//					Random random = new Random();
+//					Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
+//					c.setFill(randomColor);
+//				}else if(value.equals("red")) {
+//					c.setFill(Color.RED);
+//				} else if(value.equals("green")) {
+//					c.setFill(Color.GREEN);
+//				} else if(value.equals("blue")) {
+//					c.setFill(Color.BLUE);
+//				}
+//			}
+//		}
+
+
+//			for (int i = 0; i < variableConstraintsDomain.size(); i++) {
+//				String vcd = variableConstraintsDomain.get(i).get(0);
+//				String n = nodes.get(i).getState().toString();
+//
+//				System.out.println("VariableConstraintsDomain: " + variableConstraintsDomain.get(i));
+//				System.out.println("VCD.get(i).get(0) : " + variableConstraintsDomain.get(i).get(0));
+//				System.out.println("Nodes.get(i).getState() : " + nodes.get(i).getState());
+//				if (vcd.equals(n)){
+//					System.out.println(variableConstraintsDomain.get(i).get(1));
+////					for (int j = 0; j < variableConstraintsDomain.get(i).get(0); j++) {
+////						mapCSP2D.setCircleColor(variableConstraintsDomain.get(i).get(0), variableConstraintsDomain.get(i).get(1));
+////					}
+//				}
+//			}
+			// Set the colors of the circles according to the assignments
+//			for(int i = 0; i < variables.size(); i++) {
+//				if (!assignments.isEmpty()){
+//					String variable = variables.get(i);
+//					String value = assignments.get(variable);
+//					mapCSP2D.setCircleColor(variable, value);
+//				}
+//			}
+
+//			mapCSP2D.setCircleColor();
+
+		}
 
 
 //		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);

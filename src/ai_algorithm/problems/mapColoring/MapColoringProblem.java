@@ -2,6 +2,7 @@ package ai_algorithm.problems.mapColoring;
 
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
+import javafx.scene.shape.Circle;
 
 import javax.net.ssl.SSLContext;
 import java.util.*;
@@ -20,9 +21,15 @@ public class MapColoringProblem extends Problem {
     List<List<String>> constraints;
     List<List<String>> domain;
     Map<String, String> assignments;
+
+    List<Bundesstaaten> bundesstaatenListe;
+
     List<List<String>> variableConstraintsEdges = new ArrayList<>();
 
-    List<List<String>> variableConstraintsDomain = new ArrayList<>();
+//    List<List<String>> variableConstraintsDomain = new ArrayList<>();
+
+    Map<String, Circle> variableToCircleMap = new HashMap<>();
+
     List<List<String>> arcs;
 
     String start;
@@ -33,6 +40,16 @@ public class MapColoringProblem extends Problem {
         super();
 
         // TODO: Add Randomization for the different variables of australia
+        // "Red", "Green", "Blue"
+        Bundesstaaten wa = new Bundesstaaten("WA", Arrays.asList("Red", "Green"), Arrays.asList("NT", "SA"));
+        Bundesstaaten nt = new Bundesstaaten("NT", Arrays.asList("Green"), Arrays.asList("WA", "SA", "Q"));
+        Bundesstaaten sa = new Bundesstaaten("SA", Arrays.asList("Blue", "Green"), Arrays.asList("WA", "NT", "Q", "NSW", "V"));
+        Bundesstaaten q = new Bundesstaaten("Q", Arrays.asList("Green", "Red", "Blue"), Arrays.asList("SA", "NT", "NSW"));
+        Bundesstaaten nsw = new Bundesstaaten("NSW", Arrays.asList("Green"), Arrays.asList("SA", "Q", "V"));
+        Bundesstaaten v = new Bundesstaaten("V", Arrays.asList("Blue", "Green"), Arrays.asList("NSW", "SA"));
+        Bundesstaaten t = new Bundesstaaten("T", Arrays.asList("Red", "Green"), Collections.emptyList());
+        bundesstaatenListe = (Arrays.asList(wa, nt, sa, q, nsw, v, t));
+
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         GAMESIZE = variables.size();
         constraints = Arrays.asList(
@@ -45,22 +62,22 @@ public class MapColoringProblem extends Problem {
                 Collections.emptyList() // Constraint from T
         );
 
-        assignments = new HashMap<>();
-        arcs = new ArrayList<>();
-
         domain = new ArrayList<>();
         for (int i = 0; i < GAMESIZE; i++) {
             domain.add(Arrays.asList("Red", "Green", "Blue"));
         }
+        assignments = new HashMap<>();
+        arcs = new ArrayList<>();
 
         fillQueue();
 
+//        start = bundesstaatenListe.get(0).getVariable();
         start = variables.get(0);
     }
 
     public void runAC3() {
 //        fillQueue(); // Fill the queue with the initial arcs
-        while (!arcs.isEmpty()) { // While the queue is not empty
+//        while (!arcs.isEmpty()) { // While the queue is not empty
             List<String> arcVars = arcs.remove(0); // Remove the first arc from the queue
             if (revise(arcVars.get(0), arcVars.get(1))) { // Revise the domain of the arc
                 int dIIndex = variables.indexOf(arcVars.get(0)); // Get the index of the variable in the domain
@@ -75,7 +92,7 @@ public class MapColoringProblem extends Problem {
                     arcs.add(Arrays.asList(xk, arcVars.get(0))); // Add the neighbor and the first variable to the queue
                 }
             }
-        }
+//        }
         setAssignments(assignments);
     }
 
@@ -113,10 +130,10 @@ public class MapColoringProblem extends Problem {
             }
         }
 
-        for (int i = 0; i < domain.size(); i++) {
-            variableConstraintsDomain.add(Arrays.asList(variables.get(i), domain.get(i).toString()));
-        }
-
+        // Not necessary anymore
+//        for (int i = 0; i < domain.size(); i++) {
+//            variableConstraintsDomain.add(Arrays.asList(variables.get(i), domain.get(i).toString()));
+//        }
     }
 
     public List<String> getVariables() {
@@ -148,13 +165,29 @@ public class MapColoringProblem extends Problem {
         return assignments;
     }
 
-    public void setVariableConstraintsEdges(List<List<String>> variableConstraintsEdges) {
-        this.variableConstraintsEdges = variableConstraintsEdges;
+    public List<List<String>> getArcs() {
+        return arcs;
     }
 
     public List<List<String>> getVariableConstraintsEdges() {
-        System.out.println(variableConstraintsEdges);
+        System.out.println("Variable Constraint with Node [Vaiable, Node]: " + variableConstraintsEdges);
         return this.variableConstraintsEdges;
+    }
+
+    public void setVariableToCircleMap(Map<String, Circle> variableToCircleMap) {
+        this.variableToCircleMap = variableToCircleMap;
+    }
+
+    public Map<String, Circle> getVariableToCircleMap() {
+        return variableToCircleMap;
+    }
+
+//    public List<List<String>> getVariableConstraintsDomain() {
+//        return variableConstraintsDomain;
+//    }
+
+    public List<Bundesstaaten> getBundesstaatenListe() {
+        return bundesstaatenListe;
     }
 
     @Override
@@ -171,10 +204,35 @@ public class MapColoringProblem extends Problem {
     public boolean isGoalState(State state) {
         MapColoringState stateM = (MapColoringState) state;
         // TODO: Nacharbeiten. Für jede Domäne darf es nur eine Variable geben außer für Variablen ohne Constraints wie bei T
-        if(stateM.getPosition().equals(goal)){
-            return true;
+
+        List<Boolean> isGoal = new ArrayList<>();
+        int index = 0;
+
+        for (int i = 0; i < bundesstaatenListe.size(); i++){
+            isGoal.add(false);
         }
-        return false;
+
+        for (Bundesstaaten bs : bundesstaatenListe){
+            if (bs.getDomain().size() == 1){
+                isGoal.set(index, true);
+            } else {
+                isGoal.set(index, false);
+            }
+            index++;
+        }
+
+        int counter = 0;
+        for (Boolean b : isGoal){
+            if (b){
+                counter++;
+            }
+        }
+
+        if(counter == isGoal.size()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -190,6 +248,10 @@ public class MapColoringProblem extends Problem {
                 }
             }
         }
+
+        // Mit folgendem Zeilenaufruf funktioniert die Baumvisualisierung nicht mehr ganz
+//        runAC3(); // TODO: ???
+
         return l;
     }
 
@@ -213,6 +275,7 @@ public class MapColoringProblem extends Problem {
     public double getCost(State state, String action, State succ) {
         return 1;
     }
+
 }
 
 

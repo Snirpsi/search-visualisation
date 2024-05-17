@@ -8,6 +8,9 @@ import javafx.scene.shape.Line;
 
 import java.util.*;
 
+
+// ######################################################## KLASSE NICHT MEHR VERWENDET BISHGER ########################################################
+
 public class MapCSP2D extends Drawable {
 
     /**
@@ -107,7 +110,7 @@ public class MapCSP2D extends Drawable {
         }
     }
 
-    public void fitToMap(List<String> vcm, Sprite sprites){
+    public void setLinesBetweenCircle(List<String> vcm, Sprite sprites){
 //        System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
 
         String var1 = vcm.get(0);

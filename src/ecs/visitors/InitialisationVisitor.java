@@ -476,6 +476,7 @@ public class InitialisationVisitor extends Visitor {
 
 		List<String> variables = mapColoringProblem.getVariables();
 		List<Circle> circles = new ArrayList<>();
+		Map<String, Circle> variableToCircleMap = mapColoringProblem.getVariableToCircleMap();
 
 		double angleStep = 360.0 / mapColoringProblem.GAMESIZE;
 		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
@@ -484,9 +485,8 @@ public class InitialisationVisitor extends Visitor {
 
 		// Run the AC3 Algorithm
 		// Run must be executed before lines are drawn
-//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
 		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
-		MapCSP2D mapCSP2D = new MapCSP2D(mapColoringProblem.GAMESIZE, variableConstraintsMap);
 
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
 			double angle = i * angleStep;
@@ -495,23 +495,64 @@ public class InitialisationVisitor extends Visitor {
 			double circleX = bigCircleCenterX + bigCircleRadius * Math.cos(angleRad);
 			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
 
-			mapCSP2D.insertCircle(sprites, circles, variables, i, circleX, circleY);
+			Circle c = new Circle();
+			c.setRadius(30);
+			c.setCenterX(circleX);
+			c.setCenterY(circleY);
+			c.setFill(Color.WHITE);
+			c.setStrokeWidth(2);
+			c.setStroke(Color.BLACK);
+			sprites.addShape(c);
+			circles.add(c);
+
+			String variable = variables.get(i);
+			variableToCircleMap.put(variable, c);
 		}
 
-		for(List<String> vcm : mapCSP2D.getVariableConstraintsMap()) {
-			mapCSP2D.fitToMap(vcm, sprites);
-		}
+		for(List<String> vcm : variableConstraintsMap) {
+//			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
 
-		//Get the assignments after AC3 Algorithm has been run
-		Map<String, String> assignments = mapColoringProblem.getAssignments();
-		// Set the colors of the circles according to the assignments
-		for(int i = 0; i < variables.size(); i++) {
-			if (!assignments.isEmpty()){
-				String variable = variables.get(i);
-				String value = assignments.get(variable);
-				mapCSP2D.setCircleColor(variable, value);
-			}
+			String var1 = vcm.get(0);
+			String var2 = vcm.get(1);
+
+			Circle c1 = variableToCircleMap.get(var1);
+			Circle c2 = variableToCircleMap.get(var2);
+
+			Line l = new Line();
+			l.setStartX(c1.getCenterX());
+			l.setStartY(c1.getCenterY());
+			l.setEndX(c2.getCenterX());
+			l.setEndY(c2.getCenterY());
+			l.setStrokeWidth(2);
+			l.setStroke(Color.BLACK);
+
+			sprites.addShape(l);
 		}
+		mapColoringProblem.setVariableToCircleMap(variableToCircleMap);
+
+		// TODO: Farbe soll über Change Visitor erfolgen
+//		//Get the assignments after AC3 Algorithm has been run
+//		Map<String, String> assignments = mapColoringProblem.getAssignments();
+//		// Set the colors of the circles according to the assignments
+//		for(int i = 0; i < variables.size(); i++) {
+//			if (!assignments.isEmpty()){
+//				String variable = variables.get(i);
+//				String value = assignments.get(variable);
+//				Circle c = variableToCircleMap.get(variable);
+//				if (value == null) {
+//					List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
+//					Random random = new Random();
+//					Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
+//					c.setFill(randomColor);
+//				}else if(value.equals("red")) {
+//					c.setFill(Color.RED);
+//				} else if(value.equals("green")) {
+//					c.setFill(Color.GREEN);
+//				} else if(value.equals("blue")) {
+//					c.setFill(Color.BLUE);
+//				}
+//			}
+//		}
 
 // ####################################### 		\/ IT WORKS        #######################################
 //		Sprite sprites = new Sprite();
