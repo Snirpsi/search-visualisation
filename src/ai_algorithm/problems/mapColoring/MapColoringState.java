@@ -52,12 +52,17 @@ public class MapColoringState extends State {
         return this.problem;
     }
 
+    /**
+     * Get the reference to the position
+     *
+     * @return the position
+     */
     public String getPosition() {
         return position;
     }
 
     /**
-     *  Assignments as representation in the form of a string
+     * Assignments as representation in the form of a string
      *
      * @return string representation of the state
      */
@@ -75,7 +80,7 @@ public class MapColoringState extends State {
 //    }
 
     /**
-     *  hash function
+     * hash function
      *
      * @return hash value
      */
@@ -86,7 +91,7 @@ public class MapColoringState extends State {
     }
 
     /**
-     *  checked for equivalence
+     * checked for equivalence
      *
      * @param obj
      * @return true if equal false if not equal or null

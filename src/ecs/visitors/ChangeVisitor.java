@@ -1,5 +1,6 @@
 package ecs.visitors;
 
+import java.time.format.SignStyle;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,12 @@ import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
+
+import javax.net.ssl.SSLContext;
 
 /**
  * This class handles the change of every possible {@link GameObject}. The
@@ -208,13 +212,12 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
-	/**
-	 * 
-	 * @param slidingTileState
-	 */
-
 //++++++++++++++++++++++Hatte schon funktioniert+++++++++++++++++++++
-//	
+//
+//	/**
+//	 *
+//	 * @param slidingTileState
+//	 */
 //	
 //	public void visit(SlidingTileState slidingTileState) {
 //		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
@@ -237,23 +240,59 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	/**
+	 * Visualizes the {@link MapColoringProblem} and applies colors to it if
+	 * corresponding {@link State} are in {@link Frontier} and {@link ExploredSet}
+	 *
+	 * @param mapColoringProblem
+	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
-		System.out.println("MapColoringProblem - ChangeVisitor");
-		// TODO: Implement this for the visualisation of the MapColoringProblem
+//		System.out.println("MapColoringProblem - ChangeVisitor");
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		List<Bundesstaaten> bundesstaatenListe = mapColoringProblem.getBundesstaatenListe();
+		List<List<String>> arcs = mapColoringProblem.getArcs();
+		// Sprite to highlite the arcs between the nodes for signalling that this edge has just been expanded
+		// -> It dosn't work yet
+//		Sprite sprites = new Sprite();
+
+		//		System.out.println("Arcs: " + arcs);
 
 		for (SearchNode node : nodes) {
-
-			MapColoringState state;
-			try {
+			MapColoringState state; // Get the current state
+			try { // Try to get the current state
 				state = (MapColoringState) node.getState();
-			} catch (Exception e) {
+			} catch (Exception e) { // If it fails, return
 				return;
 			}
+			String statePos = state.getPosition(); // Get the current node
 
-			String statePos = state.getPosition();
+			// TODO: Implement the visualisation of the edges between nodes
+			// Linie über bestehenden Linien zeichnen -> Kreisinformationen habe ich schon durch:
+//			 Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable()); -> Dann kann ich diese Linie einfärben
 
+
+			for (List<String> a : arcs) { // Check if the current node is in the arcs list
+				if(a.get(0).equals(statePos)) { // Check if the first element of the arc is the current node
+					if (node == node.metadata.expanding) {
+//						System.out.println("Expanding: " + statePos);
+					} else if (node.metadata.isInFrontier) {
+//						System.out.println("In Frontier: " + statePos);
+					} else if (node.metadata.isInExploredSet) {
+//						System.out.println("In ExploredSet: " + statePos);
+					}
+				}
+			}
+
+			/**
+			 * Set the color of the node according to the domain
+			 * Red if the node has been set to red
+			 * Green if the node has been set to green
+			 * Blue if the node has been set to blue
+			 * Yellow if the node has been set to red and green
+			 * Purple if the node has been set to red and blue
+			 * Cyan if the node has been set to green and blue
+			 * Gray if the node has been set to red, green and blue
+ 			 */
 			for (Bundesstaaten bs : bundesstaatenListe) {
 				if (bs.getVariable().equals(statePos)) {
 					Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable());
@@ -280,32 +319,13 @@ public class ChangeVisitor extends Visitor {
 				}
 			}
 		}
-
-
-//		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
-//		MapCSP2D mapCSP2D = mapColoringProblem.getComponent(MapCSP2D.class);
-//		for (SearchNode node : nodes) {
-//			State state = node.getState();
-//			if (mapCSP2D.getShapes(state) != null) {
-//				if (node == node.metadata.expanding) {
-//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDING);
-//				} else if (node.metadata.isInFrontier) {
-//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.IN_FRONTIER);
-//				} else if (node.metadata.isInExploredSet) {
-//					mapCSP2D.setTileColor(state, Settings.DEFAULTCOLORS.EXPANDED);
-//				}
-//			}
-//		}
 	}
-
-
 }
-
-
 
 
 /*
  * Copyright (c) 2022 Severin Dippold
+ * Copyright (c) 2024 Alexander Ultsch
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

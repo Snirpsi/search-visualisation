@@ -461,40 +461,47 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
-		System.out.println("MapColoringProblem - InitialisationVisitor");
-		// TODO: Erstellung der Karte und der Kreise als Ausgangspunkt
+//		System.out.println("MapColoringProblem - InitialisationVisitor");
 		super.visit(mapColoringProblem);
 //		mapColoringProblem.fillQueue(); // Wird aktuell doppelt befüllt
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
-
+		// Fetch all Frontiers
 		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
-
+		// Fetch all ExploredSets
 		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
+		// Create a new Sprite
 		Sprite sprites = new Sprite();
+		// Add the Sprite to the MapColoringProblem
 		mapColoringProblem.addComponent(sprites);
 
+		// Get the variables of the MapColoringProblem
 		List<String> variables = mapColoringProblem.getVariables();
+		// Create a list of Circles
 		List<Circle> circles = new ArrayList<>();
+		// Create a map of variables to Circles
 		Map<String, Circle> variableToCircleMap = mapColoringProblem.getVariableToCircleMap();
 
+		// Calculate the angle step with bigCircleRadius and bigCircleCenterX and bigCircleCenterY
 		double angleStep = 360.0 / mapColoringProblem.GAMESIZE;
 		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
 		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
 		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
 
-		// Run the AC3 Algorithm
-		// Run must be executed before lines are drawn
+		// Run the AC3 Algorithm. Run must be executed before lines are drawn
 //		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
 		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
 
+		// Create the Circles and add them to the Sprite without Highlighting and Coloring
 		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
 			double angle = i * angleStep;
 			double angleRad = Math.toRadians(angle);
 
+			// Calculate the x and y coordinates of the circle
 			double circleX = bigCircleCenterX + bigCircleRadius * Math.cos(angleRad);
 			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
 
+			// Create a new Circle with the calculated x and y coordinates and the specifications
 			Circle c = new Circle();
 			c.setRadius(30);
 			c.setCenterX(circleX);
@@ -505,19 +512,25 @@ public class InitialisationVisitor extends Visitor {
 			sprites.addShape(c);
 			circles.add(c);
 
+			// Get the variablename of the current circle
 			String variable = variables.get(i);
+			// Add the variable and the circle to the variableToCircleMap to signalize the togetherness
 			variableToCircleMap.put(variable, c);
 		}
 
+		// Set the lines between the circles
 		for(List<String> vcm : variableConstraintsMap) {
 //			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
 
+			// Get the variables of the current Circle
 			String var1 = vcm.get(0);
 			String var2 = vcm.get(1);
 
+			// Get the Circles of the variables var1 and var2
 			Circle c1 = variableToCircleMap.get(var1);
 			Circle c2 = variableToCircleMap.get(var2);
 
+			// Create a new Line between the Circles c1 and c2 and set the specifications of the Line
 			Line l = new Line();
 			l.setStartX(c1.getCenterX());
 			l.setStartY(c1.getCenterY());
@@ -526,33 +539,11 @@ public class InitialisationVisitor extends Visitor {
 			l.setStrokeWidth(2);
 			l.setStroke(Color.BLACK);
 
+			// Add the line to the sprite and visualize it in the GUI
 			sprites.addShape(l);
 		}
+		 // Set the variableToCircleMap specification for future access
 		mapColoringProblem.setVariableToCircleMap(variableToCircleMap);
-
-		// TODO: Farbe soll über Change Visitor erfolgen
-//		//Get the assignments after AC3 Algorithm has been run
-//		Map<String, String> assignments = mapColoringProblem.getAssignments();
-//		// Set the colors of the circles according to the assignments
-//		for(int i = 0; i < variables.size(); i++) {
-//			if (!assignments.isEmpty()){
-//				String variable = variables.get(i);
-//				String value = assignments.get(variable);
-//				Circle c = variableToCircleMap.get(variable);
-//				if (value == null) {
-//					List<Color> availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN);
-//					Random random = new Random();
-//					Color randomColor = availableColors.get(random.nextInt(availableColors.size()));
-//					c.setFill(randomColor);
-//				}else if(value.equals("red")) {
-//					c.setFill(Color.RED);
-//				} else if(value.equals("green")) {
-//					c.setFill(Color.GREEN);
-//				} else if(value.equals("blue")) {
-//					c.setFill(Color.BLUE);
-//				}
-//			}
-//		}
 
 // ####################################### 		\/ IT WORKS        #######################################
 //		Sprite sprites = new Sprite();
@@ -600,7 +591,7 @@ public class InitialisationVisitor extends Visitor {
 //		}
 //
 //		// Run the AC3 Algorithm
-//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
+//		mapColoringProblem.runAC3();
 //		// Get the assignments after AC3 Algorithm has been run
 //		Map<String, String> assignments = mapColoringProblem.getAssignments();
 //		// Set the colors of the circles according to the assignments
@@ -664,6 +655,7 @@ public class InitialisationVisitor extends Visitor {
 ////		}
 // ####################################### 		/\ Until here        #######################################
 
+		// Show the GUI
 		mapColoringProblem.getComponent(Graphics.class).show();
 	}
 
@@ -674,7 +666,7 @@ public class InitialisationVisitor extends Visitor {
 	 * @autor Alexander
 	 */
 	public void visit(MapColoringState mapColoringState) {
-		System.out.println("MapColoringState - InitialisationVisitor");
+//		System.out.println("MapColoringState - InitialisationVisitor");
 		super.visit(mapColoringState);
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
@@ -684,23 +676,6 @@ public class InitialisationVisitor extends Visitor {
 
 		Component position = new Position(Vector2D.ZERO);
 		mapColoringState.addComponent(position);
-
-		// TODO: Implement this for the visualisation of the MapColoringState
-		// TODO: hier fehlt noch etwas -> Beispiel ist das untere
-		// Circle stateC = new Circle();
-		// gridMazeState.getProblem().getComponent(TileMap2D.class).fitToTilemap(gridMazeState.getPosition(), stateC);
-		// stateC.setRadius(4);
-		// stateC.setFill(Color.CYAN);
-
-		// TODO: Folgendes zeichnet komplett komische Kreise -> Warum?
-//		Graphics g = new Graphics(Globals.stateRepresentationGraphicsContext);
-//		mapColoringState.addComponent(g);
-//
-//		Sprite sprite = new Sprite();
-//		mapColoringState.addComponent(sprite);
-//		sprite.addShape(new Circle(100, 100, 100));
-//
-//		g.show();
 	}
 
 }
