@@ -1,5 +1,7 @@
 .settings/
+.idea/
 bin/
+out/
 .classpath
 .project
 build.fxbuild
