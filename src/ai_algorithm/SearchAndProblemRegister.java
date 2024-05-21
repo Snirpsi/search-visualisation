@@ -3,12 +3,20 @@ package ai_algorithm;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
-import ai_algorithm.search.*;
+import ai_algorithm.search.BidirectionalBreadthFirstSearch;
+import ai_algorithm.search.BreadthFirstSearch;
+import ai_algorithm.search.DepthFirstSearch;
+import ai_algorithm.search.DepthFirstSearchExplored;
+import ai_algorithm.search.ManualSearch;
+import ai_algorithm.search.RecursiveDepthSearch;
+import ai_algorithm.search.ArcConsistancy3Search;
+//import ai_algorithm.search.*;
 
 /**
  * Class to register new problems and Searches
- * @author Severin
  *
+ * @author Severin
+ * @author Alexander (Add MapColoringProblem and ArcConsistancy3Search Algorithm)
  */
 public class SearchAndProblemRegister {
 
@@ -38,13 +46,11 @@ public class SearchAndProblemRegister {
 			ArcConsistancy3Search.class.getName()//
 	};
 
-	// TODO: Implementation of CSP-AC3 algorithm alternatives
-
 }
 /*
- * Copyright (c) 2024 Alexander Ultsch
  * Copyright (c) 2022 Severin Dippold
- * 
+ * Copyright (c) 2024 Alexander Ultsch
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
