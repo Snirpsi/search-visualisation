@@ -466,9 +466,9 @@ public class InitialisationVisitor extends Visitor {
 //		mapColoringProblem.fillQueue(); // Wird aktuell doppelt befüllt
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 		// Fetch all Frontiers
-		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
+//		List<Frontier> frontiers = GameObjectRegistry.getAllGameObjectsOfType(Frontier.class);
 		// Fetch all ExploredSets
-		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
+//		List<ExploredSet> exploredSets = GameObjectRegistry.getAllGameObjectsOfType(ExploredSet.class);
 
 		// Create a new Sprite
 		Sprite sprites = new Sprite();
@@ -483,7 +483,7 @@ public class InitialisationVisitor extends Visitor {
 		Map<String, Circle> variableToCircleMap = mapColoringProblem.getVariableToCircleMap();
 
 		// Calculate the angle step with bigCircleRadius and bigCircleCenterX and bigCircleCenterY
-		double angleStep = 360.0 / mapColoringProblem.GAMESIZE;
+		double angleStep = 360.0 / mapColoringProblem.getVariables().size();
 		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
 		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
 		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
@@ -493,7 +493,7 @@ public class InitialisationVisitor extends Visitor {
 		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
 
 		// Create the Circles and add them to the Sprite without Highlighting and Coloring
-		for (int i = 0; i < mapColoringProblem.GAMESIZE; i++) {
+		for (int i = 0; i < mapColoringProblem.getVariables().size(); i++) {
 			double angle = i * angleStep;
 			double angleRad = Math.toRadians(angle);
 
@@ -677,7 +677,6 @@ public class InitialisationVisitor extends Visitor {
 		Component position = new Position(Vector2D.ZERO);
 		mapColoringState.addComponent(position);
 	}
-
 }
 
 /*

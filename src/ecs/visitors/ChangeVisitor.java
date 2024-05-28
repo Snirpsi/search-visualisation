@@ -264,7 +264,7 @@ public class ChangeVisitor extends Visitor {
 			} catch (Exception e) { // If it fails, return
 				return;
 			}
-			String statePos = state.getPosition(); // Get the current node
+//			String statePos = state.toString(); // Get the current node
 
 			// TODO: Implement the visualisation of the edges between nodes
 			// Linie über bestehenden Linien zeichnen -> Kreisinformationen habe ich schon durch:
@@ -272,7 +272,7 @@ public class ChangeVisitor extends Visitor {
 
 
 			for (List<String> a : arcs) { // Check if the current node is in the arcs list
-				if(a.get(0).equals(statePos)) { // Check if the first element of the arc is the current node
+				if(a.get(0).equals(state)) { // Check if the first element of the arc is the current node
 					if (node == node.metadata.expanding) {
 //						System.out.println("Expanding: " + statePos);
 					} else if (node.metadata.isInFrontier) {
@@ -294,7 +294,7 @@ public class ChangeVisitor extends Visitor {
 			 * Gray if the node has been set to red, green and blue
  			 */
 			for (Bundesstaaten bs : bundesstaatenListe) {
-				if (bs.getVariable().equals(statePos)) {
+				if (bs.getVariable().equals(state.toString())) {
 					Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable());
 					List<String> valueOfDomain = bs.getDomain();
 					if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Red")) {

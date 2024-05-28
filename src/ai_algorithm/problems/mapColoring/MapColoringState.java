@@ -20,26 +20,41 @@ public class MapColoringState extends State {
     /**
      *  reference to the problem
      */
-    private MapColoringProblem problem;
+    final private MapColoringProblem problem;
 
     /**
      *  reference to the assignments
      */
-    private String position;
+    final Map<String, List<String>> domain;
+    final Map<String, String> assignments;
+
 
     /**
      * initializes state with problem and assignments
      *
      * @param problem
-     * @param position
+     * @param domain
+     * @param assignments
      */
-    public MapColoringState(MapColoringProblem problem, String position) {
+    public MapColoringState(MapColoringProblem problem, 
+                            Map<String, List<String>> domain,
+                            Map<String, String> assignments) {
         this.problem = problem;
-        this.setPosition(position);
+        this.domain = new HashMap<>(domain);
+        this.assignments = new HashMap<>(assignments);
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    /**
+     * Assignments as representation in the form of a string
+     *
+     * @return string representation of the state
+     */
+    public Map<String, String> getAssignments() {
+        return assignments;
+    }
+
+    public List<String> getDomain(String variable) {
+        return new ArrayList<>(domain.get(variable));
     }
 
     /**
@@ -51,24 +66,6 @@ public class MapColoringState extends State {
     public MapColoringProblem getProblem() {
         return this.problem;
     }
-
-    /**
-     * Get the reference to the position
-     *
-     * @return the position
-     */
-    public String getPosition() {
-        return position;
-    }
-
-    /**
-     * Assignments as representation in the form of a string
-     *
-     * @return string representation of the state
-     */
-//    public Map<String, String> getAssignments() {
-//        return assignments;
-//    }
 
     /**
      * Set the assignments -> variable -> color // Vermutlich nicht notwendig
@@ -86,8 +83,7 @@ public class MapColoringState extends State {
      */
     @Override
     public int hashCode() {
-//        return Objects.hash(assignments);
-        return Objects.hash(position);
+        return Objects.hash(problem, assignments, domain);
     }
 
     /**
@@ -105,7 +101,9 @@ public class MapColoringState extends State {
         if (getClass() != obj.getClass())
             return false;
         MapColoringState other = (MapColoringState) obj;
-        return Objects.equals(position, other.position);
+        return Objects.equals(assignments, other.assignments) &&
+                Objects.equals(problem, other.problem) &&
+                Objects.equals(domain, other.domain);
     }
 
     /**
@@ -115,7 +113,6 @@ public class MapColoringState extends State {
      */
     @Override
     public String toString() {
-        return position.toString();
+        return assignments.toString();
     }
-
 }

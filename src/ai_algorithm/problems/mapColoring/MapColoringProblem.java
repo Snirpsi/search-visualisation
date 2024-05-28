@@ -29,7 +29,7 @@ public class MapColoringProblem extends Problem {
 
     List<String> variables; // Variables of the problem
     List<List<String>> constraints; // Constraints of the problem
-    List<List<String>> domain; // Domain of the problem
+    Map<String, List<String>> domain; // Domain of the problem
     Map<String, String> assignments; // Assignments of the problem
 
     List<Bundesstaaten> bundesstaatenListe; // List of all Bundesstaaten
@@ -78,17 +78,17 @@ public class MapColoringProblem extends Problem {
         );
 
         // Assignment of all variables to their respective circles
-        domain = new ArrayList<>();
-        for (int i = 0; i < GAMESIZE; i++) {
-            domain.add(Arrays.asList("Red", "Green", "Blue"));
+        domain = new HashMap<>();
+        for (String var : variables) {
+            domain.put(var, Arrays.asList("Red", "Green", "Blue"));
         }
-        assignments = new HashMap<>();
+
         arcs = new ArrayList<>();
 
         fillQueue();
 
 //        start = bundesstaatenListe.get(0).getVariable();
-        start = variables.get(0);
+//        start = variables.get(0);
     }
 
 //    public void runAC3() {
@@ -178,7 +178,7 @@ public class MapColoringProblem extends Problem {
      *
      * @return list of all domains
      */
-    public List<List<String>> getDomain() {
+    public Map<String, List<String>> getDomain() {
         return domain;
     }
 
@@ -268,7 +268,13 @@ public class MapColoringProblem extends Problem {
      */
     @Override
     public State getInitialState() {
-        return new MapColoringState(this, start);
+        Map<String, String> initialAssignments = new HashMap<>();
+        Map<String, List<String>> initialDomain = new HashMap<>();
+
+        for (String variable : variables) {
+            initialDomain.put(variable, new ArrayList<>(domain.get(variable)));
+        }
+        return new MapColoringState(this, initialDomain, initialAssignments);
     }
 
     /**
@@ -278,7 +284,7 @@ public class MapColoringProblem extends Problem {
      */
     @Override
     public State getGoalState() {
-        return new MapColoringState(this, goal);
+        return null;
     }
 
     /**
@@ -290,36 +296,22 @@ public class MapColoringProblem extends Problem {
     @Override
     public boolean isGoalState(State state) {
         MapColoringState stateM = (MapColoringState) state;
-        // TODO: Nacharbeiten. Für jede Domäne darf es nur eine Variable geben außer für Variablen ohne Constraints wie bei T
 
-        List<Boolean> isGoal = new ArrayList<>();
-        int index = 0;
-
-        for (int i = 0; i < bundesstaatenListe.size(); i++){
-            isGoal.add(false);
-        }
-
-        for (Bundesstaaten bs : bundesstaatenListe){
-            if (bs.getDomain().size() == 1){
-                isGoal.set(index, true);
-            } else {
-                isGoal.set(index, false);
-            }
-            index++;
-        }
-
-        int counter = 0;
-        for (Boolean b : isGoal){
-            if (b){
-                counter++;
+        for (String variable : variables) {
+            if (!stateM.getAssignments().containsKey(variable)) {
+                return false;
             }
         }
-
-        if(counter == isGoal.size()){
-            return true;
-        } else {
-            return false;
+        for (List<String> constraint : constraints) {
+            String var1 = constraint.get(0);
+            String var2 = constraint.get(1);
+            String val1 = stateM.getAssignments().get(var1);
+            String val2 = stateM.getAssignments().get(var2);
+            if (val1.equals(val2)){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -330,22 +322,20 @@ public class MapColoringProblem extends Problem {
      */
     @Override
     public List<String> getActions(State state) {
-        LinkedList<String> l = new LinkedList<String>();
 
-        //rpstate.getPosition -> hoffentlich Schritt 1 WA
+        MapColoringState stateM = (MapColoringState) state;
+        List<String> actions = new ArrayList<>();
 
-        if (state instanceof MapColoringState rpState){
-            for (List<String> vce : arcs){
-                if (vce.get(0).equals(rpState.getPosition())){
-
-                    l.add(vce.get(1));
-                }
+        for (String variable : variables) {
+            if (stateM.getAssignments().containsKey(variable)) {
+                continue;
+            }
+            List<String> varDomain = stateM.getDomain(variable);
+            for (String color : varDomain) {
+                actions.add(variable + "=" + color);
             }
         }
-
-        // Mit folgendem Zeilenaufruf funktioniert die Baumvisualisierung nicht mehr ganz
-//        runAC3(); // TODO: ??? -> Muss wenn ich das richtig verstanden habe im Suchalgorithmus ausgeführt werden HÄÄÄÄ ???????????
-        return l;
+        return actions;
     }
 
     /**
@@ -358,17 +348,26 @@ public class MapColoringProblem extends Problem {
     @Override
     public State getSuccessor(State state, String action) {
         MapColoringState stateM = (MapColoringState) state;
-        String oldPos = stateM.getPosition();
-        String neuPos = oldPos;
+        Map<String, String> newAssignments = new HashMap<>(stateM.getAssignments());
 
-        MapColoringState result = new MapColoringState(this, neuPos);
-        //        String neuPos = stateM.get
-        //        Möglicherweise action = NT
+        String[] parts = action.split("=");
+        String variable = parts[0];
+        String value = parts[1];
 
-        neuPos = action;
-        result.setPosition(neuPos);
+        if (!stateM.getDomain(variable).contains(value)) {
+            return null;
+        }
+        newAssignments.put(variable, value);
 
-        return result;
+        Map<String, List<String>> newDomain = new HashMap<>();
+        for (String var : variables) {
+            if(variable.equals(var)) {
+                newDomain.put(var, Arrays.asList(value));
+            } else {
+                newDomain.put(var, new ArrayList<>(stateM.getDomain(var)));
+            }
+        }
+        return new MapColoringState(this, newDomain, newAssignments);
     }
 
     /**
