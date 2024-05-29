@@ -1,5 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
+import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import javafx.scene.shape.Circle;
@@ -163,6 +164,12 @@ public class MapColoringProblem extends Problem {
     public List<String> getVariables() {
         return variables;
     }
+
+//    public String getVariable(SearchNode node) {
+//        // Such mir die Variable aus der Variablenliste heraus die am Node hängt
+//        return variables.get());
+//
+//    }
 
     /**
      * Returns the list of all constraints.
@@ -382,6 +389,7 @@ public class MapColoringProblem extends Problem {
     public double getCost(State state, String action, State succ) {
         return 1;
     }
+
 
 }
 

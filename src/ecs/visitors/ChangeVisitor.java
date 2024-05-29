@@ -14,6 +14,7 @@ import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
+import ai_algorithm.specific_algorithm_logic.csp.Variables;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -249,77 +250,68 @@ public class ChangeVisitor extends Visitor {
 	public void visit(MapColoringProblem mapColoringProblem) {
 //		System.out.println("MapColoringProblem - ChangeVisitor");
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
-		List<Bundesstaaten> bundesstaatenListe = mapColoringProblem.getBundesstaatenListe();
-		List<List<String>> arcs = mapColoringProblem.getArcs();
-		// Sprite to highlite the arcs between the nodes for signalling that this edge has just been expanded
-		// -> It dosn't work yet
-//		Sprite sprites = new Sprite();
-
-		//		System.out.println("Arcs: " + arcs);
 
 		for (SearchNode node : nodes) {
-			MapColoringState state; // Get the current state
-			try { // Try to get the current state
+			MapColoringState state;
+			try {
 				state = (MapColoringState) node.getState();
-			} catch (Exception e) { // If it fails, return
+			} catch (Exception e) {
 				return;
 			}
-//			String statePos = state.toString(); // Get the current node
 
-			// TODO: Implement the visualisation of the edges between nodes
-			// Linie über bestehenden Linien zeichnen -> Kreisinformationen habe ich schon durch:
-//			 Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable()); -> Dann kann ich diese Linie einfärben
+//			System.out.println("Node: " + node);
+//			System.out.println("Node: " + node.getAction());
+//			String blabla = node.getAction();
+//			if(blabla != null){
+//				System.out.println("Node: " + blabla.split("="));
+//			}
 
+//			Map<String, String> assignements = state.getAssignments();
+//			System.out.println("Assignments: " + assignements.get("Red"));
 
-			for (List<String> a : arcs) { // Check if the current node is in the arcs list
-				if(a.get(0).equals(state)) { // Check if the first element of the arc is the current node
-					if (node == node.metadata.expanding) {
-//						System.out.println("Expanding: " + statePos);
-					} else if (node.metadata.isInFrontier) {
-//						System.out.println("In Frontier: " + statePos);
-					} else if (node.metadata.isInExploredSet) {
-//						System.out.println("In ExploredSet: " + statePos);
-					}
-				}
+//			System.out.println("State vor Split: " + state);
+//			if(state.toString() != " "){
+//				String[] test = state.toString().split(",");
+
+//				String[] test = state.toString().split("=");
+//				System.out.println("Sate nach Split: " + test[0]);
+//			}
+
+//			System.out.println("Domain: " + state.getDomain());
+
+			for(String var : mapColoringProblem.getVariables()) {
+				List<String> stateVarDomain = state.getDomain(var);
+				Circle c = mapColoringProblem.getVariableToCircleMap().get(var);
+
+				setColorToCircle(c, stateVarDomain);
 			}
 
-			/**
-			 * Set the color of the node according to the domain
-			 * Red if the node has been set to red
-			 * Green if the node has been set to green
-			 * Blue if the node has been set to blue
-			 * Yellow if the node has been set to red and green
-			 * Purple if the node has been set to red and blue
-			 * Cyan if the node has been set to green and blue
-			 * Gray if the node has been set to red, green and blue
- 			 */
-			for (Bundesstaaten bs : bundesstaatenListe) {
-				if (bs.getVariable().equals(state.toString())) {
-					Circle c = mapColoringProblem.getVariableToCircleMap().get(bs.getVariable());
-					List<String> valueOfDomain = bs.getDomain();
-					if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Red")) {
-						c.setFill(Color.RED);
-					} else if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Green")) {
-						c.setFill(Color.GREEN);
-					} else if (valueOfDomain.size() == 1 && valueOfDomain.get(0).equals("Blue")) {
-						c.setFill(Color.BLUE);
-					} else if (valueOfDomain.size() == 2 && (valueOfDomain.get(0).equals("Red") || valueOfDomain.get(1).equals("Red"))) {
-						if (valueOfDomain.get(0).equals("Green") || valueOfDomain.get(1).equals("Green")) {
-							c.setFill(Color.YELLOW);
-						} else if (valueOfDomain.get(0).equals("Blue") || valueOfDomain.get(1).equals("Blue")) {
-							c.setFill(Color.PURPLE);
-						}
-					} else if (valueOfDomain.size() == 2 && (valueOfDomain.get(0).equals("Green") || valueOfDomain.get(1).equals("Green"))) {
-						if (valueOfDomain.get(0).equals("Blue") || valueOfDomain.get(1).equals("Blue")) {
-							c.setFill(Color.CYAN);
-						}
-					} else if (valueOfDomain.size() == 3) {
-						c.setFill(Color.GRAY);
-					}
-				}
+		}
+
+	}
+
+	private void setColorToCircle(Circle c, List<String> stateVarDomain) {
+		if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Red")) {
+			c.setFill(Color.RED);
+		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Green")) {
+			c.setFill(Color.GREEN);
+		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Blue")) {
+			c.setFill(Color.BLUE);
+		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("Red") || stateVarDomain.get(1).equals("Red"))) {
+			if (stateVarDomain.get(0).equals("Green") || stateVarDomain.get(1).equals("Green")) {
+				c.setFill(Color.YELLOW);
+			} else if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
+				c.setFill(Color.PURPLE);
 			}
+		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("Green") || stateVarDomain.get(1).equals("Green"))) {
+			if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
+				c.setFill(Color.CYAN);
+			}
+		} else if (stateVarDomain.size() == 3) {
+			c.setFill(Color.WHITE);
 		}
 	}
+
 }
 
 
