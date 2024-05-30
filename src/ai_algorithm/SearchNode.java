@@ -168,9 +168,9 @@ public class SearchNode extends GameObject {
 		Debugger.pause("Expanding: " + this);
 		// ende vis
 
-		List<SearchNode> futureCildren = new ArrayList<>();
+		List<SearchNode> futureChildren = new ArrayList<>();
 
-		if (this.getChildren() != null && this.getChildren().size() != 0) {
+		if (this.getChildren() != null && !this.getChildren().isEmpty() ) {
 			return this.getChildren(); // <-- only expand children if they don't alredy exist
 		}
 
@@ -181,10 +181,10 @@ public class SearchNode extends GameObject {
 			// neue knoten erzeugen
 			SearchNode succ = new SearchNode(this, succState,
 					this.getPathCost() + prob.getCost(state, action, succState), action);
-			futureCildren.add(succ);
+			futureChildren.add(succ);
 			Debugger.pause("EXPANSION: " + action);
 		}
-		this.children.addAll(futureCildren);
+		this.children.addAll(futureChildren);
 		// visualsiieren
 		GameObjectRegistry.registerForStateChange(this);
 		// ende vis

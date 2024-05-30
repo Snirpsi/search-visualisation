@@ -29,7 +29,6 @@ public class SearchThread extends Thread {
 			if (Settings.DEBUGMODE)
 				System.out.println("safely stopped");
 		}
-		return;
 	}
 
 	@Override
