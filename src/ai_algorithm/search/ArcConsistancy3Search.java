@@ -8,7 +8,6 @@ import ai_algorithm.problems.mapColoring.MapColoringProblem; // ???
 import application.debugger.Debugger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ArcConsistancy3Search extends SearchAlgorithm{
@@ -37,10 +36,10 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
         }
         frontier.add(start);
         Debugger.pause();
-        System.out.println("Arcs: " + mapColoringProblem.getArcs()); // Ausgaben sind da
-        while (!mapColoringProblem.getArcs().isEmpty()) {
-            System.out.println("Arcs: " + mapColoringProblem.getArcs());
-            List<String> arcVars = mapColoringProblem.getArcs().remove(0);
+        System.out.println("Arcs: " + mapColoringProblem.getContraints()); // Ausgaben sind da
+        while (!mapColoringProblem.getContraints().isEmpty()) {
+            System.out.println("Arcs: " + mapColoringProblem.getContraints());
+//            List<String> arcVars = mapColoringProblem.getContraints().remove(0);
             // !!!!!! HÄÄÄÄ !!!!!!
         }
 
@@ -54,9 +53,9 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
         int lindex = mapColoringProblem.getVariables().indexOf(Xi);
         for(String x : new ArrayList<>(mapColoringProblem.getDomain().get(lindex))) {
             // TODO: ??? \/
-            if(!mapColoringProblem.getConstraints().get(lindex).contains(Xj)) {
-                break;
-            }
+//            if(!mapColoringProblem.getNeighbors().get(lindex).contains(Xj)) {
+//                break;
+//            }
             if(!mapColoringProblem.getAssignments().containsKey(Xj)) {
                 continue;
             }

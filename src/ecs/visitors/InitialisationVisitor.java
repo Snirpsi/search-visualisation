@@ -15,6 +15,7 @@ import ai_algorithm.problems.raster_path.GridMazeState;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileTile;
+import ai_algorithm.specific_algorithm_logic.csp.csp_content.util.Pair;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -490,7 +491,7 @@ public class InitialisationVisitor extends Visitor {
 
 		// Run the AC3 Algorithm. Run must be executed before lines are drawn
 //		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
-		List<List<String>> variableConstraintsMap = mapColoringProblem.getVariableConstraintsEdges();
+		List<Pair<String, String>> binaryConstraints = mapColoringProblem.getContraints();
 
 		// Create the Circles and add them to the Sprite without Highlighting and Coloring
 		for (int i = 0; i < mapColoringProblem.getVariables().size(); i++) {
@@ -519,12 +520,12 @@ public class InitialisationVisitor extends Visitor {
 		}
 
 		// Set the lines between the circles
-		for(List<String> vcm : variableConstraintsMap) {
+		for(Pair<String, String> arc : binaryConstraints) {
 //			System.out.println("Constraint: " + vcm.get(0) + " " + vcm.get(1));
 
 			// Get the variables of the current Circle
-			String var1 = vcm.get(0);
-			String var2 = vcm.get(1);
+			String var1 = arc.getFirst();
+			String var2 = arc.getSecond();
 
 			// Get the Circles of the variables var1 and var2
 			Circle c1 = variableToCircleMap.get(var1);

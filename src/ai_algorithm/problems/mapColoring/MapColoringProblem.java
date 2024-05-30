@@ -1,11 +1,10 @@
 package ai_algorithm.problems.mapColoring;
 
-import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
+import ai_algorithm.specific_algorithm_logic.csp.csp_content.util.Pair;
 import javafx.scene.shape.Circle;
 
-import javax.net.ssl.SSLContext;
 import java.util.*;
 
 /**
@@ -29,7 +28,7 @@ public class MapColoringProblem extends Problem {
     public final int GAMESIZE; // Number of all variables
 
     List<String> variables; // Variables of the problem
-    List<List<String>> constraints; // Constraints of the problem
+    Map<String, List<String>> neighbors; // Neighbors for each variable
     Map<String, List<String>> domain; // Domain of the problem
     Map<String, String> assignments; // Assignments of the problem
 
@@ -41,7 +40,7 @@ public class MapColoringProblem extends Problem {
 
     Map<String, Circle> variableToCircleMap = new HashMap<>(); // Assignment of all variables to their respective circles
 
-    List<List<String>> arcs; // List of all arcs
+    List<Pair<String, String>> contraints; // List of all constraints / arcs
 
     String start;
 
@@ -68,14 +67,14 @@ public class MapColoringProblem extends Problem {
 
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         GAMESIZE = variables.size();
-        constraints = Arrays.asList(
-                Arrays.asList("NT", "SA"), // Constraint from WA
-                Arrays.asList("WA", "SA", "Q"), // Constraint from NT
-                Arrays.asList("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
-                Arrays.asList("SA", "NT", "NSW"), // Constraint from Q
-                Arrays.asList("SA", "Q", "V"), // Constraint from NSW
-                Arrays.asList("NSW", "SA"), // Constraint from V
-                Collections.emptyList() // Constraint from T
+        neighbors = Map.of(
+                "WA", List.of("NT", "SA"), // Constraint from WA
+                "NT", List.of("WA", "SA", "Q"), // Constraint from NT
+                "SA", List.of("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
+                "Q", List.of("SA", "NT", "NSW"), // Constraint from Q
+                "NSW", List.of("SA", "Q", "V"), // Constraint from NSW
+                "V", List.of("NSW", "SA"), // Constraint from V
+                "T", List.of() // Constraint from T
         );
 
         // Assignment of all variables to their respective circles
@@ -84,8 +83,7 @@ public class MapColoringProblem extends Problem {
             domain.put(var, Arrays.asList("Red", "Green", "Blue"));
         }
 
-        arcs = new ArrayList<>();
-
+        contraints = new ArrayList<>();
         fillQueue();
 
 //        start = bundesstaatenListe.get(0).getVariable();
@@ -138,15 +136,11 @@ public class MapColoringProblem extends Problem {
      * Fills the queue with the edges and assigns each variable an edge between two nodes.
      */
     public void fillQueue() {
-        for (int i = 0; i < constraints.size(); i++) {
-            List<String> constraint = constraints.get(i);
-            String var = variables.get(i);
-            if (constraint.isEmpty()) {
-                continue; // Skip empty constraints
-            }
-            for (String arc : constraint) {
-                variableConstraintsEdges.add(Arrays.asList(var, arc)); // Backupdeclaration - Hopefully no longer necessary in the future
-                arcs.add(Arrays.asList(var, arc));
+        // Create constraint list out of neighbors
+        for( String var : variables) {
+            List<String> constraint = neighbors.get(var);
+            for (String other : constraint) {
+                contraints.add(new Pair<>(var, other));
             }
         }
 //        System.out.println("Arcs: " + arcs);
@@ -170,15 +164,6 @@ public class MapColoringProblem extends Problem {
 //        return variables.get());
 //
 //    }
-
-    /**
-     * Returns the list of all constraints.
-     *
-     * @return list of all constraints
-     */
-    public List<List<String>> getConstraints() {
-        return constraints;
-    }
 
     /**
      * Returns the list of all domains.
@@ -222,18 +207,8 @@ public class MapColoringProblem extends Problem {
      *
      * @return arcs
      */
-    public List<List<String>> getArcs() {
-        return arcs;
-    }
-
-    /**
-     * Return the variable constraints edges.
-     *
-     * @return variable constraints edges
-     */
-    public List<List<String>> getVariableConstraintsEdges() {
-//        System.out.println("Variable Constraint with Node [Vaiable, Node]: " + variableConstraintsEdges);
-        return this.variableConstraintsEdges;
+    public List<Pair<String, String>> getContraints() {
+        return contraints;
     }
 
     /**
@@ -309,9 +284,9 @@ public class MapColoringProblem extends Problem {
                 return false;
             }
         }
-        for (List<String> constraint : constraints) {
-            String var1 = constraint.get(0);
-            String var2 = constraint.get(1);
+        for (Pair<String, String> constraint : contraints ) {
+            String var1 = constraint.getFirst();
+            String var2 = constraint.getSecond();
             String val1 = stateM.getAssignments().get(var1);
             String val2 = stateM.getAssignments().get(var2);
             if (val1.equals(val2)){
