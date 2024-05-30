@@ -27,7 +27,7 @@ public class SearchThread extends Thread {
 			search.search();
 		} catch (RuntimeException e) {
 			if (Settings.DEBUGMODE)
-				System.out.print("savely stoped");
+				System.out.println("safely stopped");
 		}
 		return;
 	}
