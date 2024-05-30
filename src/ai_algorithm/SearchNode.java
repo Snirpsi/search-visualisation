@@ -1,15 +1,13 @@
 package ai_algorithm;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import application.debugger.Debugger;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
-import javafx.scene.Node;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Search nodes are the central data structure of the AI algorithms, they make
@@ -26,7 +24,7 @@ public class SearchNode extends GameObject {
 	/**
 	 * child node
 	 */
-	private LinkedList<SearchNode> children = null;
+	private final List<SearchNode> children;
 	/**
 	 * state
 	 */
@@ -42,7 +40,7 @@ public class SearchNode extends GameObject {
 	/**
 	 * reference to the path traveled
 	 */
-	private Path path;
+	private final Path path;
 
 	/**
 	 * object mainly for visualization and Thread communication
@@ -94,11 +92,8 @@ public class SearchNode extends GameObject {
 	 * @return true, false
 	 */
 	public boolean isRoot() {
-		if (this.getParent() == null) {
-			return true;
-		}
-		return false;
-	}
+        return this.getParent() == null;
+    }
 
 	/**
 	 * gives associated state
@@ -132,7 +127,7 @@ public class SearchNode extends GameObject {
 	 * 
 	 * @return list of all child nodes
 	 */
-	public LinkedList<SearchNode> getChildren() {
+	public List<SearchNode> getChildren() {
 		return children;
 	}
 

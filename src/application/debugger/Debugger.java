@@ -21,7 +21,7 @@ public class Debugger {
 	 * pauses any given search algorithm
 	 */
 	public static void pause() {
-		// wen thread getötet werden muss:
+		// wen thread getï¿½tet werden muss:
 		killIfStoped();
 
 		if (autostep) {
@@ -67,13 +67,13 @@ public class Debugger {
 	/**
 	 * prints a message to the application console without pausing
 	 * 
-	 * @param breakpointDescription
+	 * @param msg message to print
 	 */
 
-	public static void consolePrintln(String string) {
+	public static void consolePrintln(String msg) {
 		synchronized (textChangeMutex) {
-			if (string != null) {
-				consoleText = consoleText + "\n" + string;
+			if (msg != null) {
+				consoleText = consoleText + "\n" + msg;
 				if (isConnected()) {
 					debuggerUi.notifyTextChange();
 				}
@@ -97,7 +97,7 @@ public class Debugger {
 	private static void killIfStoped() {
 		SearchThread searcher = (SearchThread) Thread.currentThread();
 
-		if (searcher.toBeStoped) {
+		if (searcher.toBeStopped ) {
 			System.out.println("threadstoper");
 			throw new RuntimeException("ThreadStoper");
 		}
@@ -152,15 +152,10 @@ public class Debugger {
 
 	/**
 	 * tests if debugger is connected to the ui
-	 * 
-	 * @param ui
 	 */
 	private static boolean isConnected() {
-		if (debuggerUi != null) {
-			return true;
-		}
-		return false;
-	}
+        return debuggerUi != null;
+    }
 
 	/**
 	 * get connected ui
