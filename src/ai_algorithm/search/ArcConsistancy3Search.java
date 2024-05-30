@@ -4,6 +4,7 @@ import ai_algorithm.Frontier;
 import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringProblem; // ???
 import application.debugger.Debugger;
 
@@ -13,11 +14,11 @@ import java.util.List;
 
 public class ArcConsistancy3Search extends SearchAlgorithm{
 
-    private MapColoringProblem mapColoringProblem; // KA OB NÖTIG
+    private MapColoringProblem mapColoringProblem;
 
     public ArcConsistancy3Search() {
         super();
-    } // KA OB NÖTIG
+    }
 
     public ArcConsistancy3Search(Problem problem) { // KA OB NÖTIG
         super(problem);
@@ -27,33 +28,52 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
     @Override
     public Path search() {
         // TODO: Implement ArcConsistancy3Search
-
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
         Frontier frontier = new Frontier();
-        mapColoringProblem = (MapColoringProblem) problem; // HÄÄÄÄÄ ?????????????
         Debugger.pause();
         if (this.problem.isGoalState(start.getState())) {
             return start.getPath();
         }
         frontier.add(start);
         Debugger.pause();
-        System.out.println("Arcs: " + mapColoringProblem.getArcs()); // Ausgaben sind da
-        while (!mapColoringProblem.getArcs().isEmpty()) {
-            System.out.println("Arcs: " + mapColoringProblem.getArcs());
-            List<String> arcVars = mapColoringProblem.getArcs().remove(0);
-            // !!!!!! HÄÄÄÄ !!!!!!
+        while (!frontier.isEmpty()) {
+            SearchNode node = frontier.removeLast();
+            Debugger.pause();
+            System.out.println(node);
+            if (problem.isGoalState(node.getState())) {
+                return node.getPath();
+            }
+            for (SearchNode child : node.expand()) {
+                State state = child.getState();
+                if (problem.isGoalState(state)) {
+                    Debugger.pause("Finished");
+                    return child.getPath();
+                }
+//                if (!contains2(node, state)) {
+//                    frontier.add(child);
+//                }
+            }
         }
 
+
+//        mapColoringProblem = (MapColoringProblem) problem;
+
+        Debugger.pause("No Sulution found");
         return null;
     }
     // ############################# /\ NOCH KA WIE GENAU IMPLEMENTIERT WERDEN SOLL /\ #############################
+
+    private boolean ac3() {
+
+
+        return true;
+    }
 
     // ############################# \/ SOLLLTE SO SEIN \/ #############################
     public boolean revise(String Xi, String Xj) {
         boolean revised = false;
         int lindex = mapColoringProblem.getVariables().indexOf(Xi);
         for(String x : new ArrayList<>(mapColoringProblem.getDomain().get(lindex))) {
-            // TODO: ??? \/
             if(!mapColoringProblem.getConstraints().get(lindex).contains(Xj)) {
                 break;
             }
@@ -71,6 +91,30 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
         return revised;
     }
     // ############################# /\ SOLLLTE SO SEIN /\ #############################
+
+
+    private Path backtrackingSearch() {
+
+        return null;
+    }
+
+    private Path bachtracking(SearchNode node) {
+
+        return null;
+    }
+
+    private boolean isConsistent(String var, String value) {
+
+        return true;
+    }
+
+    private String selectUnassignedVariable() {
+
+        return null;
+    }
+
+
+
 
     // ############################# \/ Orientierung \/ #############################
 //    public void runAC3() {
