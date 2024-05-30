@@ -65,13 +65,8 @@ public class SearchNode extends GameObject {
 		this.state = state;
 		this.pathCost = pathCost;
 		this.action = action;
-		if (this.parent != null) {
+		if (this.parent == null) {
 			this.metadata.root = this;
-			if (this.parent.children == null) {
-				this.parent.children = new LinkedList<SearchNode>();
-			} else {
-				this.parent.children.add(this);
-			}
 		}
 		this.path = new Path(this);
 
@@ -131,15 +126,15 @@ public class SearchNode extends GameObject {
 		return children;
 	}
 
-	/**
-	 * sets the child nodes
-	 * 
-	 * @param children
-	 */
-	public void setChildren(LinkedList<SearchNode> children) {
-		this.children = children;
-		GameObjectRegistry.registerForStateChange(this);
-	}
+//	/**
+//	 * sets the child nodes
+//	 *
+//	 * @param children
+//	 */
+//	public void setChildren(LinkedList<SearchNode> children) {
+//		this.children = children;
+//		GameObjectRegistry.registerForStateChange(this);
+//	}
 
 	/**
 	 * @return path object
@@ -163,8 +158,6 @@ public class SearchNode extends GameObject {
 		Debugger.pause("Expanding: " + this);
 		// ende vis
 
-		List<SearchNode> futureChildren = new ArrayList<>();
-
 		if (this.getChildren() != null && !this.getChildren().isEmpty() ) {
 			return this.getChildren(); // <-- only expand children if they don't alredy exist
 		}
@@ -176,10 +169,9 @@ public class SearchNode extends GameObject {
 			// neue knoten erzeugen
 			SearchNode succ = new SearchNode(this, succState,
 					this.getPathCost() + prob.getCost(state, action, succState), action);
-			futureChildren.add(succ);
+			this.children.add(succ);
 			Debugger.pause("EXPANSION: " + action);
 		}
-		this.children.addAll(futureChildren);
 		// visualsiieren
 		GameObjectRegistry.registerForStateChange(this);
 		// ende vis
