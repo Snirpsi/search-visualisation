@@ -71,7 +71,6 @@ public class MapColoringProblem extends Problem {
         contraints = new ArrayList<>();
         fillQueue();
 
-//        start = bundesstaatenListe.get(0).getVariable();
 //        start = variables.get(0);
     }
 
@@ -144,12 +143,6 @@ public class MapColoringProblem extends Problem {
         return variables;
     }
 
-//    public String getVariable(SearchNode node) {
-//        // Such mir die Variable aus der Variablenliste heraus die am Node hängt
-//        return variables.get());
-//
-//    }
-
     /**
      * Returns the list of all domains.
      *
@@ -173,10 +166,6 @@ public class MapColoringProblem extends Problem {
             return domain.get(index);
         }
     }
-
-//    public void setAssignments(Map<String, String> assignment) {
-//        this.assignments = assignment;
-//    }
 
     /**
      * Returns the assignments.
@@ -214,10 +203,6 @@ public class MapColoringProblem extends Problem {
     public Map<String, Circle> getVariableToCircleMap() {
         return variableToCircleMap;
     }
-
-//    public List<List<String>> getVariableConstraintsDomain() {
-//        return variableConstraintsDomain;
-//    }
 
     /**
      * Returns the start variable.
@@ -340,7 +325,6 @@ public class MapColoringProblem extends Problem {
     public double getCost(State state, String action, State succ) {
         return 1;
     }
-
 
 }
 

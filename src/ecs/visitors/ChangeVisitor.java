@@ -9,6 +9,7 @@ import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.MapColoringState;
+import ai_algorithm.problems.mapColoring.Pair;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import application.Globals;
@@ -241,7 +242,6 @@ public class ChangeVisitor extends Visitor {
 	 * @param mapColoringProblem
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
-//		System.out.println("MapColoringProblem - ChangeVisitor");
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 
 		for (SearchNode node : nodes) {
@@ -252,25 +252,7 @@ public class ChangeVisitor extends Visitor {
 				return;
 			}
 
-//			System.out.println("Node: " + node);
-//			System.out.println("Node: " + node.getAction());
-//			String blabla = node.getAction();
-//			if(blabla != null){
-//				System.out.println("Node: " + blabla.split("="));
-//			}
-
-//			Map<String, String> assignements = state.getAssignments();
-//			System.out.println("Assignments: " + assignements.get("Red"));
-
-//			System.out.println("State vor Split: " + state);
-//			if(state.toString() != " "){
-//				String[] test = state.toString().split(",");
-
-//				String[] test = state.toString().split("=");
-//				System.out.println("Sate nach Split: " + test[0]);
-//			}
-
-//			System.out.println("Domain: " + state.getDomain());
+			System.out.println("Node: " + node.getAction());
 
 			for(String var : mapColoringProblem.getVariables()) {
 				List<String> stateVarDomain = state.getDomain(var);

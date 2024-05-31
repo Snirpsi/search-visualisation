@@ -9,7 +9,7 @@ import ai_algorithm.search.DepthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.ManualSearch;
 import ai_algorithm.search.RecursiveDepthSearch;
-import ai_algorithm.search.ArcConsistancy3Search;
+import ai_algorithm.search.BacktrackingArcConsistancy3Search;
 //import ai_algorithm.search.*;
 
 /**
@@ -43,7 +43,7 @@ public class SearchAndProblemRegister {
 			BreadthFirstSearch.class.getName(), //
 			BidirectionalBreadthFirstSearch.class.getName(), //
 			ManualSearch.class.getName(),//
-			ArcConsistancy3Search.class.getName()//
+			BacktrackingArcConsistancy3Search.class.getName()//
 	};
 
 }
