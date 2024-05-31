@@ -1,20 +1,16 @@
 package ecs.visitors;
 
-import java.time.format.SignStyle;
 import java.util.List;
-import java.util.Map;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.Bundesstaaten;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
-import ai_algorithm.specific_algorithm_logic.csp.Variables;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -27,12 +23,9 @@ import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
-
-import javax.net.ssl.SSLContext;
 
 /**
  * This class handles the change of every possible {@link GameObject}. The

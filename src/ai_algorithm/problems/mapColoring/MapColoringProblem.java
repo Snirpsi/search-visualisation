@@ -32,8 +32,6 @@ public class MapColoringProblem extends Problem {
     Map<String, List<String>> domain; // Domain of the problem
     Map<String, String> assignments; // Assignments of the problem
 
-    List<Bundesstaaten> bundesstaatenListe; // List of all Bundesstaaten
-
     List<List<String>> variableConstraintsEdges = new ArrayList<>(); // List of all variable constraints Edges
 
 //    List<List<String>> variableConstraintsDomain = new ArrayList<>();
@@ -53,18 +51,6 @@ public class MapColoringProblem extends Problem {
      */
     public MapColoringProblem() {
         super();
-
-        // TODO: Add Randomization for the different variables of australia ??? (Maybe not necessary)
-        // "Red", "Green", "Blue"
-        Bundesstaaten wa = new Bundesstaaten("WA", Arrays.asList("Red", "Green"), Arrays.asList("NT", "SA"));
-        Bundesstaaten nt = new Bundesstaaten("NT", Arrays.asList("Green"), Arrays.asList("WA", "SA", "Q"));
-        Bundesstaaten sa = new Bundesstaaten("SA", Arrays.asList("Blue", "Green"), Arrays.asList("WA", "NT", "Q", "NSW", "V"));
-        Bundesstaaten q = new Bundesstaaten("Q", Arrays.asList("Green", "Red", "Blue"), Arrays.asList("SA", "NT", "NSW"));
-        Bundesstaaten nsw = new Bundesstaaten("NSW", Arrays.asList("Green"), Arrays.asList("SA", "Q", "V"));
-        Bundesstaaten v = new Bundesstaaten("V", Arrays.asList("Blue", "Green"), Arrays.asList("NSW", "SA"));
-        Bundesstaaten t = new Bundesstaaten("T", Arrays.asList("Red", "Green"), Collections.emptyList());
-        bundesstaatenListe = (Arrays.asList(wa, nt, sa, q, nsw, v, t));
-
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         GAMESIZE = variables.size();
         neighbors = Map.of(
@@ -233,15 +219,6 @@ public class MapColoringProblem extends Problem {
 //    public List<List<String>> getVariableConstraintsDomain() {
 //        return variableConstraintsDomain;
 //    }
-
-    /**
-     * Returns the list of all Bundesstaaten.
-     *
-     * @return list of all Bundesstaaten
-     */
-    public List<Bundesstaaten> getBundesstaatenListe() {
-        return bundesstaatenListe;
-    }
 
     /**
      * Returns the start variable.
