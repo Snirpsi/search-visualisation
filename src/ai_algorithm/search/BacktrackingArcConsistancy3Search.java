@@ -8,17 +8,16 @@ import ai_algorithm.problems.mapColoring.MapColoringProblem; // ???
 import application.debugger.Debugger;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ArcConsistancy3Search extends SearchAlgorithm{
+public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
 
     private MapColoringProblem mapColoringProblem; // KA OB NÖTIG
 
-    public ArcConsistancy3Search() {
+    public BacktrackingArcConsistancy3Search() {
         super();
     } // KA OB NÖTIG
 
-    public ArcConsistancy3Search(Problem problem) { // KA OB NÖTIG
+    public BacktrackingArcConsistancy3Search(Problem problem) { // KA OB NÖTIG
         super(problem);
     }
 
