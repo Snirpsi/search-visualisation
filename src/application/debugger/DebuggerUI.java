@@ -15,8 +15,8 @@ import settings.Settings;
  *
  */
 public class DebuggerUI {
-	private HBox controlElements;
-	private TextArea console;
+	private final HBox controlElements;
+	private final TextArea console;
 	private boolean textChanged;
 
 	public DebuggerUI() {

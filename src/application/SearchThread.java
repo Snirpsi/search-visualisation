@@ -10,13 +10,13 @@ import settings.Settings;
  */
 public class SearchThread extends Thread {
 
-	SearchAlgorithm search = null;
+	private final SearchAlgorithm search;
 
-	public volatile boolean toBeStoped;
+	public volatile boolean toBeStopped;
 
 	public SearchThread(SearchAlgorithm search) {
 		this.search = search;
-		this.toBeStoped = false;
+		this.toBeStopped = false;
 		this.setDaemon(true);
 	}
 
@@ -27,9 +27,8 @@ public class SearchThread extends Thread {
 			search.search();
 		} catch (RuntimeException e) {
 			if (Settings.DEBUGMODE)
-				System.out.print("savely stoped");
+				System.out.println("safely stopped");
 		}
-		return;
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class SearchThread extends Thread {
 		super.interrupt(); // <-- awake from sleep
 		if (Settings.DEBUGMODE)
 			System.out.println("interrupted");
-		this.toBeStoped = true; // <-- end thread at safe place next time debugger is called
+		this.toBeStopped = true; // <-- end thread at safe place next time debugger is called
 		// continues thread to next pause then cleans it up
 		Debugger.resume();
 

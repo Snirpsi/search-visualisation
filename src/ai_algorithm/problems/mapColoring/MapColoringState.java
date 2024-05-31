@@ -1,6 +1,5 @@
 package ai_algorithm.problems.mapColoring;
 
-import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 
 import java.util.*;
@@ -66,15 +65,6 @@ public class MapColoringState extends State {
     public MapColoringProblem getProblem() {
         return this.problem;
     }
-
-    /**
-     * Set the assignments -> variable -> color // Vermutlich nicht notwendig
-     *
-     * @param assignments
-     */
-//    private void setAssignments(Map<String, String> assignments) {
-//        this.assignments = assignments;
-//    }
 
     /**
      * hash function

@@ -4,23 +4,20 @@ import ai_algorithm.Frontier;
 import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.Problem;
-import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringProblem; // ???
 import application.debugger.Debugger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class ArcConsistancy3Search extends SearchAlgorithm{
+public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
 
-    private MapColoringProblem mapColoringProblem;
+    private MapColoringProblem mapColoringProblem; // KA OB NÖTIG
 
-    public ArcConsistancy3Search() {
+    public BacktrackingArcConsistancy3Search() {
         super();
-    }
+    } // KA OB NÖTIG
 
-    public ArcConsistancy3Search(Problem problem) { // KA OB NÖTIG
+    public BacktrackingArcConsistancy3Search(Problem problem) { // KA OB NÖTIG
         super(problem);
     }
 
@@ -28,55 +25,36 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
     @Override
     public Path search() {
         // TODO: Implement ArcConsistancy3Search
+
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
         Frontier frontier = new Frontier();
+        mapColoringProblem = (MapColoringProblem) problem; // HÄÄÄÄÄ ?????????????
         Debugger.pause();
         if (this.problem.isGoalState(start.getState())) {
             return start.getPath();
         }
         frontier.add(start);
         Debugger.pause();
-        while (!frontier.isEmpty()) {
-            SearchNode node = frontier.removeLast();
-            Debugger.pause();
-            System.out.println(node);
-            if (problem.isGoalState(node.getState())) {
-                return node.getPath();
-            }
-            for (SearchNode child : node.expand()) {
-                State state = child.getState();
-                if (problem.isGoalState(state)) {
-                    Debugger.pause("Finished");
-                    return child.getPath();
-                }
-//                if (!contains2(node, state)) {
-//                    frontier.add(child);
-//                }
-            }
+        System.out.println("Arcs: " + mapColoringProblem.getContraints()); // Ausgaben sind da
+        while (!mapColoringProblem.getContraints().isEmpty()) {
+            System.out.println("Arcs: " + mapColoringProblem.getContraints());
+//            List<String> arcVars = mapColoringProblem.getContraints().remove(0);
+            // !!!!!! HÄÄÄÄ !!!!!!
         }
 
-
-//        mapColoringProblem = (MapColoringProblem) problem;
-
-        Debugger.pause("No Sulution found");
         return null;
     }
     // ############################# /\ NOCH KA WIE GENAU IMPLEMENTIERT WERDEN SOLL /\ #############################
-
-    private boolean ac3() {
-
-
-        return true;
-    }
 
     // ############################# \/ SOLLLTE SO SEIN \/ #############################
     public boolean revise(String Xi, String Xj) {
         boolean revised = false;
         int lindex = mapColoringProblem.getVariables().indexOf(Xi);
         for(String x : new ArrayList<>(mapColoringProblem.getDomain().get(lindex))) {
-            if(!mapColoringProblem.getConstraints().get(lindex).contains(Xj)) {
-                break;
-            }
+            // TODO: ??? \/
+//            if(!mapColoringProblem.getNeighbors().get(lindex).contains(Xj)) {
+//                break;
+//            }
             if(!mapColoringProblem.getAssignments().containsKey(Xj)) {
                 continue;
             }
@@ -91,30 +69,6 @@ public class ArcConsistancy3Search extends SearchAlgorithm{
         return revised;
     }
     // ############################# /\ SOLLLTE SO SEIN /\ #############################
-
-
-    private Path backtrackingSearch() {
-
-        return null;
-    }
-
-    private Path bachtracking(SearchNode node) {
-
-        return null;
-    }
-
-    private boolean isConsistent(String var, String value) {
-
-        return true;
-    }
-
-    private String selectUnassignedVariable() {
-
-        return null;
-    }
-
-
-
 
     // ############################# \/ Orientierung \/ #############################
 //    public void runAC3() {
