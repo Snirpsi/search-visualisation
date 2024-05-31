@@ -2,7 +2,6 @@ package ai_algorithm.problems.mapColoring;
 
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
-import ai_algorithm.specific_algorithm_logic.csp.csp_content.util.Pair;
 import javafx.scene.shape.Circle;
 
 import java.util.*;
