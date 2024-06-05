@@ -27,22 +27,11 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
     @Override
     public Path search() {
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
-        Frontier frontier = new Frontier();
-
-        MapColoringProblem csp = new MapColoringProblem();
-
-        if (this.problem instanceof MapColoringProblem) {
-            csp = (MapColoringProblem) this.problem;
-            System.out.println("Constraints: " + csp.getContraints());
-        }
-
-
-
-
-
-
-
         Debugger.pause();
+
+        Frontier frontier = new Frontier();
+        Debugger.pause();
+
         if (this.problem.isGoalState(start.getState())) {
             return start.getPath();
         }
@@ -67,27 +56,57 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
             }
         }
 
+        Debugger.pause("No Sulution found");
 //        return backtrack(start);
         return null;
     }
 
     private Path backtrack(SearchNode node){
-
+        Frontier frontier = new Frontier();
+        MapColoringProblem csp;
+        csp = (MapColoringProblem) this.problem;
+        Debugger.pause();
+        if (this.problem.isGoalState(node.getState())) {
+            return node.getPath();
+        }
+        frontier.add(node);
+        Debugger.pause();
+        if (this.problem instanceof MapColoringProblem) {
+            MapColoringState state = (MapColoringState) node.getState();
+            if (state.getAssignments().size() == csp.getVariables().size()) {
+                return node.getPath();
+            }
+            State nextVariable = selectUnassignedVariable(node);
+            List<String> values = state.getDomain(nextVariable.toString());
+            for (String value : values) {
+                if (isConsistent(value, node.getState())) {
+                    Map<String, String> newAssignments = new HashMap<>(state.getAssignments());
+                    newAssignments.put(nextVariable.toString(), value);
+                    Map<String, List<String>> newDomain = new HashMap<>();
+                    if (ArcConsistency3(csp.getContraints(), csp.getDomain(), newAssignments)) {
+                        return backtrack(new SearchNode(node, new MapColoringState(csp, newDomain, newAssignments), 0, null));
+                    }
+                }
+            }
+        }
         return null;
     }
-
-
 
     public boolean contains2(SearchNode sn, State state) {
         return sn.getPath().getVisitedStates().contains(state);
     }
 
-    private State selectUnassignedVariable(SearchNode node) {
+    private boolean isConsistent(String value, State state) {
+        // TODO: Implement
+        return true;
+    }
 
+    private State selectUnassignedVariable(SearchNode node) {
+        // TODO: Implement
         return null;
     }
 
-    public void reduseDomains(List<Pair<String, String>> contraints,
+    public boolean ArcConsistency3(List<Pair<String, String>> contraints,
                               Map<String, List<String>> domain, Map<String, String> assignments) {
         while (!contraints.isEmpty()) {
             Pair<String, String> arc = contraints.remove(0);
@@ -95,7 +114,7 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
                 int dIIndex = domain.get(arc.getFirst()).indexOf(assignments.get(arc.getFirst()));
                 if (domain.get(arc.getFirst()).isEmpty()) {
                     System.out.println("No Solution");
-                    return;
+                    return false;
                 }
                 List<String> neighbors = new ArrayList<>((Collection) contraints.get(dIIndex));
                 neighbors.remove(arc.getSecond());
@@ -104,6 +123,7 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
                 }
             }
         }
+        return true;
     }
 
     private boolean revise(String first, String second, Map<String,
@@ -130,49 +150,6 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
         }
         return revised;
     }
-
-    // ############################# \/ Orientierung \/ #############################
-//    public void runAC3() {
-//        fillQueue(); // Fill the queue with the initial arcs
-//        while (!arcs.isEmpty()) { // While the queue is not empty
-//            List<String> arcVars = arcs.remove(0); // Remove the first arc from the queue
-//            if (revise(arcVars.get(0), arcVars.get(1))) { // Revise the domain of the arc
-//                int dIIndex = variables.indexOf(arcVars.get(0)); // Get the index of the variable in the domain
-//                if (domain.get(dIIndex).isEmpty()) { // If the domain is empty
-//                    System.out.println("No Solution");
-//                    return;
-//                }
-//                List<String> neighbors = new ArrayList<>(constraints.get(dIIndex)); // Get the neighbors of the variable
-//                neighbors.remove(arcVars.get(1)); // Remove the second variable from the neighbors
-//                // TODO: Quellcode überarbeiten
-//                for (String xk : neighbors) { // For each neighbor
-//                    arcs.add(Arrays.asList(xk, arcVars.get(0))); // Add the neighbor and the first variable to the queue
-//                }
-//            }
-//        }
-//        setAssignments(assignments);
-//    }
-
-//    private boolean revise(String Xi, String Xj) {
-//        boolean revised = false; // Initialize the revised flag
-//        int Iindex = variables.indexOf(Xi); // Get the index of the first variable
-//        for (String x : new ArrayList<>(domain.get(Iindex))) {
-//            if (!constraints.get(Iindex).contains(Xj)) {
-//                break;
-//            }
-//            if (!assignments.containsKey(Xj)) {
-//                continue;
-//            }
-//            if (assignments.get(Xj).equals(x)) {
-//                domain.get(Iindex).remove(x); // Remove the value from the domain
-//                revised = true;
-//            }
-//        }
-//        if (!revised && !domain.get(Iindex).isEmpty()) { // If the domain was not revised
-//            assignments.put(Xi, domain.get(Iindex).get(0)); // Assign the first value from the domain
-//        }
-//        return revised;
-//    }
 
 }
 
