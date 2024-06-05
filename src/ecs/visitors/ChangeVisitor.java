@@ -252,8 +252,6 @@ public class ChangeVisitor extends Visitor {
 				return;
 			}
 
-			System.out.println("Node: " + node.getAction());
-
 			for(String var : mapColoringProblem.getVariables()) {
 				List<String> stateVarDomain = state.getDomain(var);
 				Circle c = mapColoringProblem.getVariableToCircleMap().get(var);
