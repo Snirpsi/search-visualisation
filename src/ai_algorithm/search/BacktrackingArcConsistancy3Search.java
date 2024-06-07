@@ -10,6 +10,7 @@ import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.Pair;
 import application.debugger.Debugger;
 
+import javax.net.ssl.SSLContext;
 import java.util.*;
 
 public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
@@ -27,68 +28,110 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
     @Override
     public Path search() {
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
-        Debugger.pause();
-
         Frontier frontier = new Frontier();
         Debugger.pause();
 
-        if (this.problem.isGoalState(start.getState())) {
-            return start.getPath();
-        }
-        frontier.add(start);
-        Debugger.pause();
-        while (!frontier.isEmpty()) {
-            SearchNode node = frontier.removeFirst();
-            Debugger.pause();
-            System.out.println(node);
-            if (problem.isGoalState(node.getState())) {
-                return node.getPath();
-            }
-            for (SearchNode child : node.expand()) {
-                State state = child.getState();
-                if (problem.isGoalState(state)) {
-                    Debugger.pause("Finished");
-                    return child.getPath();
-                }
-                if (!contains2(node, state)) {
-                    frontier.add(child);
-                }
-            }
-        }
-
-        Debugger.pause("No Sulution found");
-//        return backtrack(start);
-        return null;
+//        Debugger.pause();
+//
+//        if (this.problem.isGoalState(start.getState())) {
+//            return start.getPath();
+//        }
+//        frontier.add(start);
+//        Debugger.pause();
+//        while (!frontier.isEmpty()) {
+//            SearchNode node = frontier.removeFirst();
+//            Debugger.pause();
+//            System.out.println(node);
+//            if (problem.isGoalState(node.getState())) {
+//                return node.getPath();
+//            }
+//            Debugger.pause();
+//
+//            for (SearchNode child : node.expand()) {
+//                State state = child.getState();
+//                Debugger.pause();
+//                if (problem.isGoalState(state)) {
+//                    Debugger.pause("Finished");
+//                    return child.getPath();
+//                }
+//                if (!contains2(node, state)) {
+//                    frontier.add(child);
+//                }
+//            }
+//        }
+//
+//        Debugger.pause("No Sulution found");
+        return backtrack(start, frontier);
+//        return null;
     }
 
-    private Path backtrack(SearchNode node){
-        Frontier frontier = new Frontier();
-        MapColoringProblem csp;
-        csp = (MapColoringProblem) this.problem;
-        Debugger.pause();
-        if (this.problem.isGoalState(node.getState())) {
-            return node.getPath();
+    private Path backtrack(SearchNode s, Frontier frontier){
+        if (this.problem.isGoalState(s.getState())) {
+            return s.getPath();
         }
-        frontier.add(node);
+        frontier.add(s);
         Debugger.pause();
-        if (this.problem instanceof MapColoringProblem) {
-            MapColoringState state = (MapColoringState) node.getState();
-            if (state.getAssignments().size() == csp.getVariables().size()) {
-                return node.getPath();
-            }
-            State nextVariable = selectUnassignedVariable(node);
-            List<String> values = state.getDomain(nextVariable.toString());
-            for (String value : values) {
-                if (isConsistent(value, node.getState())) {
-                    Map<String, String> newAssignments = new HashMap<>(state.getAssignments());
-                    newAssignments.put(nextVariable.toString(), value);
-                    Map<String, List<String>> newDomain = new HashMap<>();
-                    if (ArcConsistency3(csp.getContraints(), csp.getDomain(), newAssignments)) {
-                        return backtrack(new SearchNode(node, new MapColoringState(csp, newDomain, newAssignments), 0, null));
+
+            while (!frontier.isEmpty()) {
+                for (SearchNode currentChild : s.expand()) {
+                    State state = currentChild.getState();
+                    Debugger.pause();
+                    for (String action : state.getProblem().getActions(state)) {
+                        State succState = state.getProblem().getSuccessor(state, action);
+                        String varState = state.toString().split("=")[0];
+                        String valueState = state.toString().split("=")[1].split(",")[0];
+                        System.out.println("State Modified: !!!!!!" + varState + "   " + valueState);
+
+                        String varAction = action.split("=")[0];
+                        String valueAction = action.split("=")[1];
+                        System.out.println("Action: !!!!!!" + varAction + "   " + valueAction);
+
+                        Debugger.pause();
                     }
+
+
+                    Debugger.pause();
+
+                    if (this.problem.isGoalState(state)) {
+                        Debugger.pause("Finished");
+                        return currentChild.getPath();
+                    }
+                    Debugger.pause();
+                    Path result = backtrack(currentChild, frontier);
+                    if (result != null) {
+                        return result;
+                    }
+
+
                 }
+
+//        MapColoringProblem csp = (MapColoringProblem) this.problem;
+//        Debugger.pause();
+//        if (this.problem.isGoalState(s.getState())) {
+//            return s.getPath();
+//        }
+//        frontier.add(s);
+//        Debugger.pause();
+//        if (this.problem instanceof MapColoringProblem) {
+//            MapColoringState state = (MapColoringState) s.getState();
+//            if (state.getAssignments().size() == csp.getVariables().size()) {
+//                return s.getPath();
+//            }
+//            State nextVariable = selectUnassignedVariable(s);
+//            List<String> values = state.getDomain(nextVariable.toString());
+//            for (String value : values) {
+//                if (isConsistent(value, s.getState())) {
+//                    Map<String, String> newAssignments = new HashMap<>(state.getAssignments());
+//                    newAssignments.put(nextVariable.toString(), value);
+//                    Map<String, List<String>> newDomain = new HashMap<>();
+//                    if (ArcConsistency3(csp.getContraints(), csp.getDomain(), newAssignments)) {
+////                        return backtrack(new SearchNode(s, new MapColoringState(csp, newDomain, newAssignments), 0, null));
+//                    }
+//                }
+//            }
+//        }
             }
-        }
+
         return null;
     }
 
@@ -96,8 +139,14 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
         return sn.getPath().getVisitedStates().contains(state);
     }
 
-    private boolean isConsistent(String value, State state) {
+    private boolean isConsistentBTS(String value, State state) {
         // TODO: Implement
+//        if (this.problem instanceof MapColoringProblem) {
+//
+//        }
+//
+//
+//        System.out.println("State: " + value);
         return true;
     }
 
