@@ -1,5 +1,6 @@
 .settings/
 .idea/
+*.iml
 bin/
 out/
 .classpath
