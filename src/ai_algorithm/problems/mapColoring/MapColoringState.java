@@ -1,5 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
+import ai_algorithm.problems.CspState;
 import ai_algorithm.problems.State;
 
 import java.util.*;
@@ -14,7 +15,7 @@ import java.util.*;
  * @author Alexander
  */
 
-public class MapColoringState extends State {
+public class MapColoringState extends CspState {
 
     /**
      *  reference to the problem
@@ -50,12 +51,19 @@ public class MapColoringState extends State {
      *
      * @return string representation of the state
      */
+    @Override
     public Map<String, String> getAssignments() {
         return assignments;
     }
 
+    @Override
     public List<String> getDomain(String variable) {
         return new ArrayList<>(domain.get(variable));
+    }
+
+    @Override
+    public boolean isConsistent() {
+        return false;
     }
 
     /**

@@ -1,5 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
+import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import javafx.scene.shape.Circle;
@@ -22,7 +23,7 @@ import java.util.*;
  *
  * @author Alexander
  */
-public class MapColoringProblem extends Problem {
+public class MapColoringProblem extends CspProblem {
 
     public final int GAMESIZE; // Number of all variables
 
@@ -96,6 +97,7 @@ public class MapColoringProblem extends Problem {
      *
      * @return list of all variables
      */
+    @Override
     public List<String> getVariables() {
         return variables;
     }
@@ -105,6 +107,7 @@ public class MapColoringProblem extends Problem {
      *
      * @return list of all domains
      */
+    @Override
     public Map<String, List<String>> getDomain() {
         return domain;
     }
@@ -129,6 +132,7 @@ public class MapColoringProblem extends Problem {
      *
      * @return arcs
      */
+    @Override
     public List<Pair<String, String>> getContraints() {
         return contraints;
     }
