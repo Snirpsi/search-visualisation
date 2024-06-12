@@ -1,27 +1,23 @@
-package ai_algorithm.search;
+package ai_algorithm.searchCsp;
 
 import ai_algorithm.Frontier;
 import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
-import ai_algorithm.problems.Problem;
+import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringProblem;
-import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.Pair;
+import ai_algorithm.searchCsp.CspSearchAlgorithm;
 import application.debugger.Debugger;
 
-import javax.net.ssl.SSLContext;
 import java.util.*;
 
-public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
-
-    MapColoringProblem mcp;
+public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 
     public BacktrackingArcConsistancy3Search() {
         super();
     }
 
-    public BacktrackingArcConsistancy3Search(MapColoringProblem problem) { // KA OB NÖTIG
+    public BacktrackingArcConsistancy3Search(CspProblem problem) {
         super(problem);
     }
 
@@ -30,6 +26,7 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
         Frontier frontier = new Frontier();
         Debugger.pause();
+
 
 //        Debugger.pause();
 //
@@ -71,40 +68,46 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
         }
         frontier.add(s);
         Debugger.pause();
-
-            while (!frontier.isEmpty()) {
-                for (SearchNode currentChild : s.expand()) {
-                    State state = currentChild.getState();
-                    Debugger.pause();
-                    for (String action : state.getProblem().getActions(state)) {
-                        State succState = state.getProblem().getSuccessor(state, action);
-                        String varState = state.toString().split("=")[0];
-                        String valueState = state.toString().split("=")[1].split(",")[0];
-                        System.out.println("State Modified: !!!!!!" + varState + "   " + valueState);
-
-                        String varAction = action.split("=")[0];
-                        String valueAction = action.split("=")[1];
-                        System.out.println("Action: !!!!!!" + varAction + "   " + valueAction);
-
-                        Debugger.pause();
-                    }
-
-
-                    Debugger.pause();
-
-                    if (this.problem.isGoalState(state)) {
-                        Debugger.pause("Finished");
-                        return currentChild.getPath();
-                    }
-                    Debugger.pause();
-                    Path result = backtrack(currentChild, frontier);
-                    if (result != null) {
-                        return result;
-                    }
-
-
+        while (!frontier.isEmpty()) {
+            SearchNode node = frontier.removeFirst();
+            Debugger.pause();
+            System.out.println(node);
+            if(this.problem.isGoalState(node.getState())){
+                return node.getPath();
+            }
+            for (SearchNode currentChild : node.expand()) {
+                State state = currentChild.getState();
+                if (this.problem.isGoalState(state)) {
+                    Debugger.pause("Finished");
+                    return currentChild.getPath();
                 }
+                Debugger.pause();
+                for (String action : state.getProblem().getActions(state)) {
+                    State succState = state.getProblem().getSuccessor(state, action);
+                    System.out.println(succState);
 
+
+
+                    System.out.println("currentChild.getParent(): " + currentChild.getParent());
+//                    System.out.println("currentChild.getChildren(): " + currentChild.getChildren());
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!" + currentChild.getPath().getVisitedStates());
+
+                    String varState = state.toString().split("=")[0];
+                    String valueState = state.toString().split("=")[1].split(",")[0];
+//                    System.out.println("State Modified: !!!!!!" + varState + "   " + valueState);
+
+                    String varAction = action.split("=")[0];
+                    String valueAction = action.split("=")[1];
+//                    System.out.println("Action: !!!!!!" + varAction + "   " + valueAction);
+
+                    Debugger.pause();
+                }
+                Path result = backtrack(currentChild, frontier);
+                if (result != null) {
+                    return result;
+                }
+            }
+//=========================== \/ Adapt the following code to the framework \/ ===========================
 //        MapColoringProblem csp = (MapColoringProblem) this.problem;
 //        Debugger.pause();
 //        if (this.problem.isGoalState(s.getState())) {
@@ -130,7 +133,7 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
 //                }
 //            }
 //        }
-            }
+        }
 
         return null;
     }
@@ -141,12 +144,6 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
 
     private boolean isConsistentBTS(String value, State state) {
         // TODO: Implement
-//        if (this.problem instanceof MapColoringProblem) {
-//
-//        }
-//
-//
-//        System.out.println("State: " + value);
         return true;
     }
 
@@ -156,7 +153,7 @@ public class BacktrackingArcConsistancy3Search extends SearchAlgorithm{
     }
 
     public boolean ArcConsistency3(List<Pair<String, String>> contraints,
-                              Map<String, List<String>> domain, Map<String, String> assignments) {
+                                   Map<String, List<String>> domain, Map<String, String> assignments) {
         while (!contraints.isEmpty()) {
             Pair<String, String> arc = contraints.remove(0);
             if (revise(arc.getFirst(), arc.getSecond(), domain, assignments)) {
