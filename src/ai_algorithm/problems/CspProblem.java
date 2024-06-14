@@ -13,6 +13,8 @@ public abstract class CspProblem extends Problem {
 
     public abstract List<Pair<String, String>> getContraints();
 
+    public abstract List<String> getNeighbors(String variable);
+
 }
 
 /*

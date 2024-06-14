@@ -5,8 +5,8 @@ import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.Pair;
-import ai_algorithm.searchCsp.CspSearchAlgorithm;
 import application.debugger.Debugger;
 
 import java.util.*;
@@ -25,145 +25,90 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
     public Path search() {
         SearchNode start = new SearchNode(null, problem.getInitialState(), 0, null);
         Frontier frontier = new Frontier();
+        if (this.problem.isGoalState(start.getState())) {
+            return start.getPath();
+        }
+        frontier.add(start);
         Debugger.pause();
-
-
-//        Debugger.pause();
-//
-//        if (this.problem.isGoalState(start.getState())) {
-//            return start.getPath();
-//        }
-//        frontier.add(start);
-//        Debugger.pause();
-//        while (!frontier.isEmpty()) {
-//            SearchNode node = frontier.removeFirst();
-//            Debugger.pause();
-//            System.out.println(node);
-//            if (problem.isGoalState(node.getState())) {
-//                return node.getPath();
-//            }
-//            Debugger.pause();
-//
-//            for (SearchNode child : node.expand()) {
-//                State state = child.getState();
-//                Debugger.pause();
-//                if (problem.isGoalState(state)) {
-//                    Debugger.pause("Finished");
-//                    return child.getPath();
-//                }
-//                if (!contains2(node, state)) {
-//                    frontier.add(child);
-//                }
-//            }
-//        }
-//
-//        Debugger.pause("No Sulution found");
-        return backtrack(start, frontier);
-//        return null;
+        while(!frontier.isEmpty()) {
+            Path result = backtrack(start, frontier);
+            if (result != null) {
+                return result;
+            }
+        }
+        Debugger.pause("No Sulution found");
+        return null;
     }
 
-    private Path backtrack(SearchNode s, Frontier frontier){
-        if (this.problem.isGoalState(s.getState())) {
-            return s.getPath();
-        }
-        frontier.add(s);
-        Debugger.pause();
-        while (!frontier.isEmpty()) {
-            SearchNode node = frontier.removeFirst();
-            Debugger.pause();
-            System.out.println(node);
-            if(this.problem.isGoalState(node.getState())){
-                return node.getPath();
-            }
-            for (SearchNode currentChild : node.expand()) {
-                State state = currentChild.getState();
-                if (this.problem.isGoalState(state)) {
-                    Debugger.pause("Finished");
-                    return currentChild.getPath();
-                }
-                Debugger.pause();
-                for (String action : state.getProblem().getActions(state)) {
-                    State succState = state.getProblem().getSuccessor(state, action);
-                    System.out.println(succState);
-
-
-
-                    System.out.println("currentChild.getParent(): " + currentChild.getParent());
-//                    System.out.println("currentChild.getChildren(): " + currentChild.getChildren());
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!" + currentChild.getPath().getVisitedStates());
-
-                    String varState = state.toString().split("=")[0];
-                    String valueState = state.toString().split("=")[1].split(",")[0];
-//                    System.out.println("State Modified: !!!!!!" + varState + "   " + valueState);
-
-                    String varAction = action.split("=")[0];
-                    String valueAction = action.split("=")[1];
-//                    System.out.println("Action: !!!!!!" + varAction + "   " + valueAction);
-
+    private Path backtrack(SearchNode s, Frontier frontier) {
+        // Innerhalb dieser backtracking Funktion muss eine Variable aus der Frontier entfertn werden um einen neue Node zu bekommen
+        Map<String, String> assignments = ((MapColoringState) s.getState()).getAssignments();
+        String var = selectUnassignedVariable(assignments);
+        if (!var.isEmpty()) {
+            for (String value : orderDomainValues(var, assignments)) {
+                assignments.put(var, value);
+                boolean inference = ArcConsistency3(this.problem.getContraints(), this.problem.getDomain(), assignments);
+                if (inference) {
+                    // Übergabe eines Strings an die Funktion "getSuccessor" sie erwartet jedoch eine Action die gesplittet werden muss
+                    // var bei getSuccessor müsste eine Action sein // TODO: Überprüfen + Anpassen
+                    State successor = this.problem.getSuccessor(s.getState(), var); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
+//                    SearchNode child = new SearchNode(s, successor, 0, null);
+                    SearchNode child = new SearchNode(null, successor, 0, null);
+                    frontier.add(child);
                     Debugger.pause();
-                }
-                Path result = backtrack(currentChild, frontier);
-                if (result != null) {
-                    return result;
+                    if (problem.isGoalState(successor)) {
+                        Debugger.pause("Finished");
+                        return child.getPath();
+                    }
+                    return backtrack(child, frontier);
+                } else {
+                    assignments.remove(var);
                 }
             }
-//=========================== \/ Adapt the following code to the framework \/ ===========================
-//        MapColoringProblem csp = (MapColoringProblem) this.problem;
-//        Debugger.pause();
-//        if (this.problem.isGoalState(s.getState())) {
-//            return s.getPath();
-//        }
-//        frontier.add(s);
-//        Debugger.pause();
-//        if (this.problem instanceof MapColoringProblem) {
-//            MapColoringState state = (MapColoringState) s.getState();
-//            if (state.getAssignments().size() == csp.getVariables().size()) {
-//                return s.getPath();
-//            }
-//            State nextVariable = selectUnassignedVariable(s);
-//            List<String> values = state.getDomain(nextVariable.toString());
-//            for (String value : values) {
-//                if (isConsistent(value, s.getState())) {
-//                    Map<String, String> newAssignments = new HashMap<>(state.getAssignments());
-//                    newAssignments.put(nextVariable.toString(), value);
-//                    Map<String, List<String>> newDomain = new HashMap<>();
-//                    if (ArcConsistency3(csp.getContraints(), csp.getDomain(), newAssignments)) {
-////                        return backtrack(new SearchNode(s, new MapColoringState(csp, newDomain, newAssignments), 0, null));
-//                    }
-//                }
-//            }
-//        }
         }
-
-        return null;
+        Debugger.pause("No Sulution found");
+        return null; // !!! Noch Falsch !!!
     }
 
-    public boolean contains2(SearchNode sn, State state) {
-        return sn.getPath().getVisitedStates().contains(state);
+    private String selectUnassignedVariable(Map<String, String> assignments) {
+        String result = "";
+        Boolean inAssignments = false;
+        if (assignments.size() < this.problem.getVariables().size()) {
+            for (String variable : this.problem.getVariables()) {
+                if ((!assignments.containsKey(variable)) && !inAssignments){
+                    result = variable;
+                    inAssignments = true;
+                }
+            }
+        }
+        return result;
     }
 
-    private boolean isConsistentBTS(String value, State state) {
-        // TODO: Implement
-        return true;
-    }
-
-    private State selectUnassignedVariable(SearchNode node) {
-        // TODO: Implement
-        return null;
+    private List<String> orderDomainValues(String var, Map<String, String> assignments) {
+        List<String> resultDomain = new ArrayList<>();
+        Boolean isInAssignment = false;
+        if (assignments.size() < this.problem.getVariables().size()) {
+            List<String> domain = ((MapColoringState) this.problem.getInitialState()).getDomain(var);
+            for (String value : domain) {
+                if ((!assignments.containsValue(value)) && !isInAssignment){
+                    isInAssignment = true;
+                    resultDomain.add(value);
+                }
+            }
+        }
+        return resultDomain;
     }
 
     public boolean ArcConsistency3(List<Pair<String, String>> contraints,
                                    Map<String, List<String>> domain, Map<String, String> assignments) {
         while (!contraints.isEmpty()) {
             Pair<String, String> arc = contraints.remove(0);
-            if (revise(arc.getFirst(), arc.getSecond(), domain, assignments)) {
-                int dIIndex = domain.get(arc.getFirst()).indexOf(assignments.get(arc.getFirst()));
+            if (revise(arc.getFirst(), arc.getSecond(), domain, assignments, arc)) {
                 if (domain.get(arc.getFirst()).isEmpty()) {
                     System.out.println("No Solution");
                     return false;
                 }
-                List<String> neighbors = new ArrayList<>((Collection) contraints.get(dIIndex));
-                neighbors.remove(arc.getSecond());
+                List<String> neighbors = problem.getNeighbors(arc.getFirst());
                 for (String xk : neighbors) {
                     contraints.add(new Pair<>(xk, arc.getFirst()));
                 }
@@ -173,30 +118,35 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
     }
 
     private boolean revise(String first, String second, Map<String,
-            List<String>> domain, Map<String, String> assignments) {
-        boolean revised = false;
+            List<String>> domain, Map<String, String> assignment, Pair<String, String> arc) {
         List<String> currDomain = domain.get(first);
         List<String> newValues = new ArrayList<>(currDomain.size());
-        Map<String, String> assignment = new HashMap<>();
+        Map<String, String> newAssignment = new HashMap<>(assignment);
         for (String vi : currDomain) {
-            assignment.put(first, vi);
+            newAssignment.put(first, vi);
             for (String vj : domain.get(second)) {
-                assignment.put(second, vj);
-                if (assignments.containsKey(first) && assignments.containsKey(second)) {
-                    if (assignments.get(first).equals(vi) && assignments.get(second).equals(vj)) {
-                        newValues.add(vi);
-                        break;
-                    }
+                newAssignment.put(second, vj);
+                if (isSatisfiedWith(newAssignment, arc)) {
+                    newValues.add(vi);
+                    break;
                 }
             }
         }
         if (newValues.size() < currDomain.size()) {
             domain.put(first, newValues);
-            revised = true;
+            return true;
         }
-        return revised;
+        return false;
     }
 
+    public boolean isSatisfiedWith(Map<String, String> assignment, Pair<String, String> arc) {
+        String val1 = assignment.get(arc.getFirst());
+        String val2 = assignment.get(arc.getSecond());
+        if (val1.equals(val2)) {
+            return false;
+        }
+        return true;
+    }
 }
 
 /*

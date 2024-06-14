@@ -61,11 +61,6 @@ public class MapColoringState extends CspState {
         return new ArrayList<>(domain.get(variable));
     }
 
-    @Override
-    public boolean isConsistent() {
-        return false;
-    }
-
     /**
      *  reference to the problem
      *

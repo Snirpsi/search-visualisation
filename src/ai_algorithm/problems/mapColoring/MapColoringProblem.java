@@ -113,21 +113,6 @@ public class MapColoringProblem extends CspProblem {
     }
 
     /**
-     * Returns the domain of a specific variable.
-     *
-     * @param variable variable
-     * @return domain of the variable
-     */
-    public List<String> getDomainOfVariable(String variable) {
-        if(!variables.contains(variable)) {
-            return null;
-        }else {
-            int index = variables.indexOf(variable);
-            return domain.get(index);
-        }
-    }
-
-    /**
      * Returns the arcs.
      *
      * @return arcs
@@ -135,6 +120,11 @@ public class MapColoringProblem extends CspProblem {
     @Override
     public List<Pair<String, String>> getContraints() {
         return contraints;
+    }
+
+    @Override
+    public List<String> getNeighbors(String variable) {
+        return neighbors.get(variable);
     }
 
     /**
@@ -276,6 +266,21 @@ public class MapColoringProblem extends CspProblem {
     @Override
     public double getCost(State state, String action, State succ) {
         return 1;
+    }
+
+    /**
+     * Returns the domain of a specific variable.
+     *
+     * @param variable variable
+     * @return domain of the variable
+     */
+    public List<String> getDomainOfVariable(String variable) {
+        if(!variables.contains(variable)) {
+            return null;
+        }else {
+            int index = variables.indexOf(variable);
+            return domain.get(index);
+        }
     }
 
 }

@@ -9,8 +9,6 @@ public abstract class CspState extends State {
 
     public abstract List<String> getDomain(String variable);
 
-    public abstract boolean isConsistent();
-
 }
 
 /*
