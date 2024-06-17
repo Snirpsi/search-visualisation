@@ -1,8 +1,17 @@
 package ai_algorithm.searchCsp;
 
+import ai_algorithm.Frontier;
 import ai_algorithm.Path;
+import ai_algorithm.SearchNode;
+import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.CspProblem;
+import ai_algorithm.problems.CspState;
+import ai_algorithm.problems.State;
 import ai_algorithm.search.SearchAlgorithm;
+import application.debugger.Debugger;
+import ecs.GameObjectRegistry;
+
+import java.util.List;
 
 /**
  * Template for csp search algorithm as an extension of SearchAlgorithm
@@ -46,6 +55,39 @@ public abstract class CspSearchAlgorithm extends SearchAlgorithm {
 	 */
 	public abstract Path search();
 
+	/**
+	 * Expand the search node with actions for the given variable
+	 * @return list of search nodes
+	 */
+	public List<SearchNode> expand(SearchNode searchNode, Frontier frontier, String variable, List<String> values) {
+		// Start visualization
+		SearchNodeMetadataObject.setExpandingSearchnode(searchNode);
+		Debugger.pause("Expanding: " + this);
+		// End visualization
+
+		if (searchNode.getChildren() != null && !searchNode.getChildren().isEmpty() ) {
+			return searchNode.getChildren(); // <-- only expand children if they don't already exist
+		}
+
+		CspState state = (CspState) searchNode.getState();
+		CspProblem prob = (CspProblem)state.getProblem();
+
+		for (String value : values) {
+			String action = variable + "=" + value;
+			State succState = prob.getSuccessor(state, action);
+			// Create new SearchNode
+			SearchNode succ = new SearchNode(searchNode, succState,
+					searchNode.getPathCost() + prob.getCost(state, action, succState), action);
+			searchNode.getChildren().add(succ);
+			frontier.add(succ);
+			Debugger.pause("EXPANSION: " + action);
+		}
+
+		// Start visualization
+		GameObjectRegistry.registerForStateChange(searchNode);
+		// End visualization
+		return searchNode.getChildren();
+	}
 }
 
 /*
