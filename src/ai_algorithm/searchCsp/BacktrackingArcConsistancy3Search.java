@@ -86,14 +86,14 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 
     private List<String> orderDomainValues(String var, Map<String, String> assignments) {
         List<String> resultDomain = new ArrayList<>();
-        Boolean isInAssignment = false;
+//        Boolean isInAssignment = false;
         if (assignments.size() < this.problem.getVariables().size()) {
             List<String> domain = ((MapColoringState) this.problem.getInitialState()).getDomain(var);
             for (String value : domain) {
-                if ((!assignments.containsValue(value)) && !isInAssignment){
-                    isInAssignment = true;
+//                if ((!assignments.containsValue(value)) && !isInAssignment){
+//                    isInAssignment = true;
                     resultDomain.add(value);
-                }
+//                }
             }
         }
         return resultDomain;
@@ -101,16 +101,17 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 
     public boolean ArcConsistency3(List<Pair<String, String>> contraints,
                                    Map<String, List<String>> domain, Map<String, String> assignments) {
-        while (!contraints.isEmpty()) {
-            Pair<String, String> arc = contraints.remove(0);
-            if (revise(arc.getFirst(), arc.getSecond(), domain, assignments, arc)) {
+        List<Pair<String, String>> constraintCopy = new ArrayList<>(contraints);
+        while (!constraintCopy.isEmpty()) {
+            Pair<String, String> arc = constraintCopy.remove(0);
+            List<String> neighbors = problem.getNeighbors(arc.getFirst());
+            if (neighbors != null && revise(arc.getFirst(), arc.getSecond(), domain, assignments, arc)) {
                 if (domain.get(arc.getFirst()).isEmpty()) {
                     System.out.println("No Solution");
                     return false;
                 }
-                List<String> neighbors = problem.getNeighbors(arc.getFirst());
                 for (String xk : neighbors) {
-                    contraints.add(new Pair<>(xk, arc.getFirst()));
+                    constraintCopy.add(new Pair<>(xk, arc.getFirst()));
                 }
             }
         }
@@ -140,7 +141,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
     }
 
     public boolean isSatisfiedWith(Map<String, String> assignment, Pair<String, String> arc) {
-        String val1 = assignment.get(arc.getFirst());
+        String val1 = assignment.get(arc.getFirst()); // get the value of the first variable
         String val2 = assignment.get(arc.getSecond());
         if (val1.equals(val2)) {
             return false;
