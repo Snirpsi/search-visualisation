@@ -56,7 +56,12 @@ public class ChangeVisitor extends Visitor {
 		}
 
 		if (gameObject instanceof MapColoringProblem m) {
-			this.visit(m);
+//			this.visit(m);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringState s) {
+			this.visit(s);
 			return;
 		}
 
@@ -262,6 +267,16 @@ public class ChangeVisitor extends Visitor {
 
 		}
 
+	}
+
+	public void visit(MapColoringState state) {
+		for(String var : state.getProblem().getVariables()) {
+//				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
+			List<String> stateVarDomain = state.getDomain(var);
+			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+
+			setColorToCircle(c, stateVarDomain);
+		}
 	}
 
 	private void setColorToCircle(Circle c, List<String> stateVarDomain) {
