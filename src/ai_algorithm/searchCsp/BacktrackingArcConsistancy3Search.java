@@ -32,7 +32,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         frontier.add(start);
         Debugger.pause();
 
-        Path result = backtrackNew(start, frontier);
+        Path result = backtrack(start, frontier);
         if (result != null) {
             return result;
         }
@@ -41,7 +41,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return null;
     }
 
-    private Path backtrackNew(SearchNode searchNode, Frontier frontier) {
+    private Path backtrack(SearchNode searchNode, Frontier frontier) {
         frontier.remove(searchNode);
         if (this.problem.isGoalState(searchNode.getState())) {
             Debugger.pause("Finished");
@@ -59,7 +59,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         List<String> values = orderDomainValues(var, cspState, false);
         // For every "action" of Variable var
         for (SearchNode child : expand(searchNode, frontier, var, values)) {
-            Path result = backtrackNew(child, frontier);
+            Path result = backtrack(child, frontier);
             // If a solution was found, return it
             if( result != null ) {
                 return result;
