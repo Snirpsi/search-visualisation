@@ -5,8 +5,6 @@ import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.CspState;
-import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.Pair;
 import application.debugger.Debugger;
 
@@ -29,56 +27,27 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         if (this.problem.isGoalState(start.getState())) {
             return start.getPath();
         }
-//        frontier.add(start);
+
+        // Frontier is only used for coloring nodes correctly
+        frontier.add(start);
         Debugger.pause();
-//        while(!frontier.isEmpty()) {
-            Path result = backtrackNew(start, frontier);
-            if (result != null) {
-                return result;
-            }
-//        }
+
+        Path result = backtrackNew(start, frontier);
+        if (result != null) {
+            return result;
+        }
+
         Debugger.pause("No Solution found");
         return null;
     }
 
-    private Path backtrack(SearchNode s, Frontier frontier) {
-        if (this.problem.isGoalState(s.getState())) {
-            return s.getPath();
-        }
-        // Innerhalb dieser backtracking Funktion muss eine Variable aus der Frontier entfertn werden um einen neue Node zu bekommen
-        Map<String, String> assignments = ((MapColoringState) s.getState()).getAssignments();
-        String var = selectUnassignedVariable(assignments);
-        if (!var.isEmpty()) {
-            for (String value : orderDomainValues(var, assignments)) {
-                assignments.put(var, value);
-                boolean inference = ArcConsistency3(this.problem.getContraints(), this.problem.getDomain(), assignments);
-                if (inference) {
-                    // Übergabe eines Strings an die Funktion "getSuccessor" sie erwartet jedoch eine Action die gesplittet werden muss
-                    // var bei getSuccessor müsste eine Action sein // TODO: Überprüfen + Anpassen
-                    State successor = this.problem.getSuccessor(s.getState(), var + "=" + value); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
-                    SearchNode child = new SearchNode(s, successor, 0, null);
-//                    SearchNode child = new SearchNode(null, successor, 0, null);
-                    frontier.add(child);
-                    Debugger.pause();
-                    if (problem.isGoalState(successor)) {
-                        Debugger.pause("Finished");
-                        return child.getPath();
-                    }
-                    return backtrack(child, frontier);
-                } else {
-                    assignments.remove(var);
-                }
-            }
-        }
-        Debugger.pause("No Sulution found");
-        return null; // !!! Noch Falsch !!!
-    }
-
     private Path backtrackNew(SearchNode searchNode, Frontier frontier) {
+        frontier.remove(searchNode);
         if (this.problem.isGoalState(searchNode.getState())) {
             Debugger.pause("Finished");
             return searchNode.getPath();
         }
+
         CspState cspState = (CspState) searchNode.getState();
         Map<String, String> assignments = cspState.getAssignments();
         boolean inference = ArcConsistency3(this.problem.getContraints(), cspState.getDomains(), assignments);
@@ -86,18 +55,10 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
             return null;
         }
 
-        // For every "action"
         String var = selectUnassignedVariable(assignments);
-        for (String value : orderDomainValues(var, assignments)) {
-            String action = var + "=" + value;
-            State succState = this.problem.getSuccessor(cspState, action); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
-            SearchNode child = new SearchNode(
-                    searchNode,
-                    succState,
-                    searchNode.getPathCost() + this.problem.getCost(cspState, action, succState),
-                    action);
-            searchNode.getChildren().add(child);
-            Debugger.pause();
+        List<String> values = orderDomainValues(var, cspState, false);
+        // For every "action" of Variable var
+        for (SearchNode child : expand(searchNode, frontier, var, values)) {
             Path result = backtrackNew(child, frontier);
             // If a solution was found, return it
             if( result != null ) {
@@ -105,8 +66,8 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
             }
             // Otherwise, try next value
         }
-        Debugger.pause("No Sulution found");
-        return null; // !!! Noch Falsch !!!
+        Debugger.pause("No Solution found");
+        return null;
     }
 
     private String selectUnassignedVariable(Map<String, String> assignments) {
@@ -123,18 +84,15 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return result;
     }
 
-    private List<String> orderDomainValues(String var, Map<String, String> assignments) {
+    private List<String> orderDomainValues(String var, CspState state, boolean allowOnlyValidValues) {
         List<String> resultDomain = new ArrayList<>();
-//        Boolean isInAssignment = false;
-        if (assignments.size() < this.problem.getVariables().size()) {
-            List<String> domain = ((MapColoringState) this.problem.getInitialState()).getDomain(var);
-            for (String value : domain) {
-//                if ((!assignments.containsValue(value)) && !isInAssignment){
-//                    isInAssignment = true;
-                    resultDomain.add(value);
-//                }
-            }
+
+        if( allowOnlyValidValues ) {
+            resultDomain.addAll(state.getDomain(var));
+        } else {
+            resultDomain.addAll(this.problem.getDomain().get(var));
         }
+
         return resultDomain;
     }
 
@@ -199,7 +157,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 }
 
 /*
- * Copyright (c) 2024 Alexander Ultsch
+ * Copyright (c) 2024 Alexander Ultsch, Florian Mittag
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
