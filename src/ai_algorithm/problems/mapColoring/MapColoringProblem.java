@@ -239,7 +239,9 @@ public class MapColoringProblem extends CspProblem {
         String variable = parts[0];
         String value = parts[1];
 
-        if (!stateM.getDomain(variable).contains(value)) {
+//        if (!stateM.getDomain(variable).contains(value)) {
+        // Check if value is in original domain
+        if( this.getDomain().get(variable).contains(value) == false) {
             return null;
         }
         newAssignments.put(variable, value);

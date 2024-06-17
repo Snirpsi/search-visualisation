@@ -61,6 +61,11 @@ public class MapColoringState extends CspState {
         return new ArrayList<>(domain.get(variable));
     }
 
+
+    public Map<String, List<String>> getDomains() {
+        return this.domain;
+    }
+
     /**
      *  reference to the problem
      *

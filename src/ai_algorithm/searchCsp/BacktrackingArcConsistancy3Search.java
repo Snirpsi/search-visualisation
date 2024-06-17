@@ -4,6 +4,7 @@ import ai_algorithm.Frontier;
 import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.problems.CspProblem;
+import ai_algorithm.problems.CspState;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.Pair;
@@ -28,19 +29,22 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         if (this.problem.isGoalState(start.getState())) {
             return start.getPath();
         }
-        frontier.add(start);
+//        frontier.add(start);
         Debugger.pause();
-        while(!frontier.isEmpty()) {
-            Path result = backtrack(start, frontier);
+//        while(!frontier.isEmpty()) {
+            Path result = backtrackNew(start, frontier);
             if (result != null) {
                 return result;
             }
-        }
-        Debugger.pause("No Sulution found");
+//        }
+        Debugger.pause("No Solution found");
         return null;
     }
 
     private Path backtrack(SearchNode s, Frontier frontier) {
+        if (this.problem.isGoalState(s.getState())) {
+            return s.getPath();
+        }
         // Innerhalb dieser backtracking Funktion muss eine Variable aus der Frontier entfertn werden um einen neue Node zu bekommen
         Map<String, String> assignments = ((MapColoringState) s.getState()).getAssignments();
         String var = selectUnassignedVariable(assignments);
@@ -51,9 +55,9 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
                 if (inference) {
                     // Übergabe eines Strings an die Funktion "getSuccessor" sie erwartet jedoch eine Action die gesplittet werden muss
                     // var bei getSuccessor müsste eine Action sein // TODO: Überprüfen + Anpassen
-                    State successor = this.problem.getSuccessor(s.getState(), var); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
-//                    SearchNode child = new SearchNode(s, successor, 0, null);
-                    SearchNode child = new SearchNode(null, successor, 0, null);
+                    State successor = this.problem.getSuccessor(s.getState(), var + "=" + value); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
+                    SearchNode child = new SearchNode(s, successor, 0, null);
+//                    SearchNode child = new SearchNode(null, successor, 0, null);
                     frontier.add(child);
                     Debugger.pause();
                     if (problem.isGoalState(successor)) {
@@ -65,6 +69,41 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
                     assignments.remove(var);
                 }
             }
+        }
+        Debugger.pause("No Sulution found");
+        return null; // !!! Noch Falsch !!!
+    }
+
+    private Path backtrackNew(SearchNode searchNode, Frontier frontier) {
+        if (this.problem.isGoalState(searchNode.getState())) {
+            Debugger.pause("Finished");
+            return searchNode.getPath();
+        }
+        CspState cspState = (CspState) searchNode.getState();
+        Map<String, String> assignments = cspState.getAssignments();
+        boolean inference = ArcConsistency3(this.problem.getContraints(), cspState.getDomains(), assignments);
+        if( !inference ) {
+            return null;
+        }
+
+        // For every "action"
+        String var = selectUnassignedVariable(assignments);
+        for (String value : orderDomainValues(var, assignments)) {
+            String action = var + "=" + value;
+            State succState = this.problem.getSuccessor(cspState, action); // Hier wird irgendwie Safely Stopped und nicht weiter gemacht
+            SearchNode child = new SearchNode(
+                    searchNode,
+                    succState,
+                    searchNode.getPathCost() + this.problem.getCost(cspState, action, succState),
+                    action);
+            searchNode.getChildren().add(child);
+            Debugger.pause();
+            Path result = backtrackNew(child, frontier);
+            // If a solution was found, return it
+            if( result != null ) {
+                return result;
+            }
+            // Otherwise, try next value
         }
         Debugger.pause("No Sulution found");
         return null; // !!! Noch Falsch !!!
@@ -100,13 +139,13 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
     }
 
     public boolean ArcConsistency3(List<Pair<String, String>> contraints,
-                                   Map<String, List<String>> domain, Map<String, String> assignments) {
+                                   Map<String, List<String>> domains, Map<String, String> assignments) {
         List<Pair<String, String>> constraintCopy = new ArrayList<>(contraints);
         while (!constraintCopy.isEmpty()) {
             Pair<String, String> arc = constraintCopy.remove(0);
             List<String> neighbors = problem.getNeighbors(arc.getFirst());
-            if (neighbors != null && revise(arc.getFirst(), arc.getSecond(), domain, assignments, arc)) {
-                if (domain.get(arc.getFirst()).isEmpty()) {
+            if (neighbors != null && revise(arc, domains)) {
+                if (domains.get(arc.getFirst()).isEmpty()) {
                     System.out.println("No Solution");
                     return false;
                 }
@@ -118,26 +157,35 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return true;
     }
 
-    private boolean revise(String first, String second, Map<String,
-            List<String>> domain, Map<String, String> assignment, Pair<String, String> arc) {
-        List<String> currDomain = domain.get(first);
-        List<String> newValues = new ArrayList<>(currDomain.size());
-        Map<String, String> newAssignment = new HashMap<>(assignment);
-        for (String vi : currDomain) {
-            newAssignment.put(first, vi);
-            for (String vj : domain.get(second)) {
-                newAssignment.put(second, vj);
+    private boolean revise(Pair<String, String> arc,
+                           Map<String, List<String>> domain) {
+        boolean revise = false;
+        String xi = arc.getFirst();
+        String xj = arc.getSecond();
+
+        List<String> domain_i = domain.get(xi);
+        List<String> domain_j = domain.get(xj);
+
+        List<String> invalidValues = new ArrayList<>();
+        for (String vi : domain_i) {
+            boolean foundValidValue = false;
+            for (String vj : domain_j) {
+                Map<String, String> newAssignment = Map.of(xi, vi, xj, vj);
+                // If the assignment is satisfied, this value for Xi is fine
                 if (isSatisfiedWith(newAssignment, arc)) {
-                    newValues.add(vi);
+                    foundValidValue = true;
                     break;
                 }
             }
+            if (!foundValidValue) {
+                invalidValues.add(vi);
+                revise = true;
+            }
         }
-        if (newValues.size() < currDomain.size()) {
-            domain.put(first, newValues);
-            return true;
+        for (String invalidValue : invalidValues) {
+            domain_i.remove(invalidValue);
         }
-        return false;
+        return revise;
     }
 
     public boolean isSatisfiedWith(Map<String, String> assignment, Pair<String, String> arc) {

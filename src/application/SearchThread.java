@@ -26,8 +26,10 @@ public class SearchThread extends Thread {
 		try {
 			search.search();
 		} catch (RuntimeException e) {
-			if (Settings.DEBUGMODE)
-				System.out.println("safely stopped");
+			if (Settings.DEBUGMODE) {
+//				System.out.println("safely stopped");
+				throw e;
+			}
 		}
 	}
 
