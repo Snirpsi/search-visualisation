@@ -1,5 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
+import ai_algorithm.problems.CspState;
 import ai_algorithm.problems.State;
 
 import java.util.*;
@@ -14,17 +15,19 @@ import java.util.*;
  * @author Alexander
  */
 
-public class MapColoringState extends State {
+public class MapColoringState extends CspState {
 
     /**
      *  reference to the problem
      */
     final private MapColoringProblem problem;
 
+
+    final Map<String, List<String>> domain;
+
     /**
      *  reference to the assignments
      */
-    final Map<String, List<String>> domain;
     final Map<String, String> assignments;
 
 
@@ -48,12 +51,19 @@ public class MapColoringState extends State {
      *
      * @return string representation of the state
      */
+    @Override
     public Map<String, String> getAssignments() {
         return assignments;
     }
 
+    @Override
     public List<String> getDomain(String variable) {
         return new ArrayList<>(domain.get(variable));
+    }
+
+
+    public Map<String, List<String>> getDomains() {
+        return this.domain;
     }
 
     /**
@@ -106,3 +116,25 @@ public class MapColoringState extends State {
         return assignments.toString();
     }
 }
+
+/*
+ * Copyright (c) 2024 Alexander Ultsch
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

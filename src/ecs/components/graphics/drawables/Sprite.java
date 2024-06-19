@@ -19,11 +19,9 @@ public class Sprite extends Drawable {
 	// Coloring coloring = null;
 
 	LinkedList<Shape> sprites;
-	LinkedList<Text> texts;
 
 	public Sprite() {
 		this.sprites = new LinkedList<Shape>();
-		this.texts = new LinkedList<Text>();
 	}
 
 	public void addShape(Shape shape) {
@@ -32,14 +30,6 @@ public class Sprite extends Drawable {
 			entity.getComponent(Graphics.class).notifyNewDrawable();
 		}
 	}
-
-	public void addText(Text text) {
-		texts.addFirst(text);
-		if (entity != null) {
-			entity.getComponent(Graphics.class).notifyNewDrawable();
-		}
-	}
-
 	@Override
 	public void update(float deltaT) {
 	}
@@ -48,7 +38,6 @@ public class Sprite extends Drawable {
 	public List<Node> getShapes() {
 		return new LinkedList<Node>(sprites);
 	}
-
 
 }
 

@@ -78,20 +78,12 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(stp);
 		}
 
-//		if (gameObject instanceof MapColoringProblem mapColoringProblem) {
-//			// TODO: Implement the MapColoringProblem
-//			this.visit(mapColoringProblem);
-//			return;
-//		}
-
 		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
-			// TODO: Implement the MapColoringProblem
 			this.visit((MapColoringProblem) gameObject);
 			return;
 		}
 
 		if (gameObject instanceof MapColoringState mapColoringState) {
-			// TODO: Implement the MapColoringState
 			this.visit(mapColoringState);
 			return;
 		}
