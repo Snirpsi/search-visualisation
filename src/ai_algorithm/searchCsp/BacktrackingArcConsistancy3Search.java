@@ -50,7 +50,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 
         CspState cspState = (CspState) searchNode.getState();
         Map<String, String> assignments = cspState.getAssignments();
-        boolean inference = ArcConsistency3(this.problem.getContraints(), cspState.getDomains(), assignments);
+        boolean inference = arcConsistency3(this.problem.getContraints(), cspState.getDomains());
         if( !inference ) {
             return null;
         }
@@ -92,12 +92,12 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         } else {
             resultDomain.addAll(this.problem.getDomain().get(var));
         }
-
+        Collections.shuffle(resultDomain);
         return resultDomain;
     }
 
-    public boolean ArcConsistency3(List<Pair<String, String>> contraints,
-                                   Map<String, List<String>> domains, Map<String, String> assignments) {
+    public boolean arcConsistency3(List<Pair<String, String>> contraints,
+                                   Map<String, List<String>> domains) {
         List<Pair<String, String>> constraintCopy = new ArrayList<>(contraints);
         while (!constraintCopy.isEmpty()) {
             Pair<String, String> arc = constraintCopy.remove(0);
