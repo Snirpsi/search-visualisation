@@ -273,6 +273,7 @@ public class ChangeVisitor extends Visitor {
 		for(String var : state.getProblem().getVariables()) {
 //				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
 			List<String> stateVarDomain = state.getDomain(var);
+			// TODO: Evtl. muss hier sogar die Textausgabe für die Knoten erfolgen nicht im InitialisierungsVisitor
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
 
 			setColorToCircle(c, stateVarDomain);
@@ -282,10 +283,13 @@ public class ChangeVisitor extends Visitor {
 	private void setColorToCircle(Circle c, List<String> stateVarDomain) {
 		if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Red")) {
 			c.setFill(Color.RED);
+			c.setStrokeWidth(5);
 		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Green")) {
 			c.setFill(Color.GREEN);
+			c.setStrokeWidth(5);
 		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Blue")) {
 			c.setFill(Color.BLUE);
+			c.setStrokeWidth(5);
 		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("Red") || stateVarDomain.get(1).equals("Red"))) {
 			if (stateVarDomain.get(0).equals("Green") || stateVarDomain.get(1).equals("Green")) {
 				c.setFill(Color.YELLOW);
@@ -296,9 +300,8 @@ public class ChangeVisitor extends Visitor {
 			if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
 				c.setFill(Color.CYAN);
 			}
-		} else if (stateVarDomain.size() == 3) {
-			c.setFill(Color.WHITE);
 		}
+
 	}
 
 }
