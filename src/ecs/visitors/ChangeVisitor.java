@@ -300,6 +300,8 @@ public class ChangeVisitor extends Visitor {
 			if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
 				c.setFill(Color.CYAN);
 			}
+		}else if (stateVarDomain.size() == 3) {
+			c.setFill(Color.WHITE);
 		}
 
 	}
