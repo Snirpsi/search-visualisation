@@ -34,6 +34,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
@@ -455,7 +456,6 @@ public class InitialisationVisitor extends Visitor {
 	 */
 	public void visit(MapColoringProblem mapColoringProblem) {
 		super.visit(mapColoringProblem);
-//		mapColoringProblem.fillQueue(); // Wird aktuell doppelt befüllt
 		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
 		// Create a new Sprite
@@ -476,8 +476,6 @@ public class InitialisationVisitor extends Visitor {
 		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
 		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
 
-		// Run the AC3 Algorithm. Run must be executed before lines are drawn
-//		mapColoringProblem.runAC3(); // TODO: Muss noch geändert werden -> Muss sich Schritt für Schritt aufbauen
 		List<Pair<String, String>> binaryConstraints = mapColoringProblem.getContraints();
 
 		// Create the Circles and add them to the Sprite without Highlighting and Coloring
@@ -499,6 +497,19 @@ public class InitialisationVisitor extends Visitor {
 			c.setStroke(Color.BLACK);
 			sprites.addShape(c);
 			circles.add(c);
+
+			List<String> neighbor = mapColoringProblem.getNeighbors(variables.get(i));
+			var t = new javafx.scene.text.Text();
+			t.setText("V: " + variables.get(i) +
+					"\nD: " + // TODO: Hier muss noch die Domain hin
+					"\nC: " + neighbor +
+					"\n");
+			t.setX(circleX + 35);
+			t.setY(circleY - 15);
+			t.setFill(Color.BLACK);
+			t.setFont(Font.font(15));
+			sprites.addShape(t);
+
 
 			// Get the variablename of the current circle
 			String variable = variables.get(i);
@@ -530,27 +541,6 @@ public class InitialisationVisitor extends Visitor {
 		}
 		 // Set the variableToCircleMap specification for future access
 		mapColoringProblem.setVariableToCircleMap(variableToCircleMap);
-
-//			// TODO: Implement the position of the text in the GUI
-////			Text t = new Text();
-////			System.out.println(variables.get(i));
-//////			t.setText(variables.get(i));
-////			t.setText("Test");
-////			System.out.println(t.getText());
-////			t.setX(100);
-////			t.setY(50);
-////			sprites.addText(t);
-
-
-////			// TODO: Text Positionierung dosn't work - why? (Only necessary after allocation of the circles)
-////			Text t = new Text();
-////			t.setText("Test");
-//////			t.setX(c.getCenterX());
-//////			t.setY(c.getCenterY());
-////			t.setX(c.getCenterX() - t.getLayoutBoundsgetWidth() / 2);
-////			t.setY(c.getCenterY() - t.getLayoutBoundsgetHeight() / 4);
-////			t.setFill(Color.BLACK);
-////			sprites.addText(t);
 
 		// Show the GUI
 		mapColoringProblem.getComponent(Graphics.class).show();
