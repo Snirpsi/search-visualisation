@@ -1,17 +1,16 @@
 package ecs.visitors;
 
 import java.util.List;
+import java.util.Map;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
-import ai_algorithm.specific_algorithm_logic.csp.csp_content.Constraint;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -25,7 +24,6 @@ import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 import settings.Settings;
 import tools.Vector2DInt;
 
@@ -53,11 +51,6 @@ public class ChangeVisitor extends Visitor {
 		}
 		if (gameObject instanceof GridMazeProblem p) {
 			this.visit(p);
-			return;
-		}
-
-		if (gameObject instanceof MapColoringProblem m) {
-//			this.visit(m);
 			return;
 		}
 
@@ -241,45 +234,29 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-//	/**
-//	 * Visualizes the {@link MapColoringProblem} and applies colors to it if
-//	 * corresponding {@link State} are in {@link Frontier} and {@link ExploredSet}
-//	 *
-//	 * @param mapColoringProblem
-//	 */
-//	public void visit(MapColoringProblem mapColoringProblem) {
-//		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
-//
-//		for (SearchNode node : nodes) {
-//			MapColoringState state;
-//			try {
-//				state = (MapColoringState) node.getState();
-//			} catch (Exception e) {
-//				return;
-//			}
-//
-//			for(String var : mapColoringProblem.getVariables()) {
-////				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
-//				List<String> stateVarDomain = state.getDomain(var);
-//				Circle c = mapColoringProblem.getVariableToCircleMap().get(var);
-//
-//				setColorToCircle(c, stateVarDomain);
-//			}
-//
-//		}
-//
-//	}
-
+	/**
+	 * Visualizes the {@link MapColoringState} and applies colors
+	 *
+ 	 * @param state
+	 */
 	public void visit(MapColoringState state) {
 		for(String var : state.getProblem().getVariables()) {
-//				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
 			List<String> stateVarDomain = state.getDomain(var);
-			// TODO: Evtl. muss hier sogar die Textausgabe für die Knoten erfolgen nicht im InitialisierungsVisitor
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
 			List<String> neighborVar = state.getProblem().getNeighbors(var);
 
-			setColorToCircle(c, stateVarDomain, neighborVar);
+			// Text für Variable and Nodes
+			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
+			List<String> domainVar = state.getDomain(var);
+			// TODO: Text Coloring
+			tm.get(var).forEach(t -> {
+				t.setText("V: " + var +
+						"\nD: " + domainVar +
+						"\nC: " + neighborVar +
+						"\n");
+			});
 
+			setColorToCircle(c, stateVarDomain, neighborVar);
 		}
 	}
 
