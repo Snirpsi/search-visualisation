@@ -469,6 +469,8 @@ public class InitialisationVisitor extends Visitor {
 		List<Circle> circles = new ArrayList<>();
 		// Create a map of variables to Circles
 		Map<String, Circle> variableToCircleMap = problem.getVariableToCircleMap();
+		// Create a map of variables to Texts
+		Map<String, List<javafx.scene.text.Text>> variableTextMap = problem.getVariableTextMap();
 
 		// Calculate the angle step with bigCircleRadius and bigCircleCenterX and bigCircleCenterY
 		double angleStep = 360.0 / problem.getVariables().size();
@@ -498,15 +500,8 @@ public class InitialisationVisitor extends Visitor {
 			sprites.addShape(c);
 			circles.add(c);
 
-			String variablei = variables.get(i);
-			List<String> domaini = problem.getDomain().get(variablei);
-			List<String> neighbori = problem.getNeighbors(variablei);
-			// Vermutung Text müsste als GameObjekt hinzugefügt werden, dass dieses auf GUI angegeben wird
+			// Create a new Text with the calculated x and y coordinates and the specifications
 			var t = new javafx.scene.text.Text();
-			t.setText("V: " + variablei +
-					"\nD: " + domaini +
-					"\nC: " + neighbori +
-					"\n");
 			t.setX(circleX + 35);
 			t.setY(circleY - 15);
 			t.setFill(Color.BLACK);
@@ -517,6 +512,8 @@ public class InitialisationVisitor extends Visitor {
 			String variable = variables.get(i);
 			// Add the variable and the circle to the variableToCircleMap to signalize the togetherness
 			variableToCircleMap.put(variable, c);
+			// Add the variable and the text to the variableTextMap to signalize the togetherness
+			variableTextMap.put(variable, Arrays.asList(t));
 		}
 
 		// Set the lines between the circles
