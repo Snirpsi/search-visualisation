@@ -9,9 +9,9 @@ import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.MapColoringState;
-import ai_algorithm.problems.mapColoring.Pair;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
+import ai_algorithm.specific_algorithm_logic.csp.csp_content.Constraint;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
@@ -25,6 +25,7 @@ import ecs.components.graphics.drawables.TileMap2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import settings.Settings;
 import tools.Vector2DInt;
 
@@ -240,34 +241,34 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	/**
-	 * Visualizes the {@link MapColoringProblem} and applies colors to it if
-	 * corresponding {@link State} are in {@link Frontier} and {@link ExploredSet}
-	 *
-	 * @param mapColoringProblem
-	 */
-	public void visit(MapColoringProblem mapColoringProblem) {
-		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
-
-		for (SearchNode node : nodes) {
-			MapColoringState state;
-			try {
-				state = (MapColoringState) node.getState();
-			} catch (Exception e) {
-				return;
-			}
-
-			for(String var : mapColoringProblem.getVariables()) {
-//				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
-				List<String> stateVarDomain = state.getDomain(var);
-				Circle c = mapColoringProblem.getVariableToCircleMap().get(var);
-
-				setColorToCircle(c, stateVarDomain);
-			}
-
-		}
-
-	}
+//	/**
+//	 * Visualizes the {@link MapColoringProblem} and applies colors to it if
+//	 * corresponding {@link State} are in {@link Frontier} and {@link ExploredSet}
+//	 *
+//	 * @param mapColoringProblem
+//	 */
+//	public void visit(MapColoringProblem mapColoringProblem) {
+//		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
+//
+//		for (SearchNode node : nodes) {
+//			MapColoringState state;
+//			try {
+//				state = (MapColoringState) node.getState();
+//			} catch (Exception e) {
+//				return;
+//			}
+//
+//			for(String var : mapColoringProblem.getVariables()) {
+////				System.out.println("Variable: " + var + " Values: " + state.getDomain(var));
+//				List<String> stateVarDomain = state.getDomain(var);
+//				Circle c = mapColoringProblem.getVariableToCircleMap().get(var);
+//
+//				setColorToCircle(c, stateVarDomain);
+//			}
+//
+//		}
+//
+//	}
 
 	public void visit(MapColoringState state) {
 		for(String var : state.getProblem().getVariables()) {
@@ -275,39 +276,44 @@ public class ChangeVisitor extends Visitor {
 			List<String> stateVarDomain = state.getDomain(var);
 			// TODO: Evtl. muss hier sogar die Textausgabe für die Knoten erfolgen nicht im InitialisierungsVisitor
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+			List<String> neighborVar = state.getProblem().getNeighbors(var);
 
-			setColorToCircle(c, stateVarDomain);
+			setColorToCircle(c, stateVarDomain, neighborVar);
+
 		}
 	}
 
-	private void setColorToCircle(Circle c, List<String> stateVarDomain) {
-		if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Red")) {
+	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
+		if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("R")) {
 			c.setFill(Color.RED);
 			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Green")) {
+		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("G")) {
 			c.setFill(Color.GREEN);
 			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("Blue")) {
+		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("B")) {
 			c.setFill(Color.BLUE);
 			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("Red") || stateVarDomain.get(1).equals("Red"))) {
-			if (stateVarDomain.get(0).equals("Green") || stateVarDomain.get(1).equals("Green")) {
+		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R"))) {
+			if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 				c.setFill(Color.YELLOW);
-			} else if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
+			} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
 				c.setFill(Color.PURPLE);
 			}
-		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("Green") || stateVarDomain.get(1).equals("Green"))) {
-			if (stateVarDomain.get(0).equals("Blue") || stateVarDomain.get(1).equals("Blue")) {
+		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G"))) {
+			if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
 				c.setFill(Color.CYAN);
 			}
-		}else if (stateVarDomain.size() == 3) {
-			c.setFill(Color.WHITE);
+		} else if (stateVarDomain.size() == 3 && stateVarDomain.get(0).equals("R") && stateVarDomain.get(1).equals("G") && stateVarDomain.get(2).equals("B")){
+			if(!neighborVar.isEmpty()) {
+				c.setFill(Color.WHITE);
+				c.setStrokeWidth(2);
+			}
+
 		}
 
 	}
 
 }
-
 
 /*
  * Copyright (c) 2022 Severin Dippold
