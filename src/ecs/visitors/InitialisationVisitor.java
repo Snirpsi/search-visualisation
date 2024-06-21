@@ -431,11 +431,11 @@ public class InitialisationVisitor extends Visitor {
 //		text.setFontSize(20);
 //		stt.getComponent(Position.class).setPosition(stt.getPos().toVector2D().mul(Settings.TILEMAP.TILE_SIZE));
 //		stt.getComponent(Animation.class).setDuration(0.1);;
-//		
+//
 //		Circle c = new Circle(0, 0, TILEMAP.TILE_SIZE);
 //		stt.getComponent(Sprite.class).addShape(new Circle(0, 0, TILEMAP.TILE_SIZE,Color.ALICEBLUE));
-//		
-//		
+//
+//
 //		g.show();
 //	}
 //
@@ -451,35 +451,35 @@ public class InitialisationVisitor extends Visitor {
 	/**
 	 * Initializes MapColoringProblem GameObjects
 	 *
-	 * @param mapColoringProblem
+	 * @param problem
 	 * @autor Alexander
 	 */
-	public void visit(MapColoringProblem mapColoringProblem) {
-		super.visit(mapColoringProblem);
-		mapColoringProblem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
+	public void visit(MapColoringProblem problem) {
+		super.visit(problem);
+		problem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
 		// Create a new Sprite
 		Sprite sprites = new Sprite();
 		// Add the Sprite to the MapColoringProblem
-		mapColoringProblem.addComponent(sprites);
+		problem.addComponent(sprites);
 
 		// Get the variables of the MapColoringProblem
-		List<String> variables = mapColoringProblem.getVariables();
+		List<String> variables = problem.getVariables();
 		// Create a list of Circles
 		List<Circle> circles = new ArrayList<>();
 		// Create a map of variables to Circles
-		Map<String, Circle> variableToCircleMap = mapColoringProblem.getVariableToCircleMap();
+		Map<String, Circle> variableToCircleMap = problem.getVariableToCircleMap();
 
 		// Calculate the angle step with bigCircleRadius and bigCircleCenterX and bigCircleCenterY
-		double angleStep = 360.0 / mapColoringProblem.getVariables().size();
+		double angleStep = 360.0 / problem.getVariables().size();
 		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
 		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
 		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
 
-		List<Pair<String, String>> binaryConstraints = mapColoringProblem.getContraints();
+		List<Pair<String, String>> binaryConstraints = problem.getContraints();
 
 		// Create the Circles and add them to the Sprite without Highlighting and Coloring
-		for (int i = 0; i < mapColoringProblem.getVariables().size(); i++) {
+		for (int i = 0; i < problem.getVariables().size(); i++) {
 			double angle = i * angleStep;
 			double angleRad = Math.toRadians(angle);
 
@@ -498,18 +498,20 @@ public class InitialisationVisitor extends Visitor {
 			sprites.addShape(c);
 			circles.add(c);
 
-			List<String> neighbor = mapColoringProblem.getNeighbors(variables.get(i));
+			String variablei = variables.get(i);
+			List<String> domaini = problem.getDomain().get(variablei);
+			List<String> neighbori = problem.getNeighbors(variablei);
+			// Vermutung Text müsste als GameObjekt hinzugefügt werden, dass dieses auf GUI angegeben wird
 			var t = new javafx.scene.text.Text();
-			t.setText("V: " + variables.get(i) +
-					"\nD: " + // TODO: Hier muss noch die Domain hin
-					"\nC: " + neighbor +
+			t.setText("V: " + variablei +
+					"\nD: " + domaini +
+					"\nC: " + neighbori +
 					"\n");
 			t.setX(circleX + 35);
 			t.setY(circleY - 15);
 			t.setFill(Color.BLACK);
 			t.setFont(Font.font(15));
 			sprites.addShape(t);
-
 
 			// Get the variablename of the current circle
 			String variable = variables.get(i);
@@ -540,10 +542,10 @@ public class InitialisationVisitor extends Visitor {
 			sprites.addShape(l);
 		}
 		 // Set the variableToCircleMap specification for future access
-		mapColoringProblem.setVariableToCircleMap(variableToCircleMap);
+		problem.setVariableToCircleMap(variableToCircleMap);
 
 		// Show the GUI
-		mapColoringProblem.getComponent(Graphics.class).show();
+		problem.getComponent(Graphics.class).show();
 	}
 
 	/**
