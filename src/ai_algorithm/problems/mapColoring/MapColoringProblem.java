@@ -1,7 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
 import ai_algorithm.problems.CspProblem;
-import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import javafx.scene.shape.Circle;
 
@@ -25,23 +24,13 @@ import java.util.*;
  */
 public class MapColoringProblem extends CspProblem {
 
-    public final int GAMESIZE; // Number of all variables
-
     List<String> variables; // Variables of the problem
     Map<String, List<String>> neighbors; // Neighbors for each variable
     Map<String, List<String>> domain; // Domain of the problem
 
-    List<List<String>> variableConstraintsEdges = new ArrayList<>(); // List of all variable constraints Edges
-
-//    List<List<String>> variableConstraintsDomain = new ArrayList<>();
-
     Map<String, Circle> variableToCircleMap = new HashMap<>(); // Assignment of all variables to their respective circles
 
     List<Pair<String, String>> contraints; // List of all constraints / arcs
-
-    String start;
-
-    String goal;
 
     /**
      * Initializes the map coloring problem with the variables, constraints, domain, assignements and arcs.
@@ -51,7 +40,6 @@ public class MapColoringProblem extends CspProblem {
     public MapColoringProblem() {
         super();
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
-        GAMESIZE = variables.size();
         neighbors = Map.of(
                 "WA", List.of("NT", "SA"), // Constraint from WA
                 "NT", List.of("WA", "SA", "Q"), // Constraint from NT
@@ -65,7 +53,7 @@ public class MapColoringProblem extends CspProblem {
         // Assignment of all variables to their respective circles
         domain = new HashMap<>();
         for (String var : variables) {
-            domain.put(var, Arrays.asList("Red", "Green", "Blue"));
+            domain.put(var, Arrays.asList("R", "G", "B"));
         }
 
         contraints = new ArrayList<>();
@@ -268,21 +256,6 @@ public class MapColoringProblem extends CspProblem {
     @Override
     public double getCost(State state, String action, State succ) {
         return 1;
-    }
-
-    /**
-     * Returns the domain of a specific variable.
-     *
-     * @param variable variable
-     * @return domain of the variable
-     */
-    public List<String> getDomainOfVariable(String variable) {
-        if(!variables.contains(variable)) {
-            return null;
-        }else {
-            int index = variables.indexOf(variable);
-            return domain.get(index);
-        }
     }
 
 }

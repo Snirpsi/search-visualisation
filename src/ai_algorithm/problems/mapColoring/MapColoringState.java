@@ -1,7 +1,6 @@
 package ai_algorithm.problems.mapColoring;
 
 import ai_algorithm.problems.CspState;
-import ai_algorithm.problems.State;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class MapColoringState extends CspState {
     }
 
     /**
-     * Assignments as representation in the form of a string
+     * assignments as representation in the form of a string
      *
      * @return string representation of the state
      */
@@ -61,7 +60,11 @@ public class MapColoringState extends CspState {
         return new ArrayList<>(domain.get(variable));
     }
 
-
+    /**
+     * return Map of all variables and their domains
+     *
+     * @return domain
+     */
     public Map<String, List<String>> getDomains() {
         return this.domain;
     }
