@@ -32,6 +32,8 @@ public class MapColoringProblem extends CspProblem {
 
     List<Pair<String, String>> contraints; // List of all constraints / arcs
 
+    Map<String, List<javafx.scene.text.Text>> variableTextMap = new HashMap<>(); // Map of variables to text
+
     /**
      * Initializes the map coloring problem with the variables, constraints, domain, assignements and arcs.
      * Initializes the fillQueue method.
@@ -73,11 +75,6 @@ public class MapColoringProblem extends CspProblem {
                 contraints.add(new Pair<>(var, other));
             }
         }
-//        System.out.println("Arcs: " + arcs);
-        // Not necessary anymore
-//        for (int i = 0; i < domain.size(); i++) {
-//            variableConstraintsDomain.add(Arrays.asList(variables.get(i), domain.get(i).toString()));
-//        }
     }
 
     /**
@@ -110,6 +107,12 @@ public class MapColoringProblem extends CspProblem {
         return contraints;
     }
 
+    /**
+     * Returns the neighbors of a given variable.
+     *
+     * @param variable variable
+     * @return list of neighbors of the variable
+     */
     @Override
     public List<String> getNeighbors(String variable) {
         return neighbors.get(variable);
@@ -132,6 +135,16 @@ public class MapColoringProblem extends CspProblem {
      */
     public Map<String, Circle> getVariableToCircleMap() {
         return variableToCircleMap;
+    }
+
+    /**
+     * Get the variable text map.
+     * Contains information about the text assigned to a specific variable
+     *
+     * @return variableTextMap
+     */
+    public Map<String, List<javafx.scene.text.Text>> getVariableTextMap() {
+        return variableTextMap;
     }
 
     /**
