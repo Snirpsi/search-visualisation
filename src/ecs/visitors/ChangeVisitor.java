@@ -251,7 +251,6 @@ public class ChangeVisitor extends Visitor {
 			tm.get(var).forEach(t -> {
 				t.setText("V: " + var +
 						"\nD: " + stateVarDomain +
-						"\nC: " + neighborVar +
 						"\n");
 			});
 

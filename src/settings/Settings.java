@@ -26,7 +26,7 @@ public class Settings {
 	/**
 	 * Enables or disables the debug mode.
 	 */
-	public final static boolean DEBUGMODE = true;
+	public final static boolean DEBUGMODE = false;
 
 	static public class TREE_LAYOUT {
 		/**
