@@ -1,4 +1,4 @@
-package ai_algorithm.searchCsp;
+package ai_algorithm.search.csp;
 
 import ai_algorithm.Frontier;
 import ai_algorithm.Path;

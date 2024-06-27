@@ -9,7 +9,7 @@ import ai_algorithm.search.DepthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.ManualSearch;
 import ai_algorithm.search.RecursiveDepthSearch;
-import ai_algorithm.searchCsp.BacktrackingArcConsistancy3Search;
+import ai_algorithm.search.csp.BacktrackingArcConsistancy3Search;
 //import ai_algorithm.search.*;
 
 /**

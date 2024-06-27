@@ -10,7 +10,7 @@ import java.util.List;
 import ai_algorithm.SearchAndProblemRegister;
 import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.Problem;
-import ai_algorithm.searchCsp.CspSearchAlgorithm;
+import ai_algorithm.search.csp.CspSearchAlgorithm;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import settings.Settings;
