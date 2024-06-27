@@ -27,6 +27,8 @@ import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
 
+import javax.net.ssl.SSLContext;
+
 /**
  * This class handles the change of every possible {@link GameObject}. The
  * ChangeVisitor takes the information largely from the {@link GameObject}s and
@@ -259,31 +261,47 @@ public class ChangeVisitor extends Visitor {
 	}
 
 	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
-		if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("R")) {
-			c.setFill(Color.RED);
-			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("G")) {
-			c.setFill(Color.GREEN);
-			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 1 && stateVarDomain.get(0).equals("B")) {
-			c.setFill(Color.BLUE);
-			c.setStrokeWidth(5);
-		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R"))) {
-			if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
-				c.setFill(Color.YELLOW);
-			} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
-				c.setFill(Color.PURPLE);
+		if (stateVarDomain.size() == 1) {
+			switch (stateVarDomain.get(0)) {
+				case "R" -> {
+					c.setFill(Color.RED);
+					c.setStrokeWidth(5);
+				}
+				case "G" -> {
+					c.setFill(Color.GREEN);
+					c.setStrokeWidth(5);
+				}
+				case "B" -> {
+					c.setFill(Color.BLUE);
+					c.setStrokeWidth(5);
+				}
 			}
-		} else if (stateVarDomain.size() == 2 && (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G"))) {
-			if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
-				c.setFill(Color.CYAN);
+		} else if (stateVarDomain.size() == 2) {
+			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
+				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+					c.setFill(Color.YELLOW);
+					c.setStrokeWidth(2);
+				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
+					c.setFill(Color.PURPLE);
+					c.setStrokeWidth(2);
+				}
+			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
+					c.setFill(Color.CYAN);
+					c.setStrokeWidth(2);
+				}
 			}
-		} else if (stateVarDomain.size() == 3 && stateVarDomain.get(0).equals("R") && stateVarDomain.get(1).equals("G") && stateVarDomain.get(2).equals("B")){
-			if(!neighborVar.isEmpty()) {
+		} else if(stateVarDomain.size() ==3 ) {
+			if (!neighborVar.isEmpty()) {
+				c.setFill(Color.WHITE);
+				c.setStrokeWidth(2);
+			} else if (stateVarDomain.size() == 3) {
 				c.setFill(Color.WHITE);
 				c.setStrokeWidth(2);
 			}
-
+		} else if (stateVarDomain.size() == 0) {
+			c.setFill(Color.WHITE);
+			c.setStrokeWidth(2);
 		}
 
 	}
