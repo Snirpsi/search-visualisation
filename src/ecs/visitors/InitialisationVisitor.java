@@ -495,110 +495,80 @@ public class InitialisationVisitor extends Visitor {
 			var t = new javafx.scene.text.Text();
 			switch (variables.get(i)) {
 				case "WA":
-//					c = setCircle(30, -250, 0);
-					c.setRadius(30);
-					c.setCenterX(-250);
-					c.setCenterY(0);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x0 = -250, y0 = 0;
+					c = setCircle(30, x0, y0);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x0 - 20, y0 + 50);
+					sprites.addShape(t);
 					break;
 				case "NT":
-					c.setRadius(30);
-					c.setCenterX(-50);
-					c.setCenterY(-125);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x1 = -50, y1 = -125;
+					c = setCircle(30, x1, y1);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x1 - 20, y1 - 60);
+					sprites.addShape(t);
 					break;
 				case "SA":
-					c.setRadius(30);
-					c.setCenterX(0);
-					c.setCenterY(75);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x2 = 0, y2 = 75;
+					c = setCircle(30, x2, y2);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x2 - 25, y2 + 50);
+					sprites.addShape(t);
 					break;
 				case "Q":
-					c.setRadius(30);
-					c.setCenterX(150);
-					c.setCenterY(-95);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x3 = 150, y3 = -95;
+					c = setCircle(30, x3, y3);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x3 + 40, y3);
+					sprites.addShape(t);
 					break;
 				case "NSW":
-					c.setRadius(30);
-					c.setCenterX(225);
-					c.setCenterY(75);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x4 = 225, y4 = 75;
+					c = setCircle(30, x4, y4);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x4 + 40, y4);
+					sprites.addShape(t);
 					break;
 				case "V":
-					c.setRadius(30);
-					c.setCenterX(150);
-					c.setCenterY(175);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x5 = 150, y5 = 175;
+					c = setCircle(30, x5, y5);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x5 + 40, y5);
+					sprites.addShape(t);
 					break;
 				case "T":
-					c.setRadius(30);
-					c.setCenterX(150);
-					c.setCenterY(300);
-					c.setFill(Color.WHITE);
-					c.setStrokeWidth(2);
-					c.setStroke(Color.BLACK);
+					double x6 = 150, y6 = 300;
+					c = setCircle(30, x6, y6);
 					sprites.addShape(c);
 					circles.add(c);
+
+					t = setText(x6 + 40, y6);
+					sprites.addShape(t);
 					break;
 				default:
-//					c.setRadius(30);
-//					c.setCenterX(circleX);
-//					c.setCenterY(circleY);
-//					c.setFill(Color.WHITE);
-//					c.setStrokeWidth(2);
-//					c.setStroke(Color.BLACK);
-//					sprites.addShape(c);
-//					circles.add(c);
-//
-//					t.setX(circleX + 35);
-//					t.setY(circleY - 15);
-//					t.setFill(Color.BLACK);
-//					t.setFont(Font.font(15));
-//					sprites.addShape(t);
+					c = setCircle(30, circleX, circleY);
+					sprites.addShape(c);
+					circles.add(c);
+
+					t.setX(circleX + 35);
+					t.setY(circleY - 15);
+					t.setFill(Color.BLACK);
+					t.setFont(Font.font(15));
+					sprites.addShape(t);
 					break;
 			}
-
-//			c.setRadius(30);
-//			c.setCenterX(circleX);
-//			c.setCenterY(circleY);
-//			c.setFill(Color.WHITE);
-//			c.setStrokeWidth(2);
-//			c.setStroke(Color.BLACK);
-//			sprites.addShape(c);
-//			circles.add(c);
-
-			// Create a new Text with the calculated x and y coordinates and the specifications
-//			var t = new javafx.scene.text.Text();
-//			t.setX(circleX + 35);
-//			t.setY(circleY - 15);
-//			t.setFill(Color.BLACK);
-//			t.setFont(Font.font(15));
-//			sprites.addShape(t);
 
 			// Get the variablename of the current circle
 			String variable = variables.get(i);
@@ -646,6 +616,15 @@ public class InitialisationVisitor extends Visitor {
 		c.setStrokeWidth(2);
 		c.setStroke(Color.BLACK);
 		return c;
+	}
+
+	public javafx.scene.text.Text setText(double x, double y) {
+		var t = new javafx.scene.text.Text();
+		t.setX(x);
+		t.setY(y);
+		t.setFill(Color.BLACK);
+		t.setFont(Font.font(15));
+		return t;
 	}
 
 	// ######################### \/ MAP COLORING FUNKTIONIERT => Kreisdarstellung \/ #########################//
