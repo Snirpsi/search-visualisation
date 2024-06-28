@@ -491,22 +491,114 @@ public class InitialisationVisitor extends Visitor {
 
 			// Create a new Circle with the calculated x and y coordinates and the specifications
 			Circle c = new Circle();
-			c.setRadius(30);
-			c.setCenterX(circleX);
-			c.setCenterY(circleY);
-			c.setFill(Color.WHITE);
-			c.setStrokeWidth(2);
-			c.setStroke(Color.BLACK);
-			sprites.addShape(c);
-			circles.add(c);
-
 			// Create a new Text with the calculated x and y coordinates and the specifications
 			var t = new javafx.scene.text.Text();
-			t.setX(circleX + 35);
-			t.setY(circleY - 15);
-			t.setFill(Color.BLACK);
-			t.setFont(Font.font(15));
-			sprites.addShape(t);
+			switch (variables.get(i)) {
+				case "WA":
+//					c = setCircle(30, -250, 0);
+					c.setRadius(30);
+					c.setCenterX(-250);
+					c.setCenterY(0);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "NT":
+					c.setRadius(30);
+					c.setCenterX(-50);
+					c.setCenterY(-125);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "SA":
+					c.setRadius(30);
+					c.setCenterX(0);
+					c.setCenterY(75);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "Q":
+					c.setRadius(30);
+					c.setCenterX(150);
+					c.setCenterY(-95);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "NSW":
+					c.setRadius(30);
+					c.setCenterX(225);
+					c.setCenterY(75);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "V":
+					c.setRadius(30);
+					c.setCenterX(150);
+					c.setCenterY(175);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				case "T":
+					c.setRadius(30);
+					c.setCenterX(150);
+					c.setCenterY(300);
+					c.setFill(Color.WHITE);
+					c.setStrokeWidth(2);
+					c.setStroke(Color.BLACK);
+					sprites.addShape(c);
+					circles.add(c);
+					break;
+				default:
+//					c.setRadius(30);
+//					c.setCenterX(circleX);
+//					c.setCenterY(circleY);
+//					c.setFill(Color.WHITE);
+//					c.setStrokeWidth(2);
+//					c.setStroke(Color.BLACK);
+//					sprites.addShape(c);
+//					circles.add(c);
+//
+//					t.setX(circleX + 35);
+//					t.setY(circleY - 15);
+//					t.setFill(Color.BLACK);
+//					t.setFont(Font.font(15));
+//					sprites.addShape(t);
+					break;
+			}
+
+//			c.setRadius(30);
+//			c.setCenterX(circleX);
+//			c.setCenterY(circleY);
+//			c.setFill(Color.WHITE);
+//			c.setStrokeWidth(2);
+//			c.setStroke(Color.BLACK);
+//			sprites.addShape(c);
+//			circles.add(c);
+
+			// Create a new Text with the calculated x and y coordinates and the specifications
+//			var t = new javafx.scene.text.Text();
+//			t.setX(circleX + 35);
+//			t.setY(circleY - 15);
+//			t.setFill(Color.BLACK);
+//			t.setFont(Font.font(15));
+//			sprites.addShape(t);
 
 			// Get the variablename of the current circle
 			String variable = variables.get(i);
@@ -544,6 +636,111 @@ public class InitialisationVisitor extends Visitor {
 		// Show the GUI
 		problem.getComponent(Graphics.class).show();
 	}
+
+	public Circle setCircle(double r, double x, double y) {
+		Circle c = new Circle();
+		c.setRadius(r);
+		c.setCenterX(x);
+		c.setCenterY(y);
+		c.setFill(Color.WHITE);
+		c.setStrokeWidth(2);
+		c.setStroke(Color.BLACK);
+		return c;
+	}
+
+	// ######################### \/ MAP COLORING FUNKTIONIERT => Kreisdarstellung \/ #########################//
+//	public void visit(MapColoringProblem problem) {
+//		super.visit(problem);
+//		problem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
+//
+//		// Create a new Sprite
+//		Sprite sprites = new Sprite();
+//		// Add the Sprite to the MapColoringProblem
+//		problem.addComponent(sprites);
+//
+//		// Get the variables of the MapColoringProblem
+//		List<String> variables = problem.getVariables();
+//		// Create a list of Circles
+//		List<Circle> circles = new ArrayList<>();
+//		// Create a map of variables to Circles
+//		Map<String, Circle> variableToCircleMap = problem.getVariableToCircleMap();
+//		// Create a map of variables to Texts
+//		Map<String, List<javafx.scene.text.Text>> variableTextMap = problem.getVariableTextMap();
+//
+//		// Calculate the angle step with bigCircleRadius and bigCircleCenterX and bigCircleCenterY
+//		double angleStep = 360.0 / problem.getVariables().size();
+//		double bigCircleRadius = 200; // Radius des großen Kreises, auf dem die kleinen Kreise positioniert werden
+//		double bigCircleCenterX = 200; // x-Koordinate des Mittelpunkts des großen Kreises
+//		double bigCircleCenterY = 200; // y-Koordinate des Mittelpunkts des großen Kreises
+//
+//		List<Pair<String, String>> binaryConstraints = problem.getContraints();
+//
+//		// Create the Circles and add them to the Sprite without Highlighting and Coloring
+//		for (int i = 0; i < problem.getVariables().size(); i++) {
+//			double angle = i * angleStep;
+//			double angleRad = Math.toRadians(angle);
+//
+//			// Calculate the x and y coordinates of the circle
+//			double circleX = bigCircleCenterX + bigCircleRadius * Math.cos(angleRad);
+//			double circleY = bigCircleCenterY + bigCircleRadius * Math.sin(angleRad);
+//
+//			// Create a new Circle with the calculated x and y coordinates and the specifications
+//			Circle c = new Circle();
+//			c.setRadius(30);
+//			c.setCenterX(circleX);
+//			c.setCenterY(circleY);
+//			c.setFill(Color.WHITE);
+//			c.setStrokeWidth(2);
+//			c.setStroke(Color.BLACK);
+//			sprites.addShape(c);
+//			circles.add(c);
+//
+//			// Create a new Text with the calculated x and y coordinates and the specifications
+//			var t = new javafx.scene.text.Text();
+//			t.setX(circleX + 35);
+//			t.setY(circleY - 15);
+//			t.setFill(Color.BLACK);
+//			t.setFont(Font.font(15));
+//			sprites.addShape(t);
+//
+//			// Get the variablename of the current circle
+//			String variable = variables.get(i);
+//			// Add the variable and the circle to the variableToCircleMap to signalize the togetherness
+//			variableToCircleMap.put(variable, c);
+//			// Add the variable and the text to the variableTextMap to signalize the togetherness
+//			variableTextMap.put(variable, Arrays.asList(t));
+//		}
+//
+//		// Set the lines between the circles
+//		for(Pair<String, String> arc : binaryConstraints) {
+//			// Get the variables of the current Circle
+//			String var1 = arc.getFirst();
+//			String var2 = arc.getSecond();
+//
+//			// Get the Circles of the variables var1 and var2
+//			Circle c1 = variableToCircleMap.get(var1);
+//			Circle c2 = variableToCircleMap.get(var2);
+//
+//			// Create a new Line between the Circles c1 and c2 and set the specifications of the Line
+//			Line l = new Line();
+//			l.setStartX(c1.getCenterX());
+//			l.setStartY(c1.getCenterY());
+//			l.setEndX(c2.getCenterX());
+//			l.setEndY(c2.getCenterY());
+//			l.setStrokeWidth(2);
+//			l.setStroke(Color.BLACK);
+//
+//			// Add the line to the sprite and visualize it in the GUI
+//			sprites.addShape(l);
+//		}
+//		// Set the variableToCircleMap specification for future access
+//		problem.setVariableToCircleMap(variableToCircleMap);
+//
+//		// Show the GUI
+//		problem.getComponent(Graphics.class).show();
+//	}
+	// ######################### /\ MAP COLORING FUNKTIONIERT => Kreisdarstellung /\ #########################//
+
 
 	/**
 	 * Initializes MapColoringState GameObjects

@@ -291,7 +291,7 @@ public class ChangeVisitor extends Visitor {
 					c.setStrokeWidth(2);
 				}
 			}
-		} else if(stateVarDomain.size() ==3 ) {
+		} else if(stateVarDomain.size() == 3) {
 			if (!neighborVar.isEmpty()) {
 				c.setFill(Color.WHITE);
 				c.setStrokeWidth(2);
