@@ -41,6 +41,18 @@ public class MapColoringProblem extends CspProblem {
      */
     public MapColoringProblem() {
         super();
+        // Allgemein
+//        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G");
+//        neighbors = Map.of(
+//                "A", List.of("B", "C"), // Constraint from WA
+//                "B", List.of("A", "C", "D"), // Constraint from NT
+//                "C", List.of("A", "B", "D", "E", "F"), // Constraint from SA
+//                "D", List.of("C", "B", "E"), // Constraint from Q
+//                "E", List.of("C", "D", "F"), // Constraint from NSW
+//                "F", List.of("E", "C"), // Constraint from V
+//                "G", List.of() // Constraint from T
+//        );
+        // Australien
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         neighbors = Map.of(
                 "WA", List.of("NT", "SA"), // Constraint from WA
