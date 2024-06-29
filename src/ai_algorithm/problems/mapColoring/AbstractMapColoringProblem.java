@@ -2,84 +2,40 @@ package ai_algorithm.problems.mapColoring;
 
 import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
 import javafx.scene.shape.Circle;
 
 import java.util.*;
 
-/**
- * The MapColoring problem is a problem where a map must be colored in such a way
- * that adjacent regions have different colors. The map consists of various regions
- * (variables) that can be assigned specific colors (domains). There are constraints
- * that dictate that neighboring regions cannot share the same color.
- *
- * The agents must assign colors to the regions in a way that all constraints are satisfied.
- * There are various classes that make the problem available.
- *
- * These are: {@link MapColoringProblem}, {@link MapColoringState}, and {@link MapColoringPath}.
- * In these classes, only the functions relevant to artificial intelligence have been implemented.
- * Each of these classes also has its own visitor functions, which equip them with components
- * for visualization.
- *
- * @author Alexander
- */
-public class MapColoringProblem extends CspProblem {
+public abstract class AbstractMapColoringProblem extends CspProblem {
 
-    List<String> variables; // Variables of the problem
-    Map<String, List<String>> neighbors; // Neighbors for each variable
-    Map<String, List<String>> domain; // Domain of the problem
+    protected List<String> variables; // Variables of the problem
+    protected Map<String, List<String>> neighbors; // Neighbors for each variable
+    protected Map<String, List<String>> domain; // Domain of the problem
 
-    Map<String, Circle> variableToCircleMap = new HashMap<>(); // Assignment of all variables to their respective circles
+    protected Map<String, Circle> variableToCircleMap = new HashMap<>(); // Assignment of all variables to their respective circles
 
-    List<Pair<String, String>> contraints; // List of all constraints / arcs
+    protected List<Pair<String, String>> contraints; // List of all constraints / arcs
 
-    Map<String, List<javafx.scene.text.Text>> variableTextMap = new HashMap<>(); // Map of variables to text
+    protected Map<String, List<javafx.scene.text.Text>> variableTextMap = new HashMap<>(); // Map of variables to text
 
     /**
      * Initializes the map coloring problem with the variables, constraints, domain, assignements and arcs.
      * Initializes the fillQueue method.
      * Initializes the start variable.
      */
-    public MapColoringProblem() {
+    public AbstractMapColoringProblem() {
         super();
-        // Allgemein
-        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G");
-        neighbors = Map.of(
-                "A", List.of("B", "C"), // Constraint from WA
-                "B", List.of("A", "C", "D"), // Constraint from NT
-                "C", List.of("A", "B", "D", "E", "F"), // Constraint from SA
-                "D", List.of("C", "B", "E"), // Constraint from Q
-                "E", List.of("C", "D", "F"), // Constraint from NSW
-                "F", List.of("E", "C"), // Constraint from V
-                "G", List.of() // Constraint from T
-        );
-        // Australien
-//        variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
-//        neighbors = Map.of(
-//                "WA", List.of("NT", "SA"), // Constraint from WA
-//                "NT", List.of("WA", "SA", "Q"), // Constraint from NT
-//                "SA", List.of("WA", "NT", "Q", "NSW", "V"), // Constraint from SA
-//                "Q", List.of("SA", "NT", "NSW"), // Constraint from Q
-//                "NSW", List.of("SA", "Q", "V"), // Constraint from NSW
-//                "V", List.of("NSW", "SA"), // Constraint from V
-//                "T", List.of() // Constraint from T
-//        );
-
-        // Assignment of all variables to their respective circles
+        variables = new ArrayList<>();
+        neighbors = new HashMap<>();
         domain = new HashMap<>();
-        for (String var : variables) {
-            domain.put(var, Arrays.asList("R", "G", "B"));
-        }
-
         contraints = new ArrayList<>();
-        fillQueue();
-
-//        start = variables.get(0);
     }
 
     /**
      * Fills the queue with the edges and assigns each variable an edge between two nodes.
      */
-    public void fillQueue() {
+    protected void fillQueue() {
         // Create constraint list out of neighbors
         for( String var : variables) {
             List<String> constraint = neighbors.get(var);
@@ -172,7 +128,7 @@ public class MapColoringProblem extends CspProblem {
         for (String variable : variables) {
             initialDomain.put(variable, new ArrayList<>(domain.get(variable)));
         }
-        return new MapColoringState(this, initialDomain, initialAssignments);
+        return new MapColoringStateAustralia(this, initialDomain, initialAssignments);
     }
 
     /**
@@ -193,7 +149,7 @@ public class MapColoringProblem extends CspProblem {
      */
     @Override
     public boolean isGoalState(State state) {
-        MapColoringState stateM = (MapColoringState) state;
+        MapColoringStateAustralia stateM = (MapColoringStateAustralia) state;
 
         for (String variable : variables) {
             if (!stateM.getAssignments().containsKey(variable)) {
@@ -221,7 +177,7 @@ public class MapColoringProblem extends CspProblem {
     @Override
     public List<String> getActions(State state) {
 
-        MapColoringState stateM = (MapColoringState) state;
+        MapColoringStateAustralia stateM = (MapColoringStateAustralia) state;
         List<String> actions = new ArrayList<>();
 
         for (String variable : variables) {
@@ -245,7 +201,7 @@ public class MapColoringProblem extends CspProblem {
      */
     @Override
     public State getSuccessor(State state, String action) {
-        MapColoringState stateM = (MapColoringState) state;
+        MapColoringStateAustralia stateM = (MapColoringStateAustralia) state;
         Map<String, String> newAssignments = new HashMap<>(stateM.getAssignments());
 
         String[] parts = action.split("=");
@@ -267,7 +223,7 @@ public class MapColoringProblem extends CspProblem {
                 newDomain.put(var, new ArrayList<>(stateM.getDomain(var)));
             }
         }
-        return new MapColoringState(this, newDomain, newAssignments);
+        return new MapColoringStateAustralia(this, newDomain, newAssignments);
     }
 
     /**
@@ -284,27 +240,3 @@ public class MapColoringProblem extends CspProblem {
     }
 
 }
-
-
-/*
- * Copyright (c) 2024 Alexander Ultsch
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-

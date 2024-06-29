@@ -9,6 +9,7 @@ import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
 import ai_algorithm.problems.mapColoring.MapColoringState;
+import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import application.Globals;
@@ -26,8 +27,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
-
-import javax.net.ssl.SSLContext;
 
 /**
  * This class handles the change of every possible {@link GameObject}. The
@@ -58,6 +57,11 @@ public class ChangeVisitor extends Visitor {
 
 		if (gameObject instanceof MapColoringState s) {
 			this.visit(s);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringStateAustralia a) {
+			this.visit(a);
 			return;
 		}
 
@@ -236,6 +240,8 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+	//###################################### MAP COLORING General ######################################//
 	/**
 	 * Visualizes the {@link MapColoringState} and applies colors
 	 *
@@ -259,6 +265,33 @@ public class ChangeVisitor extends Visitor {
 			setColorToCircle(c, stateVarDomain, neighborVar);
 		}
 	}
+
+	//###################################### MAP COLORING Australia ######################################//
+	/**
+	 * Visualizes the {@link MapColoringStateAustralia} and applies colors
+	 *
+	 * @param state
+	 */
+	public void visit(MapColoringStateAustralia state) {
+		for(String var : state.getProblem().getVariables()) {
+			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+			List<String> stateVarDomain = state.getDomain(var);
+			List<String> neighborVar = state.getProblem().getNeighbors(var);
+
+			// Text für Variable and Nodes
+			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
+			System.out.println("!!!! MESSAGE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :                  " + tm);
+			// TODO: Text Coloring -> Option is TextFlow as the text contents must be combined with each other and customised individually
+			tm.get(var).forEach(t -> {
+				t.setText("V: " + var +
+						"\nD: " + stateVarDomain +
+						"\n");
+			});
+
+			setColorToCircle(c, stateVarDomain, neighborVar);
+		}
+	}
+
 
 	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
 		if (stateVarDomain.size() == 1) {
