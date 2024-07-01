@@ -7,6 +7,7 @@ import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.CspState;
 import ai_algorithm.problems.mapColoring.Pair;
 import application.debugger.Debugger;
+import ecs.GameObjectRegistry;
 
 import java.util.*;
 
@@ -44,6 +45,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
     private Path backtrack(SearchNode searchNode, Frontier frontier) {
         frontier.remove(searchNode);
         if (this.problem.isGoalState(searchNode.getState())) {
+            GameObjectRegistry.registerForStateChange(searchNode);
             Debugger.pause("Finished");
             return searchNode.getPath();
         }
@@ -52,6 +54,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         Map<String, String> assignments = cspState.getAssignments();
         boolean inference = arcConsistency3(this.problem.getContraints(), cspState.getDomains());
         if( !inference ) {
+            GameObjectRegistry.registerForStateChange(searchNode);
             return null;
         }
 
@@ -62,10 +65,12 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
             Path result = backtrack(child, frontier);
             // If a solution was found, return it
             if( result != null ) {
+                GameObjectRegistry.registerForStateChange(searchNode);
                 return result;
             }
             // Otherwise, try next value
         }
+        GameObjectRegistry.registerForStateChange(searchNode);
         Debugger.pause("No Solution found");
         return null;
     }
