@@ -13,6 +13,8 @@ import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
 import ai_algorithm.problems.mapColoring.Pair;
 import ai_algorithm.problems.mapColoring.australia.MapColoringProblemAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringProblemGeneral;
+import ai_algorithm.problems.mapColoring.general.MapColoringStateGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
@@ -81,8 +83,8 @@ public class InitialisationVisitor extends Visitor {
 			this.visit(stp);
 		}
 
-		if (gameObject.getClass().isAssignableFrom(MapColoringProblem.class)) {
-			this.visit((MapColoringProblem) gameObject);
+		if (gameObject.getClass().isAssignableFrom(MapColoringProblemGeneral.class)) {
+			this.visit((MapColoringProblemGeneral) gameObject);
 			return;
 		}
 
@@ -91,7 +93,7 @@ public class InitialisationVisitor extends Visitor {
 			return;
 		}
 
-		if (gameObject instanceof MapColoringState mapColoringState) {
+		if (gameObject instanceof MapColoringStateGeneral mapColoringState) {
 			this.visit(mapColoringState);
 			return;
 		}
@@ -466,7 +468,7 @@ public class InitialisationVisitor extends Visitor {
 	 * @param problem
 	 * @autor Alexander
 	 */
-	public void visit(MapColoringProblem problem) {
+	public void visit(MapColoringProblemGeneral problem) {
 		super.visit(problem);
 		problem.addComponent(new Graphics(Globals.stateRepresentationGraphicsContext));
 
@@ -901,7 +903,7 @@ public class InitialisationVisitor extends Visitor {
 	 * @param mapColoringState
 	 * @autor Alexander
 	 */
-	public void visit(MapColoringState mapColoringState) {
+	public void visit(MapColoringStateGeneral mapColoringState) {
 		super.visit(mapColoringState);
 		Globals.stateRepresentationGraphicsContext.getChildren().clear();
 
