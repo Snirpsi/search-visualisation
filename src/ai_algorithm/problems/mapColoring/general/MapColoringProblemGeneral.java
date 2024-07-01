@@ -10,7 +10,7 @@ import java.util.Map;
 public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
 
     public MapColoringProblemGeneral(){
-        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G");
+        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
         neighbors = Map.of(
                 "A", List.of("B", "C"), // Constraint from WA
                 "B", List.of("A", "C", "D"), // Constraint from NT
@@ -18,7 +18,8 @@ public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
                 "D", List.of("C", "B", "E"), // Constraint from Q
                 "E", List.of("C", "D", "F"), // Constraint from NSW
                 "F", List.of("E", "C"), // Constraint from V
-                "G", List.of() // Constraint from T
+                "G", List.of(), // Constraint from T
+                "H", List.of("B", "D") // Constraint from H
         );
 
         domain = new HashMap<>();
