@@ -262,7 +262,7 @@ public class ChangeVisitor extends Visitor {
 						"\n");
 			});
 
-			setColorToCircle(c, stateVarDomain, neighborVar);
+			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
 		}
 	}
 
@@ -286,52 +286,49 @@ public class ChangeVisitor extends Visitor {
 						"\n");
 			});
 
-			setColorToCircle(c, stateVarDomain, neighborVar);
+			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
 		}
 	}
 
-	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
+	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar, boolean assigned) {
+		if( assigned ) {
+			c.setStrokeWidth(5);
+		} else {
+			c.setStrokeWidth(2);
+		}
+
 		if (stateVarDomain.size() == 1) {
 			switch (stateVarDomain.get(0)) {
 				case "R" -> {
 					c.setFill(Color.RED);
-					c.setStrokeWidth(5);
 				}
 				case "G" -> {
 					c.setFill(Color.GREEN);
-					c.setStrokeWidth(5);
 				}
 				case "B" -> {
 					c.setFill(Color.BLUE);
-					c.setStrokeWidth(5);
 				}
 			}
 		} else if (stateVarDomain.size() == 2) {
 			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
 				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 					c.setFill(Color.YELLOW);
-					c.setStrokeWidth(2);
 				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
 					c.setFill(Color.PURPLE);
-					c.setStrokeWidth(2);
 				}
 			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
 					c.setFill(Color.CYAN);
-					c.setStrokeWidth(2);
 				}
 			}
 		} else if(stateVarDomain.size() == 3) {
 			if (!neighborVar.isEmpty()) {
 				c.setFill(Color.WHITE);
-				c.setStrokeWidth(2);
-			} else if (stateVarDomain.size() == 3) {
+			} else {
 				c.setFill(Color.WHITE);
-				c.setStrokeWidth(2);
 			}
 		} else if (stateVarDomain.size() == 0) {
 			c.setFill(Color.WHITE);
-			c.setStrokeWidth(2);
 		}
 
 	}
