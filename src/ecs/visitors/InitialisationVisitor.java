@@ -86,6 +86,11 @@ public class InitialisationVisitor extends Visitor {
 			return;
 		}
 
+		if (gameObject.getClass().isAssignableFrom(MapColoringProblemAustralia.class)) {
+			this.visit((MapColoringProblemAustralia) gameObject);
+			return;
+		}
+
 		if (gameObject instanceof MapColoringState mapColoringState) {
 			this.visit(mapColoringState);
 			return;
@@ -758,9 +763,6 @@ public class InitialisationVisitor extends Visitor {
 					sprites.addShape(t);
 					break;
 			}
-
-			System.out.println("!!!!!!!!!!!!! CIRCLES : !!!!!!!!!!!!!!!!!!!" + circles);
-
 			// Get the variablename of the current circle
 			String variable = variables.get(i);
 			// Add the variable and the circle to the variableToCircleMap to signalize the togetherness
