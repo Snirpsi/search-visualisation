@@ -84,6 +84,7 @@ public abstract class CspSearchAlgorithm extends SearchAlgorithm {
 		}
 
 		// Start visualization
+		SearchNodeMetadataObject.setExpandingSearchnode(null);
 		GameObjectRegistry.registerForStateChange(searchNode);
 		// End visualization
 		return searchNode.getChildren();
