@@ -280,8 +280,6 @@ public class ChangeVisitor extends Visitor {
 
 			// Text für Variable and Nodes
 			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
-			System.out.println("!!!! MESSAGE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :                  " + tm);
-			// TODO: Text Coloring -> Option is TextFlow as the text contents must be combined with each other and customised individually
 			tm.get(var).forEach(t -> {
 				t.setText("V: " + var +
 						"\nD: " + stateVarDomain +
@@ -291,7 +289,6 @@ public class ChangeVisitor extends Visitor {
 			setColorToCircle(c, stateVarDomain, neighborVar);
 		}
 	}
-
 
 	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
 		if (stateVarDomain.size() == 1) {

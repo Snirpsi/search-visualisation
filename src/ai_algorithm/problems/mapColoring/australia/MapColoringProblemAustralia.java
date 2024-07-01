@@ -22,9 +22,12 @@ public class MapColoringProblemAustralia extends AbstractMapColoringProblem {
         );
         domain = new HashMap<>();
         for (String variable : variables) {
-            domain.put(variable, Arrays.asList("Red", "Green", "Blue"));
+            domain.put(variable, Arrays.asList("R", "G", "B"));
         }
         fillQueue();
+
+        variableToCircleMap = new HashMap<>();
+        variableTextMap = new HashMap<>();
     }
 
 }
