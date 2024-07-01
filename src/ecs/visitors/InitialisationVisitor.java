@@ -8,8 +8,6 @@ import ai_algorithm.Path;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringProblem;
-import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
 import ai_algorithm.problems.mapColoring.Pair;
 import ai_algorithm.problems.mapColoring.australia.MapColoringProblemAustralia;

@@ -8,8 +8,8 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringState;
 import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringStateGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import application.Globals;
@@ -55,7 +55,7 @@ public class ChangeVisitor extends Visitor {
 			return;
 		}
 
-		if (gameObject instanceof MapColoringState s) {
+		if (gameObject instanceof MapColoringStateGeneral s) {
 			this.visit(s);
 			return;
 		}
@@ -243,11 +243,11 @@ public class ChangeVisitor extends Visitor {
 
 	//###################################### MAP COLORING General ######################################//
 	/**
-	 * Visualizes the {@link MapColoringState} and applies colors
+	 * Visualizes the {@link MapColoringStateGeneral} and applies colors
 	 *
  	 * @param state
 	 */
-	public void visit(MapColoringState state) {
+	public void visit(MapColoringStateGeneral state) {
 		for(String var : state.getProblem().getVariables()) {
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
 			List<String> stateVarDomain = state.getDomain(var);
