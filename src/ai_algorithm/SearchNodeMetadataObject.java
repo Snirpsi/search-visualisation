@@ -76,7 +76,9 @@ public class SearchNodeMetadataObject {
 	public static void setExpandingSearchnode(SearchNode searchNode) {
 		prevExpanding = expanding;
 		expanding = searchNode;
-		GameObjectRegistry.registerForStateChange(expanding);
+		if( expanding != null ) {
+			GameObjectRegistry.registerForStateChange(expanding);
+		}
 		if (prevExpanding != null) {
 			GameObjectRegistry.registerForStateChange(prevExpanding);
 		}

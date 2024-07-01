@@ -1,6 +1,8 @@
 package application.gui;
 
 import ai_algorithm.SearchNodeMetadataObject;
+import ai_algorithm.problems.mapColoring.AbstractMapColoringProblem;
+import ai_algorithm.search.DepthFirstSearch;
 import application.Globals;
 import application.SearchThreadRegistryAndFactory;
 import application.debugger.DebuggerUI;
@@ -75,12 +77,21 @@ public class GuiLayout {
 		 * Otherwise the normal search algorithms are shown
 		 */
 		problemSelect.setOnAction(e -> {
-			if (problemSelect.getValue().equals("ai_algorithm.problems.mapColoring.MapColoringProblem")) {
-				algoSelect.getItems().clear();
-				algoSelect.getItems().add("ai_algorithm.search.DepthFirstSearch");
+			String probName = problemSelect.getValue();
+			// Get class object of selected problem
+			Class<?> probClass = null;
+			try {
+                probClass = Class.forName(probName);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+			algoSelect.getItems().clear();
+
+			// If selected problem is subclass of (or identical to) AbstractMapColoringProblem
+            if (AbstractMapColoringProblem.class.isAssignableFrom(probClass)) {
+				algoSelect.getItems().add(DepthFirstSearch.class.getName());
 				algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getCspSearchAlgoritmNames());
 			} else {
-				algoSelect.getItems().clear();
 				algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getSearchAlgoritmNames());
 			}
 		});

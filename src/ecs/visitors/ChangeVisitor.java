@@ -8,7 +8,8 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
-import ai_algorithm.problems.mapColoring.MapColoringState;
+import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringStateGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
 import application.Globals;
@@ -26,8 +27,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import settings.Settings;
 import tools.Vector2DInt;
-
-import javax.net.ssl.SSLContext;
 
 /**
  * This class handles the change of every possible {@link GameObject}. The
@@ -56,8 +55,13 @@ public class ChangeVisitor extends Visitor {
 			return;
 		}
 
-		if (gameObject instanceof MapColoringState s) {
+		if (gameObject instanceof MapColoringStateGeneral s) {
 			this.visit(s);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringStateAustralia a) {
+			this.visit(a);
 			return;
 		}
 
@@ -236,12 +240,14 @@ public class ChangeVisitor extends Visitor {
 //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+	//###################################### MAP COLORING General ######################################//
 	/**
-	 * Visualizes the {@link MapColoringState} and applies colors
+	 * Visualizes the {@link MapColoringStateGeneral} and applies colors
 	 *
  	 * @param state
 	 */
-	public void visit(MapColoringState state) {
+	public void visit(MapColoringStateGeneral state) {
 		for(String var : state.getProblem().getVariables()) {
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
 			List<String> stateVarDomain = state.getDomain(var);
@@ -256,52 +262,73 @@ public class ChangeVisitor extends Visitor {
 						"\n");
 			});
 
-			setColorToCircle(c, stateVarDomain, neighborVar);
+			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
 		}
 	}
 
-	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar) {
+	//###################################### MAP COLORING Australia ######################################//
+	/**
+	 * Visualizes the {@link MapColoringStateAustralia} and applies colors
+	 *
+	 * @param state
+	 */
+	public void visit(MapColoringStateAustralia state) {
+		for(String var : state.getProblem().getVariables()) {
+			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+			List<String> stateVarDomain = state.getDomain(var);
+			List<String> neighborVar = state.getProblem().getNeighbors(var);
+
+			// Text für Variable and Nodes
+			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
+			tm.get(var).forEach(t -> {
+				t.setText("V: " + var +
+						"\nD: " + stateVarDomain +
+						"\n");
+			});
+
+			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
+		}
+	}
+
+	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar, boolean assigned) {
+		if( assigned ) {
+			c.setStrokeWidth(5);
+		} else {
+			c.setStrokeWidth(2);
+		}
+
 		if (stateVarDomain.size() == 1) {
 			switch (stateVarDomain.get(0)) {
 				case "R" -> {
 					c.setFill(Color.RED);
-					c.setStrokeWidth(5);
 				}
 				case "G" -> {
 					c.setFill(Color.GREEN);
-					c.setStrokeWidth(5);
 				}
 				case "B" -> {
 					c.setFill(Color.BLUE);
-					c.setStrokeWidth(5);
 				}
 			}
 		} else if (stateVarDomain.size() == 2) {
 			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
 				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 					c.setFill(Color.YELLOW);
-					c.setStrokeWidth(2);
 				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
 					c.setFill(Color.PURPLE);
-					c.setStrokeWidth(2);
 				}
 			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
 					c.setFill(Color.CYAN);
-					c.setStrokeWidth(2);
 				}
 			}
 		} else if(stateVarDomain.size() == 3) {
 			if (!neighborVar.isEmpty()) {
 				c.setFill(Color.WHITE);
-				c.setStrokeWidth(2);
-			} else if (stateVarDomain.size() == 3) {
+			} else {
 				c.setFill(Color.WHITE);
-				c.setStrokeWidth(2);
 			}
 		} else if (stateVarDomain.size() == 0) {
 			c.setFill(Color.WHITE);
-			c.setStrokeWidth(2);
 		}
 
 	}

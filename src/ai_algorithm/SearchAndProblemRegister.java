@@ -1,6 +1,8 @@
 package ai_algorithm;
 
 import ai_algorithm.problems.mapColoring.MapColoringProblem;
+import ai_algorithm.problems.mapColoring.australia.MapColoringProblemAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringProblemGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
 import ai_algorithm.search.BidirectionalBreadthFirstSearch;
@@ -27,7 +29,8 @@ public class SearchAndProblemRegister {
 	public static String[] problems = { //
 			GridMazeProblem.class.getName(), //
 			SlidingTileProblem.class.getName(), //
-			MapColoringProblem.class.getName(), //
+			MapColoringProblemGeneral.class.getName(), //
+			MapColoringProblemAustralia.class.getName(), //
 			"ai_algorithm.problems.cityState.GermanyRouteProblem",
 			// GermanyRouteProblem.class.getName()//
 	};
