@@ -1,9 +1,17 @@
 package ai_algorithm.problems;
 
+import ai_algorithm.problems.mapColoring.AbstractMapColoringProblem;
+
 import java.util.List;
 import java.util.Map;
 
 public abstract class CspState extends State {
+
+    protected AbstractMapColoringProblem problem; // reference to the problem
+
+    protected Map<String, List<String>> domain; // reference to the domain
+
+    protected Map<String, String> assignments; // reference to the assignments
 
     public abstract Map<String, String> getAssignments();
 

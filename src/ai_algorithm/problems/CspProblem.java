@@ -7,6 +7,14 @@ import java.util.Map;
 
 public abstract class CspProblem extends Problem {
 
+    protected List<String> variables; // Variables of the problem
+
+    protected Map<String, List<String>> domain; // Domain of the problem
+
+    protected List<Pair<String, String>> contraints; // List of all constraints / arcs
+
+    protected Map<String, List<String>> neighbors; // Neighbors for each variable
+
     public abstract List<String> getVariables();
 
     public abstract Map<String, List<String>> getDomain();
