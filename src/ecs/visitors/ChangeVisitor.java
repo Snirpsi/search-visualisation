@@ -270,12 +270,16 @@ public class ChangeVisitor extends Visitor {
 	 * @param state of the specific map coloring problem
 	 */
 	public void mapColoringProblemUpdateFunction(AbstractMapColoringState state) {
+		// Iterating over all variables of the problem
 		for(String var : state.getProblem().getVariables()) {
+			// Get the circle of the variable var from the problem
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+			// Get the domain of the variable from the state
 			List<String> stateVarDomain = state.getDomain(var);
+			// Get the neighbors of the variable var from the problem
 			List<String> neighborVar = state.getProblem().getNeighbors(var);
 
-			// Text für Variable and Nodes
+			// Text for Variable and Nodes
 			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
 			tm.get(var).forEach(t -> {
 				t.setText("V: " + var +
@@ -283,6 +287,7 @@ public class ChangeVisitor extends Visitor {
 						"\n");
 			});
 
+			// Set the color of the circle according to the stateVarDomain
 			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
 		}
 	}
@@ -297,12 +302,14 @@ public class ChangeVisitor extends Visitor {
 	 * @param assigned
 	 */
 	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar, boolean assigned) {
+		// Change the circle thickness if the variable has already been assigned
 		if( assigned ) {
 			c.setStrokeWidth(5);
 		} else {
 			c.setStrokeWidth(2);
 		}
 
+		// Set the color of the circle according to the stateVarDomain and the neighbors
 		if (stateVarDomain.size() == 1) {
 			switch (stateVarDomain.get(0)) {
 				case "R" -> {
@@ -316,6 +323,8 @@ public class ChangeVisitor extends Visitor {
 				}
 			}
 		} else if (stateVarDomain.size() == 2) {
+			// If the variable has two possible values (R, G), (R, B), (G, B) in the domain (R, G, B)
+			// then the color of the circle is mixed accordingly
 			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
 				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
 					c.setFill(Color.YELLOW);
@@ -328,12 +337,14 @@ public class ChangeVisitor extends Visitor {
 				}
 			}
 		} else if(stateVarDomain.size() == 3) {
+			// If the variable has no neighbors, the circle is white
 			if (!neighborVar.isEmpty()) {
 				c.setFill(Color.WHITE);
 			} else {
 				c.setFill(Color.WHITE);
 			}
-		} else if (stateVarDomain.size() == 0) {
+		} else if (stateVarDomain.isEmpty()) {
+			// If the variable has no domainvalue the circle is white
 			c.setFill(Color.WHITE);
 		}
 
