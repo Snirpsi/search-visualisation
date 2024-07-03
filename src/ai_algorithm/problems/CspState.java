@@ -3,7 +3,16 @@ package ai_algorithm.problems;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract class template for a CSP State.
+ *
+ * @author Alexander
+ */
 public abstract class CspState extends State {
+
+    protected Map<String, List<String>> domain; // reference to the domain
+
+    protected Map<String, String> assignments; // reference to the assignments
 
     public abstract Map<String, String> getAssignments();
 

@@ -4,6 +4,18 @@ import ai_algorithm.problems.CspState;
 
 import java.util.*;
 
+/**
+ * The AbstractMapColoringState is a abstract state and implements methods and function from the CspState class.
+ * The methods are the same for each MapColoringProblem from the implementation at the current time and differ only
+ * in the specification of the variables, domains and neighbors.
+ *
+ * The AbstractMapColoringState class represents a abstract state in the MapColoringProblem.
+ * The class provides methods to access the problem, the domains and the assignments.
+ * The class also provides methods to compare states and to generate hash codes.
+ * The class is used in the AbstractMapColoringProblem class.
+ *
+ * @author Alexander
+ */
 public abstract class AbstractMapColoringState extends CspState {
 
     /**
@@ -11,16 +23,8 @@ public abstract class AbstractMapColoringState extends CspState {
      */
     final private AbstractMapColoringProblem problem;
 
-
-    final Map<String, List<String>> domain;
-
     /**
-     *  reference to the assignments
-     */
-    final Map<String, String> assignments;
-
-    /**
-     * initializes state with problem and assignments
+     * initializes state with problem, domain and assignments
      *
      * @param problem
      * @param domain
@@ -44,6 +48,12 @@ public abstract class AbstractMapColoringState extends CspState {
         return assignments;
     }
 
+    /**
+     * get the domain of a variable
+     *
+     * @param variable
+     * @return domain of the variable
+     */
     @Override
     public List<String> getDomain(String variable) {
         return new ArrayList<>(domain.get(variable));

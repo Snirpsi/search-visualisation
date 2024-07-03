@@ -5,7 +5,21 @@ import ai_algorithm.problems.mapColoring.Pair;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract class template for a CSP Problem.
+ * The class provides abstract methods to get the variables, the domain and the constraints of the problem.
+ *
+ * @author Alexander
+ */
 public abstract class CspProblem extends Problem {
+
+    protected List<String> variables; // Variables of the problem
+
+    protected Map<String, List<String>> domain; // Domain of the problem
+
+    protected List<Pair<String, String>> contraints; // List of all constraints / arcs
+
+    protected Map<String, List<String>> neighbors; // Neighbors for each variable
 
     public abstract List<String> getVariables();
 
