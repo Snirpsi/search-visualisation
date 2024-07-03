@@ -1,6 +1,5 @@
 package ai_algorithm;
 
-import ai_algorithm.problems.mapColoring.MapColoringProblem;
 import ai_algorithm.problems.mapColoring.australia.MapColoringProblemAustralia;
 import ai_algorithm.problems.mapColoring.general.MapColoringProblemGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;

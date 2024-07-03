@@ -8,6 +8,7 @@ import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.AbstractMapColoringState;
 import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
 import ai_algorithm.problems.mapColoring.general.MapColoringStateGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
@@ -248,31 +249,27 @@ public class ChangeVisitor extends Visitor {
  	 * @param state
 	 */
 	public void visit(MapColoringStateGeneral state) {
-		for(String var : state.getProblem().getVariables()) {
-			Circle c = state.getProblem().getVariableToCircleMap().get(var);
-			List<String> stateVarDomain = state.getDomain(var);
-			List<String> neighborVar = state.getProblem().getNeighbors(var);
-
-			// Text für Variable and Nodes
-			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
-			// TODO: Text Coloring -> Option is TextFlow as the text contents must be combined with each other and customised individually
-			tm.get(var).forEach(t -> {
-				t.setText("V: " + var +
-						"\nD: " + stateVarDomain +
-						"\n");
-			});
-
-			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
-		}
+		mapColoringProblemUpdateFunction(state);
 	}
 
 	//###################################### MAP COLORING Australia ######################################//
 	/**
-	 * Visualizes the {@link MapColoringStateAustralia} and applies colors
+	 * Visualizes the {@link AbstractMapColoringState} and applies colors to the variable circles
 	 *
 	 * @param state
 	 */
 	public void visit(MapColoringStateAustralia state) {
+		mapColoringProblemUpdateFunction(state);
+	}
+
+	//############################### FUNCTIONS FOR MAP COLORING Problems ###############################//
+
+	/**
+	 * Visualizes the {@link AbstractMapColoringState} and applies colors
+	 *
+	 * @param state of the specific map coloring problem
+	 */
+	public void mapColoringProblemUpdateFunction(AbstractMapColoringState state) {
 		for(String var : state.getProblem().getVariables()) {
 			Circle c = state.getProblem().getVariableToCircleMap().get(var);
 			List<String> stateVarDomain = state.getDomain(var);
@@ -290,6 +287,15 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
+	/**
+	 * Sets the color of the circle according to the stateVarDomain
+	 * Only if a variable has already been added to the assignments list will the circle be marked thicker
+	 *
+	 * @param c
+	 * @param stateVarDomain
+	 * @param neighborVar
+	 * @param assigned
+	 */
 	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar, boolean assigned) {
 		if( assigned ) {
 			c.setStrokeWidth(5);
