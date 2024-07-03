@@ -451,7 +451,7 @@ public class InitialisationVisitor extends Visitor {
 //###################################### MAP COLORING General ######################################//
 
 	/**
-	 * Initializes MapColoringProblem GameObjects
+	 * Initializes MapColoringProblemGeneral GameObjects
 	 *
 	 * @param problem
 	 * @autor Alexander
@@ -546,7 +546,7 @@ public class InitialisationVisitor extends Visitor {
 //###################################### MAP COLORING Australia ######################################//
 
 	/**
-	 * Initializes MapColoringProblem GameObjects
+	 * Initializes MapColoringProblemAustralia GameObjects
 	 *
 	 * @param problem
 	 * @autor Alexander
