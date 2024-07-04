@@ -14,11 +14,10 @@ import java.util.*;
  *
  * @author Alexander
  */
-
 public class MapColoringStateAustralia extends AbstractMapColoringState {
 
     /**
-     * initializes state with problem and assignments
+     * initializes state with problem, domain and assignments
      *
      * @param problem
      * @param domain

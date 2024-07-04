@@ -7,6 +7,26 @@ import javafx.scene.shape.Circle;
 
 import java.util.*;
 
+/**
+ * The AbstractMapColoringProblem is a abstract problem and implements methods and function from the CspProblem class.
+ * The methods are the same for each MapColoring problem from the implementation at the current time and differ only
+ * in the specification of the variables, domains and neighbors.
+ *
+ * The AbstractMapColoring problem is a problem where a map must be colored in such a way
+ * that adjacent regions have different colors. The map consists of various regions
+ * (variables) that can be assigned specific colors (domains). There are constraints
+ * that dictate that neighboring regions cannot share the same color.
+ *
+ * The agents must assign colors to the regions in a way that all constraints are satisfied.
+ * There are various classes that make the problem available.
+ *
+ * These are: {@link AbstractMapColoringProblem} and {@link AbstractMapColoringState}.
+ * In these classes, only the functions relevant to artificial intelligence have been implemented.
+ * Each of these classes also has its own visitor functions, which equip them with components
+ * for visualization.
+ *
+ * @author Alexander
+ */
 public abstract class AbstractMapColoringProblem extends CspProblem {
 
     protected Map<String, Circle> variableToCircleMap = new HashMap<>(); // Assignment of all variables to their respective circles
@@ -60,9 +80,9 @@ public abstract class AbstractMapColoringProblem extends CspProblem {
     }
 
     /**
-     * Returns the arcs.
+     * Returns the constraints.
      *
-     * @return arcs
+     * @return constraints
      */
     @Override
     public List<Pair<String, String>> getContraints() {
@@ -204,7 +224,7 @@ public abstract class AbstractMapColoringProblem extends CspProblem {
 
 //        if (!stateM.getDomain(variable).contains(value)) {
         // Check if value is in original domain
-        if( this.getDomain().get(variable).contains(value) == false) {
+        if(!this.getDomain().get(variable).contains(value)) {
             return null;
         }
         newAssignments.put(variable, value);

@@ -91,16 +91,6 @@ public class InitialisationVisitor extends Visitor {
 			return;
 		}
 
-		if (gameObject instanceof MapColoringStateGeneral mapColoringState) {
-			this.visit(mapColoringState);
-			return;
-		}
-
-		if (gameObject instanceof MapColoringStateAustralia mapColoringState1) {
-			this.visit(mapColoringState1);
-			return;
-		}
-
 		if (gameObject instanceof Frontier frontier) {
 			this.visit(frontier);
 			return;
@@ -477,6 +467,8 @@ public class InitialisationVisitor extends Visitor {
 
 		// Get the variables of the MapColoringProblem
 		List<String> variables = problem.getVariables();
+		// Create a list of Circles
+		List<Circle> circles = new ArrayList<>();
 		// Create a map of variables to Circles
 		Map<String, Circle> variableToCircleMap = problem.getVariableToCircleMap();
 		// Create a map of variables to Texts
@@ -508,6 +500,7 @@ public class InitialisationVisitor extends Visitor {
 			// Create the Circles and Texts for the variables
 			c = setCircle(30, circleX, circleY);
 			sprites.addShape(c);
+			circles.add(c);
 
 			t = setText(circleX + 35, circleY - 15);
 			sprites.addShape(t);
@@ -549,45 +542,6 @@ public class InitialisationVisitor extends Visitor {
 		problem.getComponent(Graphics.class).show();
 	}
 
-	public Circle setCircle(double r, double x, double y) {
-		Circle c = new Circle();
-		c.setRadius(r);
-		c.setCenterX(x);
-		c.setCenterY(y);
-		c.setFill(Color.WHITE);
-		c.setStrokeWidth(2);
-		c.setStroke(Color.BLACK);
-		return c;
-	}
-
-	public javafx.scene.text.Text setText(double x, double y) {
-		var t = new javafx.scene.text.Text();
-		t.setX(x);
-		t.setY(y);
-		t.setFill(Color.BLACK);
-		t.setFont(Font.font(15));
-		return t;
-	}
-
-	/**
-	 * Initializes MapColoringStateGeneral GameObjects
-	 *
-	 * @param mapColoringState
-	 * @autor Alexander
-	 */
-	public void visit(MapColoringStateGeneral mapColoringState) {
-		super.visit(mapColoringState);
-		Globals.stateRepresentationGraphicsContext.getChildren().clear();
-
-		Graphics problem = mapColoringState.getProblem().getComponent(Graphics.class);
-
-		problem.show();
-
-		Component position = new Position(Vector2D.ZERO);
-		mapColoringState.addComponent(position);
-	}
-
-
 //###################################### MAP COLORING Australia ######################################//
 
 	/**
@@ -607,6 +561,8 @@ public class InitialisationVisitor extends Visitor {
 
 		// Get the variables of the MapColoringProblem
 		List<String> variables = problem.getVariables();
+		// Create a list of Circles
+		List<Circle> circles = new ArrayList<>();
 		// Create a map of variables to Circles
 		Map<String, Circle> variableToCircleMap = problem.getVariableToCircleMap();
 		// Create a map of variables to Texts
@@ -626,6 +582,7 @@ public class InitialisationVisitor extends Visitor {
 					double x0 = -250, y0 = 0;
 					c = setCircle(30, x0, y0);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x0 - 20, y0 + 50);
 					sprites.addShape(t);
@@ -634,6 +591,7 @@ public class InitialisationVisitor extends Visitor {
 					double x1 = -50, y1 = -125;
 					c = setCircle(30, x1, y1);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x1 - 20, y1 - 60);
 					sprites.addShape(t);
@@ -642,6 +600,7 @@ public class InitialisationVisitor extends Visitor {
 					double x2 = 0, y2 = 75;
 					c = setCircle(30, x2, y2);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x2 - 25, y2 + 50);
 					sprites.addShape(t);
@@ -650,6 +609,7 @@ public class InitialisationVisitor extends Visitor {
 					double x3 = 150, y3 = -95;
 					c = setCircle(30, x3, y3);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x3 + 40, y3);
 					sprites.addShape(t);
@@ -658,6 +618,7 @@ public class InitialisationVisitor extends Visitor {
 					double x4 = 225, y4 = 75;
 					c = setCircle(30, x4, y4);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x4 + 40, y4);
 					sprites.addShape(t);
@@ -666,6 +627,7 @@ public class InitialisationVisitor extends Visitor {
 					double x5 = 150, y5 = 175;
 					c = setCircle(30, x5, y5);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x5 + 40, y5);
 					sprites.addShape(t);
@@ -674,6 +636,7 @@ public class InitialisationVisitor extends Visitor {
 					double x6 = 150, y6 = 300;
 					c = setCircle(30, x6, y6);
 					sprites.addShape(c);
+					circles.add(c);
 
 					t = setText(x6 + 40, y6);
 					sprites.addShape(t);
@@ -718,24 +681,27 @@ public class InitialisationVisitor extends Visitor {
 		problem.getComponent(Graphics.class).show();
 	}
 
-	/**
-	 * Initializes MapColoringStateAustralia GameObjects
-	 *
-	 * @param mapColoringStateAustralia
-	 * @autor Alexander
-	 */
-	public void visit(MapColoringStateAustralia mapColoringStateAustralia) {
-		super.visit(mapColoringStateAustralia);
-		Globals.stateRepresentationGraphicsContext.getChildren().clear();
+//######################### SetCircle and SetText for MAP COLORING Problems ##########################//
 
-		Graphics problem = mapColoringStateAustralia.getProblem().getComponent(Graphics.class);
-
-		problem.show();
-
-		Component position = new Position(Vector2D.ZERO);
-		mapColoringStateAustralia.addComponent(position);
+	public Circle setCircle(double r, double x, double y) {
+		Circle c = new Circle();
+		c.setRadius(r);
+		c.setCenterX(x);
+		c.setCenterY(y);
+		c.setFill(Color.WHITE);
+		c.setStrokeWidth(2);
+		c.setStroke(Color.BLACK);
+		return c;
 	}
 
+	public javafx.scene.text.Text setText(double x, double y) {
+		var t = new javafx.scene.text.Text();
+		t.setX(x);
+		t.setY(y);
+		t.setFill(Color.BLACK);
+		t.setFont(Font.font(15));
+		return t;
+	}
 }
 
 /*

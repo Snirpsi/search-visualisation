@@ -6,10 +6,19 @@ import ai_algorithm.problems.mapColoring.AbstractMapColoringState;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The MapColoringState class represents a state in the map coloring problem.
+ * The state is represented by a map of variables to colors.
+ * The class provides methods to access the problem and the assignments.
+ * The class also provides methods to compare states and to generate hash codes.
+ * The class is used in the MapColoringProblem class.
+ *
+ * @author Alexander
+ */
 public class MapColoringStateGeneral extends AbstractMapColoringState {
 
     /**
-     * initializes state with problem and assignments
+     * initializes state with problem, domain and assignments
      *
      * @param problem
      * @param domain
