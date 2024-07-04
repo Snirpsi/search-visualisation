@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The MapColoringProblemGeneral class represents a map coloring problem for a Gernal Map.
+ *
+ * @author Alexander
+ */
 public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
 
     public MapColoringProblemGeneral(){

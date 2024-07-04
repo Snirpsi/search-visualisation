@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
  * The MapColoringProblemAustralia class represents a map coloring problem for the map of Australia.
+ *
+ * @author Alexander
  */
 public class MapColoringProblemAustralia extends AbstractMapColoringProblem {
 
