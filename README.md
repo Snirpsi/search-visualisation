@@ -412,10 +412,10 @@ public static String[] cspSearchAlgorithm = {
 ## Results of MapColoringProblems
 
 ### MapColoringProblem Australia
-![MapColoringProblem Australia]()
+![MapColoringProblem Australia](https://github.com/TheBlackDragon4/search-visualization/blob/fca6005f8c2d7ba11b5c8adbcb957f105321b90a/images/MapColoringProblemAustralia.png)
 
 ### MapColoringProblem General
-![MapColoringProblem General]()
+![MapColoringProblem General](https://github.com/TheBlackDragon4/search-visualization/blob/fca6005f8c2d7ba11b5c8adbcb957f105321b90a/images/MapColoringProblemGeneral.png)
 
 
 Start the framework and select your new problem and algorithm.
