@@ -14,8 +14,13 @@ import java.util.Map;
  */
 public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
 
+    /**
+     * Initializes the map coloring problem with the variables, constraints, domain, assignements and arcs.
+     * Initializes the fillQueue method.
+     * Initializes the start variable.
+     */
     public MapColoringProblemGeneral(){
-        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
+        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
         neighbors = Map.of(
                 "A", List.of("B", "C"), // Constraint from WA
                 "B", List.of("A", "C", "D"), // Constraint from NT
@@ -24,7 +29,9 @@ public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
                 "E", List.of("C", "D", "F"), // Constraint from NSW
                 "F", List.of("E", "C"), // Constraint from V
                 "G", List.of(), // Constraint from T
-                "H", List.of("B", "D") // Constraint from H
+                "H", List.of("B", "D"), // Constraint from H
+                "I", List.of("D", "F"), // Constraint from I
+                "J", List.of() // Constraint from J
         );
 
         domain = new HashMap<>();

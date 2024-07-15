@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class MapColoringProblemAustralia extends AbstractMapColoringProblem {
 
+    /**
+     * Initializes the map coloring problem with the variables, constraints, domain, assignements and arcs.
+     * Initializes the fillQueue method.
+     * Initializes the start variable.
+     */
     public MapColoringProblemAustralia(){
         variables = Arrays.asList("WA", "NT", "SA", "Q", "NSW", "V", "T");
         neighbors = Map.of(

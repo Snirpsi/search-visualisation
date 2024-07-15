@@ -11,6 +11,11 @@ import ecs.GameObjectRegistry;
 
 import java.util.*;
 
+/**
+ * Backtracking Suche nach Russell and Norvig
+ *
+ * @author Alexander
+ */
 public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
 
     public BacktrackingArcConsistancy3Search() {
@@ -42,6 +47,18 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return null;
     }
 
+    /**
+     * Expand the search node with actions for the given variable
+     * Makes the inference check using the Arc Consistancy 3 algorithm by calling the function arcConsistency3
+     * Selection of a variable that has not yet been assigned in the assignments list by calling up the function selectUnassignedVariable
+     * Call the function orderDomainValues to get a list of domains of this variable
+     * For each value in the domain, a new search node is created and added to the frontier
+     * Recursive call of backtrack with the new search node
+     *
+     * @param searchNode
+     * @param frontier
+     * @return list of search nodes
+     */
     private Path backtrack(SearchNode searchNode, Frontier frontier) {
         frontier.remove(searchNode);
         if (this.problem.isGoalState(searchNode.getState())) {
@@ -75,6 +92,12 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return null;
     }
 
+    /**
+     * Selects the first unassigned variable from the list of variables
+     *
+     * @param assignments
+     * @return result of variable name as string
+     */
     private String selectUnassignedVariable(Map<String, String> assignments) {
         String result = "";
         Boolean inAssignments = false;
@@ -89,6 +112,16 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return result;
     }
 
+    /**
+     * Orders the domain values of the variable
+     * If allowOnlyValidValues is true, only the valid values are returned
+     * Otherwise, all values are returned
+     *
+     * @param var
+     * @param state
+     * @param allowOnlyValidValues
+     * @return list of domain values
+     */
     private List<String> orderDomainValues(String var, CspState state, boolean allowOnlyValidValues) {
         List<String> resultDomain = new ArrayList<>();
 
@@ -101,6 +134,14 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return resultDomain;
     }
 
+    /**
+     * Arc Consistency 3 algorithm
+     * Calls the revise function to decrease the domain of variable Xi
+     *
+     * @param contraints
+     * @param domains
+     * @return true if the problem is arc consistent
+     */
     public boolean arcConsistency3(List<Pair<String, String>> contraints,
                                    Map<String, List<String>> domains) {
         List<Pair<String, String>> constraintCopy = new ArrayList<>(contraints);
@@ -120,6 +161,13 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return true;
     }
 
+    /**
+     * Revise the domain of the variable Xi
+     *
+     * @param arc
+     * @param domain
+     * @return true if the domain was revised
+     */
     private boolean revise(Pair<String, String> arc,
                            Map<String, List<String>> domain) {
         boolean revise = false;
@@ -151,6 +199,13 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
         return revise;
     }
 
+    /**
+     * Check if the assignment is satisfied
+     *
+     * @param assignment
+     * @param arc
+     * @return true if the assignment is satisfied
+     */
     public boolean isSatisfiedWith(Map<String, String> assignment, Pair<String, String> arc) {
         String val1 = assignment.get(arc.getFirst()); // get the value of the first variable
         String val2 = assignment.get(arc.getSecond());
