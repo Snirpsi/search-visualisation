@@ -120,7 +120,7 @@ public class BacktrackingArcConsistancy3Search extends CspSearchAlgorithm {
      * @param var
      * @param state
      * @param allowOnlyValidValues
-     * @return list of domain values
+     * @return the ordered domain values
      */
     private List<String> orderDomainValues(String var, CspState state, boolean allowOnlyValidValues) {
         List<String> resultDomain = new ArrayList<>();

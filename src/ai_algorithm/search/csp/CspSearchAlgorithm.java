@@ -57,7 +57,12 @@ public abstract class CspSearchAlgorithm extends SearchAlgorithm {
 
 	/**
 	 * Expand the search node with actions for the given variable
-	 * @return list of search nodes
+	 *
+	 * @param searchNode the search node to expand
+	 * @param frontier the frontier to add the new nodes to
+	 * @param variable the variable to assign values to
+	 * @param values the possible values to assign to the variable
+	 * @return a list of new search nodes
 	 */
 	public List<SearchNode> expand(SearchNode searchNode, Frontier frontier, String variable, List<String> values) {
 		// Start visualization
