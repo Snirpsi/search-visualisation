@@ -322,20 +322,20 @@ public class ChangeVisitor extends Visitor {
 					c.setFill(Color.BLUE);
 				}
 			}
-		} else if (stateVarDomain.size() == 2) {
-			// If the variable has two possible values (R, G), (R, B), (G, B) in the domain (R, G, B)
-			// then the color of the circle is mixed accordingly
-			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
-				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
-					c.setFill(Color.YELLOW);
-				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
-					c.setFill(Color.PURPLE);
-				}
-			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
-				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
-					c.setFill(Color.CYAN);
-				}
-			}
+//		} else if (stateVarDomain.size() == 2) {
+//			// If the variable has two possible values (R, G), (R, B), (G, B) in the domain (R, G, B)
+//			// then the color of the circle is mixed accordingly
+//			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
+//				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+//					c.setFill(Color.YELLOW);
+//				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
+//					c.setFill(Color.PURPLE);
+//				}
+//			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+//				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
+//					c.setFill(Color.CYAN);
+//				}
+//			}
 		} else if(stateVarDomain.size() == 3) {
 			// If the variable has no neighbors, the circle is white
 			if (!neighborVar.isEmpty()) {

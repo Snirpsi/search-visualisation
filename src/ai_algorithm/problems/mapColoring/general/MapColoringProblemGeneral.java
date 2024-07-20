@@ -20,18 +20,16 @@ public class MapColoringProblemGeneral extends AbstractMapColoringProblem{
      * Initializes the start variable.
      */
     public MapColoringProblemGeneral(){
-        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
+        variables = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
         neighbors = Map.of(
                 "A", List.of("B", "C"), // Constraint from WA
-                "B", List.of("A", "C", "D"), // Constraint from NT
-                "C", List.of("A", "B", "D", "E", "F"), // Constraint from SA
-                "D", List.of("C", "B", "E"), // Constraint from Q
-                "E", List.of("C", "D", "F"), // Constraint from NSW
+                "B", List.of("A", "C"), // Constraint from NT
+                "C", List.of("A", "B", "E", "F"), // Constraint from SA
+                "D", List.of(), // Constraint from Q
+                "E", List.of("C", "F"), // Constraint from NSW
                 "F", List.of("E", "C"), // Constraint from V
                 "G", List.of(), // Constraint from T
-                "H", List.of("B", "D"), // Constraint from H
-                "I", List.of("D", "F"), // Constraint from I
-                "J", List.of() // Constraint from J
+                "H", List.of("B") // Constraint from NT
         );
 
         domain = new HashMap<>();
