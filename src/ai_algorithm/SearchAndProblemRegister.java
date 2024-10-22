@@ -1,5 +1,7 @@
 package ai_algorithm;
 
+import ai_algorithm.problems.mapColoring.australia.MapColoringProblemAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringProblemGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.slidingTilePuzzle.SlidingTileProblem;
 import ai_algorithm.search.BidirectionalBreadthFirstSearch;
@@ -8,10 +10,14 @@ import ai_algorithm.search.DepthFirstSearch;
 import ai_algorithm.search.DepthFirstSearchExplored;
 import ai_algorithm.search.ManualSearch;
 import ai_algorithm.search.RecursiveDepthSearch;
+import ai_algorithm.search.csp.BacktrackingArcConsistancy3Search;
+//import ai_algorithm.search.*;
+
 /**
  * Class to register new problems and Searches
- * @author Severin
  *
+ * @author Severin
+ * @author Alexander
  */
 public class SearchAndProblemRegister {
 
@@ -22,6 +28,8 @@ public class SearchAndProblemRegister {
 	public static String[] problems = { //
 			GridMazeProblem.class.getName(), //
 			SlidingTileProblem.class.getName(), //
+			MapColoringProblemGeneral.class.getName(), //
+			MapColoringProblemAustralia.class.getName(), //
 			"ai_algorithm.problems.cityState.GermanyRouteProblem",
 			// GermanyRouteProblem.class.getName()//
 	};
@@ -36,13 +44,22 @@ public class SearchAndProblemRegister {
 			RecursiveDepthSearch.class.getName(), //
 			BreadthFirstSearch.class.getName(), //
 			BidirectionalBreadthFirstSearch.class.getName(), //
-			ManualSearch.class.getName()//
+			ManualSearch.class.getName(),//
+	};
+
+	/**
+	 * Array in which all CSP Search-Algorithms are to be registered by a string with
+	 * the class name
+	 */
+	public static String[] cspSearchAlgorithm = {
+			BacktrackingArcConsistancy3Search.class.getName()//
 	};
 
 }
 /*
  * Copyright (c) 2022 Severin Dippold
- * 
+ * Copyright (c) 2024 Alexander Ultsch
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights

@@ -8,17 +8,25 @@ import javafx.scene.shape.Shape;
 /**
  * determines the collor of a game object
  * @author Severin
+ * @author Alexander (Comments adjusted)
  *
  */
 public class Coloring extends Component {
 
 	public Color color;
 
+	/**
+	 * constructor
+	 */
 	public Coloring() {
 		super();
 		this.color = Color.BLACK;
 	}
 
+	/**
+	 * set the color of the object
+	 * @param color
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 

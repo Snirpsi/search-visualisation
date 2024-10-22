@@ -10,6 +10,7 @@ import settings.Settings;
  * executes function if there is a javafx input connected
  * 
  * @author Severin
+ * @author Alexander (Comments adjusted)
  *
  */
 public class InputHandler extends Component {
@@ -29,6 +30,10 @@ public class InputHandler extends Component {
 
 	}
 
+	/**
+	 *
+	 * @param event
+	 */
 	public void handle(Event event) {
 		if (event == null) {
 			this.action.apply(event);

@@ -35,7 +35,7 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 	 * @param node
 	 */
 	public void add(SearchNode node) {
-		// eventuell notify hinzufügen für fallunterscheidung von verschiedenen aktionen
+		// eventuell notify hinzufï¿½gen fï¿½r fallunterscheidung von verschiedenen aktionen
 		this.frontier.add(node);
 		node.metadata.isInFrontier = true;
 		node.metadata.isInMemory = true;
@@ -127,6 +127,22 @@ public class Frontier extends GameObject { // maby it is althou collection ??? {
 		last.metadata.isInFrontier = false;
 		last.metadata.isInMemory = false;
 		return last;
+	}
+
+	/**
+	 * Removes the given search node from the frontier
+	 *
+	 * @return
+	 */
+
+	public SearchNode remove(SearchNode node) {
+		if (frontier.isEmpty()) {
+			return null;
+		}
+		frontier.remove(node);
+		node.metadata.isInFrontier = false;
+		node.metadata.isInMemory = false;
+		return node;
 	}
 
 	/**

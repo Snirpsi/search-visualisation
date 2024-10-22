@@ -16,6 +16,13 @@ import settings.Settings;
 import tools.Vector2D;
 import tools.Vector2DInt;
 
+/**
+ * a class that can draw a 2D tilemap
+ *
+ * @author Severin
+ * @author Alexander (Comments adjusted)
+ *
+ */
 public class TileMap2D extends Drawable {
 
 	private int tileSize = Settings.TILEMAP.TILE_SIZE;
@@ -139,6 +146,9 @@ public class TileMap2D extends Drawable {
 
 	}
 
+	/**
+	 * returns all shapes of the {@link TileMap2D}
+	 */
 	@Override
 	public List<Node> getShapes() {
 		List<Node> ret = new LinkedList<>();

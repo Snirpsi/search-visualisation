@@ -1,6 +1,8 @@
 package application.gui;
 
 import ai_algorithm.SearchNodeMetadataObject;
+import ai_algorithm.problems.mapColoring.AbstractMapColoringProblem;
+import ai_algorithm.search.DepthFirstSearch;
 import application.Globals;
 import application.SearchThreadRegistryAndFactory;
 import application.debugger.DebuggerUI;
@@ -70,7 +72,31 @@ public class GuiLayout {
 		problemSelect.getItems().addAll(SearchThreadRegistryAndFactory.getProblemNames());
 		topMenue.getChildren().add(problemSelect);
 
-		algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getSearchAlgoritmNames());
+		/**
+		 * When a MapColoringProblem is selected the algorithm selection is updated with the CSP algorithms
+		 * Otherwise the normal search algorithms are shown
+		 */
+		problemSelect.setOnAction(e -> {
+			String probName = problemSelect.getValue();
+			// Get class object of selected problem
+			Class<?> probClass = null;
+			try {
+                probClass = Class.forName(probName);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+			algoSelect.getItems().clear();
+
+			// If selected problem is subclass of (or identical to) AbstractMapColoringProblem
+            if (AbstractMapColoringProblem.class.isAssignableFrom(probClass)) {
+				algoSelect.getItems().add(DepthFirstSearch.class.getName());
+				algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getCspSearchAlgoritmNames());
+			} else {
+				algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getSearchAlgoritmNames());
+			}
+		});
+
+//		algoSelect.getItems().addAll(SearchThreadRegistryAndFactory.getSearchAlgoritmNames());
 		topMenue.getChildren().add(algoSelect);
 
 		var debugg = new DebuggerUI();
@@ -89,6 +115,7 @@ public class GuiLayout {
 
 /*
  * Copyright (c) 2022 Severin Dippold
+ * Copyright (c) 2024 Alexander Ultsch
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

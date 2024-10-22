@@ -19,7 +19,7 @@ public abstract class Visitor {
 	 * @param gameObject
 	 */
 	public void visit(GameObject gameObject) {
-		// System.out.println("The object " + gameObject + " was visited by " + this);
+		System.out.println("The object " + gameObject + " was visited by " + this);
 	}
 }
 /*
