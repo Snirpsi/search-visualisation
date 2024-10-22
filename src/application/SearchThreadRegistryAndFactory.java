@@ -8,7 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ai_algorithm.SearchAndProblemRegister;
+import ai_algorithm.problems.CspProblem;
 import ai_algorithm.problems.Problem;
+import ai_algorithm.search.csp.CspSearchAlgorithm;
 import ai_algorithm.search.SearchAlgorithm;
 import application.gui.GuiLayout;
 import settings.Settings;
@@ -32,13 +34,34 @@ public class SearchThreadRegistryAndFactory {
 		}
 
 		Problem problem = getProblemByName(GuiLayout.problemSelect.getValue());
-		SearchAlgorithm algo = getSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), problem);
+//		SearchAlgorithm algo = getSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), problem);
 
-		SearchThread s = new SearchThread(algo);
-		searchThreads.add(s);
-		s.setPriority(1);
-		s.start();
+//		SearchThread s = new SearchThread(algo);
+//		searchThreads.add(s);
+//		s.setPriority(1);
+//		s.start();
 
+		if (problem instanceof ai_algorithm.problems.CspProblem) {
+			if (GuiLayout.algoSelect.getValue().equals("ai_algorithm.search.DepthFirstSearch")) {
+				SearchAlgorithm algo = getSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), problem);
+				SearchThread s = new SearchThread(algo);
+				searchThreads.add(s);
+				s.setPriority(1);
+				s.start();
+			} else {
+				CspSearchAlgorithm algo = getCspSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), (CspProblem) problem);
+				SearchThread s = new SearchThread(algo);
+				searchThreads.add(s);
+				s.setPriority(1);
+				s.start();
+			}
+		} else {
+			SearchAlgorithm algo = getSearchAlgoritmByName(GuiLayout.algoSelect.getValue(), problem);
+			SearchThread s = new SearchThread(algo);
+			searchThreads.add(s);
+			s.setPriority(1);
+			s.start();
+		}
 	}
 	
 	/**
@@ -55,7 +78,7 @@ public class SearchThreadRegistryAndFactory {
 		return ret;
 	}
 	/**
-	 * 
+	 *
 	 * @return all registered {@link SearchAlgorithm}
 	 */
 	public static List<String> getSearchAlgoritmNames() {
@@ -66,6 +89,20 @@ public class SearchThreadRegistryAndFactory {
 		}
 		return ret;
 	}
+
+	/**
+	 *
+	 * @return all registered {@link CspSearchAlgorithm}
+	 */
+	public static List<String> getCspSearchAlgoritmNames() {
+		var ret = new LinkedList<String>();
+
+		for (var s : SearchAndProblemRegister.cspSearchAlgorithm) {
+			ret.add(s);
+		}
+		return ret;
+	}
+
 
 	public static Problem getProblemByName(String problemName) {
 		Problem problem = null;
@@ -115,10 +152,43 @@ public class SearchThreadRegistryAndFactory {
 		return algo;
 	}
 
-	
 	/**
-	 * method to stop all running threads 
+	 *
+	 *
+	 * @param cspSearchAlgorithmName
+	 * @param problem
+	 * @return
 	 */
+	public static CspSearchAlgorithm getCspSearchAlgoritmByName(String cspSearchAlgorithmName, CspProblem problem) {
+		if (Settings.DEBUGMODE)
+			System.out.println("csp search algoritm: " + cspSearchAlgorithmName);
+		CspSearchAlgorithm algo = null;
+		if (problem == null) {
+			return null;
+		}
+
+		try {
+
+			Class<CspSearchAlgorithm> algoClass = (Class<CspSearchAlgorithm>) Class.forName(cspSearchAlgorithmName);
+
+			Constructor<CspSearchAlgorithm> cosntructor = algoClass.getConstructor();
+			algo = cosntructor.newInstance();
+			if (Settings.DEBUGMODE)
+				System.out.println(algo.getClass());
+
+			algo.setProblem(problem);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return algo;
+
+	}
+
+		/**
+         * method to stop all running threads
+         */
 	public static void stopAllThreads() {
 		for (SearchThread thread : searchThreads) {
 			thread.interrupt();
@@ -141,6 +211,7 @@ public class SearchThreadRegistryAndFactory {
 
 /*
  * Copyright (c) 2022 Severin Dippold
+ * Copyright (c) 2024 Alexander Ultsch
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

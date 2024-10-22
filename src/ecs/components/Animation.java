@@ -7,44 +7,72 @@ import tools.Vector2D;
  * adding animation component to entity enables positional animations
  * 
  * @author Severin
- *
+ * @author Alexander (Comments adjusted)
  */
 public class Animation extends Component {
 
 	Vector2D startPos = new Vector2D();
 	Vector2D endPos = new Vector2D();
-
 	double duration = 1.0;
 	double timeUntilEnd = 1.0;
 
+	/**
+	 * Default constructor
+	 */
 	public Animation() {
 	}
 
+	/**
+	 * Constructor
+	 *
+	 * @param duration
+	 */
 	public Animation(double duration) {
 		this.setDuration(duration);
 	}
 
+	/**
+	 * sets the duration of the animation
+	 *
+	 * @param duration
+	 */
 	public void setDuration(double duration) {
 		this.duration = duration;
 		this.timeUntilEnd = duration;
 	}
 
+	/**
+	 * sets the end position of the animation
+	 *
+	 * @param endPos
+	 */
 	public void setEndPos(Vector2D endPos) {
 		this.endPos = endPos;
 		// this.duration = 1.0;
 		this.timeUntilEnd = this.duration;
 	}
 
+	/**
+	 * sets the end position of the animation
+	 *
+	 * @param endPos
+	 * @param duration
+	 */
 	public void setEndPos(Vector2D endPos, double duration) {
 		this.endPos = endPos;
 		this.duration = duration;
 		this.timeUntilEnd = duration;
 	}
 
+	/**
+	 * sets the start position of the animation
+	 *
+	 * @param deltaT
+	 */
 	@Override
 	public void update(float deltaT) {
 
-		if (timeUntilEnd <= deltaT) {
+		if (timeUntilEnd <= deltaT) { 
 			// animation just finished
 			startPos = endPos;
 			// make sure that Entitie has arrived at exactly the right position

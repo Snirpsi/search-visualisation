@@ -11,23 +11,40 @@ import ecs.components.graphics.drawables.ConnectionLine;
  * objects.
  * 
  * @author Severin Dippold
+ * @author Alexander (Comments adjusted)
  */
 public class Association extends Component {
 
 	public GameObject other;
 
+	/**
+	 * Default constructor
+	 */
 	public Association() {
 		this.other = null;
 	}
 
+	/**
+	 * Constructor with parameter
+	 *
+	 * @param other The other {@link GameObject} to associate with.
+	 */
 	public Association(GameObject other) {
 		this.other = other;
 	}
 
+	/**
+	 * Associates this {@link GameObject} with another {@link GameObject}.
+	 *
+	 * @param other The other {@link GameObject} to associate with.
+	 */
 	public void associateWith(GameObject other) {
 		this.other = other;
 	}
 
+	/**
+	 * Disassociates this {@link GameObject} with another {@link GameObject}.
+	 */
 	@Override
 	public void update(float deltaT) {
 	}

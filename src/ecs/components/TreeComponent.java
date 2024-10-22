@@ -6,8 +6,8 @@ import java.util.List;
 
 import ecs.Component;
 
-// Diese Klasse ist etwas redundant, sie ermöglicht es aber den Komponenten 
-// auf einer Baumstruktur unabhängig von der "echten Baumstruktur" zu navigieren
+// Diese Klasse ist etwas redundant, sie ermï¿½glicht es aber den Komponenten 
+// auf einer Baumstruktur unabhï¿½ngig von der "echten Baumstruktur" zu navigieren
 
 /**
  * This class allows to represent a tree data structure between GameObjects
@@ -39,8 +39,8 @@ public class TreeComponent extends Component {
 	 */
 	public TreeComponent(TreeComponent parent) {
 		this();
-		parent.addChild(this); // das ruft eigentlich die nötigen Sachen auf ... oder ???
-		// System.out.println("depth " + depth + " " + parent );
+		parent.addChild(this); // das ruft eigentlich die nï¿½tigen Sachen auf ... oder ???
+		 System.out.println("depth " + depth + " " + parent );
 	}
 
 	/**

@@ -1,31 +1,32 @@
 package ecs.visitors;
 
 import java.util.List;
+import java.util.Map;
 
 import ai_algorithm.ExploredSet;
 import ai_algorithm.Frontier;
 import ai_algorithm.SearchNode;
 import ai_algorithm.SearchNodeMetadataObject;
 import ai_algorithm.problems.State;
+import ai_algorithm.problems.mapColoring.AbstractMapColoringState;
+import ai_algorithm.problems.mapColoring.australia.MapColoringStateAustralia;
+import ai_algorithm.problems.mapColoring.general.MapColoringStateGeneral;
 import ai_algorithm.problems.raster_path.GridMazeProblem;
 import ai_algorithm.problems.raster_path.GridMazeState;
-import ai_algorithm.problems.slidingTilePuzzle.SlidingTileState;
-import ai_algorithm.problems.slidingTilePuzzle.SlidingTileTile;
 import application.Globals;
 import ecs.Component;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
-import ecs.components.InputHandler;
-import ecs.components.Position;
 import ecs.components.graphics.Coloring;
 import ecs.components.graphics.Graphics;
 import ecs.components.graphics.TreeLayouter;
 import ecs.components.graphics.drawables.Sprite;
 import ecs.components.graphics.drawables.Text;
 import ecs.components.graphics.drawables.TileMap2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import settings.Settings;
-import tools.Vector2D;
 import tools.Vector2DInt;
 
 /**
@@ -52,6 +53,16 @@ public class ChangeVisitor extends Visitor {
 		}
 		if (gameObject instanceof GridMazeProblem p) {
 			this.visit(p);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringStateGeneral s) {
+			this.visit(s);
+			return;
+		}
+
+		if (gameObject instanceof MapColoringStateAustralia a) {
+			this.visit(a);
 			return;
 		}
 
@@ -172,10 +183,10 @@ public class ChangeVisitor extends Visitor {
 	 */
 	public void visit(GridMazeProblem rasterPathProblem) {
 		// Makieren von Frontier und Explored set in dem spezifischen Problem,
-		// ist Problemabhängig ob es geht oder nicht.
+		// ist Problemabhï¿½ngig ob es geht oder nicht.
 		List<SearchNode> nodes = GameObjectRegistry.getAllGameObjectsOfType(SearchNode.class);
 		TileMap2D t2d = rasterPathProblem.getComponent(TileMap2D.class);
-		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser währe alle frontiers und exploredsets zu
+		for (SearchNode node : nodes) { // <<- is ja nur O(n) -.- <besser wï¿½hre alle frontiers und exploredsets zu
 										// bekommen
 			GridMazeState state;
 			try {
@@ -202,16 +213,12 @@ public class ChangeVisitor extends Visitor {
 		}
 	}
 
-	/**
-	 * 
-	 * @param slidingTileState
-	 */
-
-	
-	
-	
 //++++++++++++++++++++++Hatte schon funktioniert+++++++++++++++++++++
-//	
+//
+//	/**
+//	 *
+//	 * @param slidingTileState
+//	 */
 //	
 //	public void visit(SlidingTileState slidingTileState) {
 //		int maxval = slidingTileState.getSize().y * slidingTileState.getSize().x;
@@ -235,13 +242,119 @@ public class ChangeVisitor extends Visitor {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+	//###################################### MAP COLORING General ######################################//
+	/**
+	 * Visualizes the {@link MapColoringStateGeneral} and applies colors
+	 *
+ 	 * @param state
+	 */
+	public void visit(MapColoringStateGeneral state) {
+		mapColoringProblemUpdateFunction(state);
+	}
+
+	//###################################### MAP COLORING Australia ######################################//
+	/**
+	 * Visualizes the {@link AbstractMapColoringState} and applies colors to the variable circles
+	 *
+	 * @param state
+	 */
+	public void visit(MapColoringStateAustralia state) {
+		mapColoringProblemUpdateFunction(state);
+	}
+
+	//############################### FUNCTIONS FOR MAP COLORING Problems ###############################//
+
+	/**
+	 * Visualizes the {@link AbstractMapColoringState} and applies colors
+	 *
+	 * @param state of the specific map coloring problem
+	 */
+	public void mapColoringProblemUpdateFunction(AbstractMapColoringState state) {
+		// Iterating over all variables of the problem
+		for(String var : state.getProblem().getVariables()) {
+			// Get the circle of the variable var from the problem
+			Circle c = state.getProblem().getVariableToCircleMap().get(var);
+			// Get the domain of the variable from the state
+			List<String> stateVarDomain = state.getDomain(var);
+			// Get the neighbors of the variable var from the problem
+			List<String> neighborVar = state.getProblem().getNeighbors(var);
+
+			// Text for Variable and Nodes
+			Map<String, List<javafx.scene.text.Text>> tm = state.getProblem().getVariableTextMap();
+			tm.get(var).forEach(t -> {
+				t.setText("V: " + var +
+						"\nD: " + stateVarDomain +
+						"\n");
+			});
+
+			// Set the color of the circle according to the stateVarDomain
+			setColorToCircle(c, stateVarDomain, neighborVar, state.getAssignments().containsKey(var));
+		}
+	}
+
+	/**
+	 * Sets the color of the circle according to the stateVarDomain
+	 * Only if a variable has already been added to the assignments list will the circle be marked thicker
+	 *
+	 * @param c
+	 * @param stateVarDomain
+	 * @param neighborVar
+	 * @param assigned
+	 */
+	private void setColorToCircle(Circle c, List<String> stateVarDomain, List<String> neighborVar, boolean assigned) {
+		// Change the circle thickness if the variable has already been assigned
+		if( assigned ) {
+			c.setStrokeWidth(5);
+		} else {
+			c.setStrokeWidth(2);
+		}
+
+		// Set the color of the circle according to the stateVarDomain and the neighbors
+		if (stateVarDomain.size() == 1) {
+			switch (stateVarDomain.get(0)) {
+				case "R" -> {
+					c.setFill(Color.RED);
+				}
+				case "G" -> {
+					c.setFill(Color.GREEN);
+				}
+				case "B" -> {
+					c.setFill(Color.BLUE);
+				}
+			}
+//		} else if (stateVarDomain.size() == 2) {
+//			// If the variable has two possible values (R, G), (R, B), (G, B) in the domain (R, G, B)
+//			// then the color of the circle is mixed accordingly
+//			if (stateVarDomain.get(0).equals("R") || stateVarDomain.get(1).equals("R")){
+//				if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+//					c.setFill(Color.YELLOW);
+//				} else if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("Blue")) {
+//					c.setFill(Color.PURPLE);
+//				}
+//			} else if (stateVarDomain.get(0).equals("G") || stateVarDomain.get(1).equals("G")) {
+//				if (stateVarDomain.get(0).equals("B") || stateVarDomain.get(1).equals("B")) {
+//					c.setFill(Color.CYAN);
+//				}
+//			}
+		} else if(stateVarDomain.size() == 3) {
+			// If the variable has no neighbors, the circle is white
+			if (!neighborVar.isEmpty()) {
+				c.setFill(Color.WHITE);
+			} else {
+				c.setFill(Color.WHITE);
+			}
+		} else if (stateVarDomain.isEmpty()) {
+			// If the variable has no domainvalue the circle is white
+			c.setFill(Color.WHITE);
+		}
+
+	}
+
 }
-
-
-
 
 /*
  * Copyright (c) 2022 Severin Dippold
+ * Copyright (c) 2024 Alexander Ultsch
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

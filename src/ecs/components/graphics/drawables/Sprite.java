@@ -30,7 +30,6 @@ public class Sprite extends Drawable {
 			entity.getComponent(Graphics.class).notifyNewDrawable();
 		}
 	}
-
 	@Override
 	public void update(float deltaT) {
 	}

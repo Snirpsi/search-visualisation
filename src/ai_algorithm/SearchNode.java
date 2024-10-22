@@ -1,15 +1,13 @@
 package ai_algorithm;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import ai_algorithm.problems.Problem;
 import ai_algorithm.problems.State;
 import application.debugger.Debugger;
 import ecs.GameObject;
 import ecs.GameObjectRegistry;
-import javafx.scene.Node;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Search nodes are the central data structure of the AI algorithms, they make
@@ -26,7 +24,7 @@ public class SearchNode extends GameObject {
 	/**
 	 * child node
 	 */
-	private LinkedList<SearchNode> children = null;
+	private final List<SearchNode> children;
 	/**
 	 * state
 	 */
@@ -42,7 +40,7 @@ public class SearchNode extends GameObject {
 	/**
 	 * reference to the path traveled
 	 */
-	private Path path;
+	private final Path path;
 
 	/**
 	 * object mainly for visualization and Thread communication
@@ -60,18 +58,15 @@ public class SearchNode extends GameObject {
 	public SearchNode(SearchNode parent, State state, double pathCost, String action) {
 		super();
 		this.metadata = new SearchNodeMetadataObject();
+		this.children = new LinkedList<>();
+		GameObjectRegistry.registerForStateChange(this);
 
 		this.parent = parent;
 		this.state = state;
 		this.pathCost = pathCost;
 		this.action = action;
-		if (this.parent != null) {
+		if (this.parent == null) {
 			this.metadata.root = this;
-			if (this.parent.children == null) {
-				this.parent.children = new LinkedList<SearchNode>();
-			} else {
-				this.parent.children.add(this);
-			}
 		}
 		this.path = new Path(this);
 
@@ -92,11 +87,8 @@ public class SearchNode extends GameObject {
 	 * @return true, false
 	 */
 	public boolean isRoot() {
-		if (this.getParent() == null) {
-			return true;
-		}
-		return false;
-	}
+        return this.getParent() == null;
+    }
 
 	/**
 	 * gives associated state
@@ -130,19 +122,19 @@ public class SearchNode extends GameObject {
 	 * 
 	 * @return list of all child nodes
 	 */
-	public LinkedList<SearchNode> getChildren() {
+	public List<SearchNode> getChildren() {
 		return children;
 	}
 
-	/**
-	 * sets the child nodes
-	 * 
-	 * @param children
-	 */
-	public void setChildren(LinkedList<SearchNode> children) {
-		this.children = children;
-		GameObjectRegistry.registerForStateChange(this);
-	}
+//	/**
+//	 * sets the child nodes
+//	 *
+//	 * @param children
+//	 */
+//	public void setChildren(LinkedList<SearchNode> children) {
+//		this.children = children;
+//		GameObjectRegistry.registerForStateChange(this);
+//	}
 
 	/**
 	 * @return path object
@@ -166,9 +158,7 @@ public class SearchNode extends GameObject {
 		Debugger.pause("Expanding: " + this);
 		// ende vis
 
-		List<SearchNode> futureCildren = new ArrayList<>();
-
-		if (this.getChildren() != null && this.getChildren().size() != 0) {
+		if (this.getChildren() != null && !this.getChildren().isEmpty() ) {
 			return this.getChildren(); // <-- only expand children if they don't alredy exist
 		}
 
@@ -179,10 +169,9 @@ public class SearchNode extends GameObject {
 			// neue knoten erzeugen
 			SearchNode succ = new SearchNode(this, succState,
 					this.getPathCost() + prob.getCost(state, action, succState), action);
-			futureCildren.add(succ);
+			this.children.add(succ);
 			Debugger.pause("EXPANSION: " + action);
 		}
-		this.children.addAll(futureCildren);
 		// visualsiieren
 		GameObjectRegistry.registerForStateChange(this);
 		// ende vis

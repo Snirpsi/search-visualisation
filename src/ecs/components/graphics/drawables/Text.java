@@ -28,7 +28,6 @@ public class Text extends Drawable {
 	public Text(String string) {
 		this();
 		this.text.setText(string);
-
 	}
 
 	public void setFontSize(int fontsize) {

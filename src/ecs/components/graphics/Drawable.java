@@ -7,11 +7,14 @@ import javafx.scene.Node;
 /**
  * abstract class of object that can be displayed to the graphics context
  * @author Severin
+ * @author Alexander (Comments adjusted)
  *
  */
 public abstract class Drawable extends Component {
 	public abstract List<Node> getShapes();
-
+	/**
+	 * notifies the graphics component that a new drawable is available
+	 */
 	public void notifyGraphics() {
 		if (this.entity.hasComponent(Graphics.class)) {
 			this.entity.getComponent(Graphics.class).notifyNewDrawable();
